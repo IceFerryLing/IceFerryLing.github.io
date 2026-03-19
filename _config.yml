@@ -1,0 +1,6 @@
+title: IceFerryLing
+description: 以紫色星云为基调的个人博客，记录代码、生活与灵感。
+url: ""
+baseurl: ""
+permalink: /posts/:title/
+markdown: kramdown
