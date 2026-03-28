@@ -6,7 +6,7 @@ import { codeToHtml } from 'shiki';
 import { POSTS_PER_PAGE } from '../config/site';
 
 const contentPostsDirectory = path.join(process.cwd(), 'content', 'posts');
-const legacyPostsDirectory = path.join(process.cwd(), '_posts');
+const legacyPostsDirectory = path.join(process.cwd(), 'legacy', 'archived-root', '_posts');
 
 function stripMarkdown(markdown = '') {
   return markdown

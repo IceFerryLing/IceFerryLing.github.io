@@ -33,7 +33,7 @@ jobs:
       - name: Build static site
         run: npm run build
         env:
-          NEXT_PUBLIC_SITE_URL: https://iceferryling.github.io
+          SITE_URL: https://iceferryling.github.io
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3

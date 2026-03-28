@@ -1,6 +1,6 @@
 export const SITE_NAME = 'IceFerryLing';
 export const SITE_DESCRIPTION = '以紫色星云为基调的个人博客，记录代码、生活与灵感。';
-export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://iceferryling.github.io';
+export const SITE_URL = process.env.SITE_URL || process.env.NEXT_PUBLIC_SITE_URL || 'https://iceferryling.github.io';
 export const POSTS_PER_PAGE = 6;
 
 export const AUTHOR_PROFILE = {

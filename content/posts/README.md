@@ -13,4 +13,4 @@
 
 示例链接将是：`/posts/<slug>`。
 
-> 兼容说明：旧 `_posts/*.md` 仍可读取，但优先读取 `content/posts/*.md`。
+> 兼容说明：旧文章备份位于 `legacy/archived-root/_posts/*.md`，系统仍可兜底读取，但优先读取 `content/posts/*.md`。
