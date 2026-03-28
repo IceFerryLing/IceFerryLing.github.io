@@ -28,6 +28,7 @@ const ogImage = new URL(image, SITE_URL).toString();
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImage} />
     <link rel="alternate" type="application/rss+xml" title={`${SITE_NAME} RSS`} href="/rss.xml" />
+    <script src="https://cdn.tailwindcss.com"></script>
     <script is:inline>
       (() => {
         const saved = localStorage.getItem('theme-mode');
@@ -39,6 +40,7 @@ const ogImage = new URL(image, SITE_URL).toString();
   </head>
   <body>
     <div id="readingProgress"></div>
+    <div id="tsparticles" class="particles-layer" aria-hidden="true"></div>
     <div class="bg-orb orb-1"></div>
     <div class="bg-orb orb-2"></div>
     <div class="bg-grid"></div>
@@ -74,6 +76,8 @@ const ogImage = new URL(image, SITE_URL).toString();
       </div>
     </footer>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tsparticles/3.5.0/tsparticles.bundle.min.js"></script>
     <script type="module" src="/assets/js/blog-enhance.js"></script>
+    <script type="module" src="/assets/js/ui-effects.js"></script>
   </body>
 </html>
