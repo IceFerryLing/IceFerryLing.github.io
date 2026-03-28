@@ -34,8 +34,9 @@ function initThemeToggle() {
 
   const updateIcon = () => {
     const mode = getMode();
-    btn.textContent = mode === 'dark' ? '☀️' : '🌙';
+    btn.classList.toggle('is-night', mode === 'dark');
     btn.setAttribute('title', mode === 'dark' ? '切换为浅色模式' : '切换为深色模式');
+    btn.setAttribute('aria-pressed', String(mode === 'dark'));
   };
 
   btn.addEventListener('click', () => {

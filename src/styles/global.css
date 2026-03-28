@@ -73,13 +73,176 @@ a:hover { color: var(--accent-soft); }
   color: var(--text);
 }
 .theme-toggle {
-  border: 1px solid var(--border);
-  background: var(--card);
-  color: var(--text);
-  border-radius: 999px;
-  width: 36px;
+  border: 0;
+  background: transparent;
+  padding: 0;
+  width: 92px;
   height: 36px;
   cursor: pointer;
+  position: relative;
+}
+
+.theme-toggle-box {
+  --box-height: 32px;
+  --box-width: 82px;
+  --ball-size: 27px;
+  --ball-margin: 3px;
+  position: relative;
+  display: block;
+  width: var(--box-width);
+  height: var(--box-height);
+  border-radius: 999px;
+  overflow: hidden;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.2), 0 6px 16px rgba(0, 0, 0, 0.25);
+}
+
+.theme-toggle-sky,
+.theme-toggle-stars,
+.theme-toggle-clouds,
+.theme-toggle-halo,
+.theme-toggle-ball {
+  position: absolute;
+  inset: 0;
+}
+
+.theme-toggle-sky {
+  background: linear-gradient(180deg, #4e9be9, #3f86d2);
+  transition: background 0.8s cubic-bezier(0.26, 0.97, 0.2, 1.08);
+}
+
+.theme-toggle-stars {
+  background-image:
+    radial-gradient(circle at 18% 28%, rgba(255, 255, 255, .9) 0 1.5px, transparent 2px),
+    radial-gradient(circle at 38% 64%, rgba(255, 255, 255, .85) 0 1px, transparent 2px),
+    radial-gradient(circle at 56% 35%, rgba(255, 255, 255, .9) 0 1.4px, transparent 2px),
+    radial-gradient(circle at 72% 60%, rgba(255, 255, 255, .75) 0 1px, transparent 2px),
+    radial-gradient(circle at 82% 24%, rgba(255, 255, 255, .85) 0 1.3px, transparent 2px);
+  opacity: 0;
+  transform: translateY(-100%);
+  transition: opacity 0.5s ease, transform 1s cubic-bezier(0.26, 0.97, 0.2, 1.08);
+}
+
+.theme-toggle-clouds {
+  background:
+    radial-gradient(circle at 88% 72%, #ffffff 0 9px, transparent 10px),
+    radial-gradient(circle at 78% 74%, #ffffff 0 8px, transparent 9px),
+    radial-gradient(circle at 68% 74%, #ffffff 0 7px, transparent 8px),
+    radial-gradient(circle at 61% 78%, #d3e4f6 0 8px, transparent 9px),
+    radial-gradient(circle at 49% 81%, #d3e4f6 0 7px, transparent 8px),
+    radial-gradient(circle at 38% 84%, #d3e4f6 0 7px, transparent 8px);
+  transition: transform 1s cubic-bezier(0.49, 1.57, 0.04, 0.83), opacity 0.5s ease;
+}
+
+.theme-toggle-halo::before,
+.theme-toggle-halo::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 16px;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.12);
+  transition: left 1s cubic-bezier(0.26, 0.97, 0.2, 1.08);
+}
+
+.theme-toggle-halo::before {
+  width: 42px;
+  height: 42px;
+}
+
+.theme-toggle-halo::after {
+  width: 52px;
+  height: 52px;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.theme-toggle-ball {
+  width: var(--ball-size);
+  height: var(--ball-size);
+  inset: auto auto auto var(--ball-margin);
+  top: 50%;
+  transform: translate(0, -50%);
+  border-radius: 50%;
+  box-shadow: 0.3em 0.3em 0.5em rgba(0, 0, 0, 0.45);
+  overflow: hidden;
+  transition: transform 1.2s cubic-bezier(0.26, 0.97, 0.2, 1.08);
+  z-index: 2;
+}
+
+.theme-toggle-sun,
+.theme-toggle-moon {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+}
+
+.theme-toggle-sun {
+  background-color: rgb(243, 198, 43);
+  box-shadow: inset 0.3em 0.3em 0.3em rgba(255, 255, 255, 0.8), inset -0.3em -0.3em 1em rgba(0, 0, 0, 0.35);
+  transition: opacity .5s ease;
+}
+
+.theme-toggle-moon {
+  background-color: rgb(195, 201, 211);
+  transform: translateX(100%);
+  transition: transform .7s ease;
+  box-shadow: inset 0.3em 0.3em 0.3em rgba(255, 255, 255, 0.8), inset -0.3em -0.3em 1em rgba(0, 0, 0, 0.35);
+}
+
+.theme-toggle-moon .crater {
+  position: absolute;
+  border-radius: 50%;
+  background: rgb(145, 151, 165);
+}
+
+.theme-toggle-moon .crater-1 { width: 5px; height: 5px; top: 6px; left: 12px; }
+.theme-toggle-moon .crater-2 { width: 8px; height: 8px; top: 13px; left: 5px; }
+.theme-toggle-moon .crater-3 { width: 6px; height: 6px; top: 18px; left: 18px; }
+
+.theme-toggle.is-night .theme-toggle-sky {
+  background: rgb(23, 30, 51);
+}
+
+.theme-toggle.is-night .theme-toggle-stars {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.theme-toggle.is-night .theme-toggle-clouds {
+  transform: translateY(100%);
+  opacity: .85;
+}
+
+.theme-toggle.is-night .theme-toggle-halo::before,
+.theme-toggle.is-night .theme-toggle-halo::after {
+  left: calc(var(--box-width) - 16px);
+}
+
+.theme-toggle.is-night .theme-toggle-ball {
+  transform: translate(calc(var(--box-width) - var(--ball-size) - var(--ball-margin) * 2), -50%);
+}
+
+.theme-toggle.is-night .theme-toggle-sun {
+  opacity: 0;
+}
+
+.theme-toggle.is-night .theme-toggle-moon {
+  transform: translateX(0);
+}
+
+.theme-toggle:hover .theme-toggle-stars {
+  animation: twinkle-lite 1.4s ease-in-out infinite alternate;
+}
+
+.theme-toggle:focus-visible {
+  outline: 2px solid #b594ff;
+  outline-offset: 3px;
+  border-radius: 999px;
+}
+
+@keyframes twinkle-lite {
+  from { opacity: .65; }
+  to { opacity: 1; }
 }
 .site-main { padding: 36px 0 80px; position: relative; z-index: 1; }
 

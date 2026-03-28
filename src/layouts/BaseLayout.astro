@@ -58,7 +58,23 @@ const ogImage = new URL(image, SITE_URL).toString();
             <a href="/archive/">归档</a>
             <a href="/about/">关于</a>
           </div>
-          <button id="themeToggle" class="theme-toggle" type="button" aria-label="切换主题">🌙</button>
+          <button id="themeToggle" class="theme-toggle" type="button" aria-label="切换主题">
+            <span class="theme-toggle-box" aria-hidden="true">
+              <span class="theme-toggle-sky"></span>
+              <span class="theme-toggle-stars"></span>
+              <span class="theme-toggle-clouds"></span>
+              <span class="theme-toggle-halo"></span>
+              <span class="theme-toggle-ball">
+                <span class="theme-toggle-sun"></span>
+                <span class="theme-toggle-moon">
+                  <span class="crater crater-1"></span>
+                  <span class="crater crater-2"></span>
+                  <span class="crater crater-3"></span>
+                </span>
+              </span>
+            </span>
+            <span class="visually-hidden">切换主题</span>
+          </button>
         </nav>
       </div>
     </header>
