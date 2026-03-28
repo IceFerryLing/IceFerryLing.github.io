@@ -143,3 +143,4 @@ function initMouseDroplets() {
     drop.addEventListener('animationend', () => drop.remove(), { once: true });
   }, { passive: true });
 }
+
