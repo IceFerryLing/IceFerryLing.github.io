@@ -67,10 +67,19 @@ a:hover { color: var(--accent-soft); }
   transition: all .22s ease;
 }
 
+.nav-icon {
+  font-size: 1.05rem;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .site-nav-links a:hover {
   background: rgba(255, 255, 255, 0.08);
   border-color: rgba(255, 255, 255, 0.15);
   color: var(--text);
+  transform: translateY(-1px);
 }
 .theme-toggle {
   border: 0;
@@ -448,6 +457,11 @@ a:hover { color: var(--accent-soft); }
   background: rgba(255, 255, 255, 0.1);
   border: 1px solid rgba(255, 255, 255, 0.2);
   flex-shrink: 0;
+}
+
+.feature-icon i {
+  font-size: 1rem;
+  line-height: 1;
 }
 
 .chip-wrap {
