@@ -1,11 +1,15 @@
+// 页面可交互后再初始化视觉层，避免首屏阻塞
 window.addEventListener('DOMContentLoaded', () => {
+  // 1) 背景公式泡泡：理科风点缀（数学/物理/代码符号）
   initFormulaBubbles();
 
+  // 2) 如果粒子库不可用，保底启用鼠标水滴效果并退出
   if (!window.tsParticles) {
     initMouseDroplets();
     return;
   }
 
+  // 3) 粒子背景：轻量上浮 + hover 时 trail 拖尾
   window.tsParticles.load({
     id: 'tsparticles',
     options: {
@@ -53,13 +57,16 @@ window.addEventListener('DOMContentLoaded', () => {
     }
   });
 
+  // 4) 鼠标跟随水滴（与粒子背景并行，不互斥）
   initMouseDroplets();
 });
 
 function initFormulaBubbles() {
+  // 公式层容器不存在时直接跳过，避免脚本报错
   const layer = document.getElementById('formulaBubbles');
   if (!layer) return;
 
+  // 著名公式与少量代码复杂度符号：只做背景点缀，不作为主体内容
   const formulas = [
     'E = mc²',
     'F = ma',
@@ -80,8 +87,10 @@ function initFormulaBubbles() {
   ];
 
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  // 根据屏幕宽度控制密度，避免移动端太拥挤
   const count = Math.min(18, Math.max(10, Math.floor(window.innerWidth / 120)));
 
+  // 先清空再重建，防止重复初始化叠加
   layer.innerHTML = '';
 
   for (let i = 0; i < count; i++) {
@@ -89,6 +98,7 @@ function initFormulaBubbles() {
     bubble.className = 'formula-bubble';
     bubble.textContent = formulas[Math.floor(Math.random() * formulas.length)];
 
+    // 随机参数：横向位置、字号、时长、延迟、摆动幅度
     const x = 4 + Math.random() * 92;
     const size = 0.72 + Math.random() * 0.44;
     const delay = -Math.random() * 24;
@@ -102,6 +112,7 @@ function initFormulaBubbles() {
     bubble.style.setProperty('--sway', `${sway}px`);
     bubble.style.setProperty('--fx', `${(Math.random() - 0.5) * 20}px`);
 
+    // 无障碍降级：用户偏好减少动态时，改为静态淡化分布
     if (reducedMotion) {
       bubble.style.animation = 'none';
       bubble.style.opacity = '0.2';
@@ -114,11 +125,13 @@ function initFormulaBubbles() {
 }
 
 function initMouseDroplets() {
+  // 无障碍：减少动态时不生成跟随粒子
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
     return;
   }
 
   let last = 0;
+  // 简单节流，避免高频 pointermove 造成过多 DOM 节点
   const throttle = 26;
 
   window.addEventListener('pointermove', (event) => {
@@ -131,6 +144,7 @@ function initMouseDroplets() {
     drop.style.left = `${event.clientX}px`;
     drop.style.top = `${event.clientY}px`;
 
+    // 每个水滴随机漂移方向和尺寸，增强“液体”感
     const driftX = (Math.random() - 0.5) * 18;
     const driftY = -12 - Math.random() * 28;
     const size = 8 + Math.random() * 8;
@@ -140,6 +154,7 @@ function initMouseDroplets() {
     drop.style.height = `${size}px`;
 
     document.body.appendChild(drop);
+    // 动画结束自动销毁节点，防止内存/DOM 堆积
     drop.addEventListener('animationend', () => drop.remove(), { once: true });
   }, { passive: true });
 }

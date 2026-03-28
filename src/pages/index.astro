@@ -127,10 +127,12 @@ const tags = getAllTags(posts).slice(0, 12);
 
   <script is:inline>
     (() => {
+      // 首页快筛：按分类切换“最新文章”列表显示
       const buttons = Array.from(document.querySelectorAll('[data-home-filter]'));
       const cards = Array.from(document.querySelectorAll('[data-home-card]'));
       if (!buttons.length || !cards.length) return;
 
+      // 根据分类过滤卡片，并更新按钮激活态
       function setFilter(category) {
         buttons.forEach((btn) => {
           btn.classList.toggle('is-active', btn.dataset.homeFilter === category);
@@ -142,6 +144,7 @@ const tags = getAllTags(posts).slice(0, 12);
         });
       }
 
+      // 绑定分类按钮点击事件
       buttons.forEach((btn) => {
         btn.addEventListener('click', () => setFilter(btn.dataset.homeFilter || 'all'));
       });

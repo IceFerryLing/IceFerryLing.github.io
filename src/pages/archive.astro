@@ -44,6 +44,7 @@ const tags = getAllTags(posts);
   </section>
 
   <script define:vars={{ POSTS_PER_PAGE }}>
+    // 归档页：关键词 + 分类 + 标签筛选，并带分页与 URL 参数同步
     const grid = document.getElementById('archiveGrid');
     const cards = Array.from(grid.querySelectorAll('.archive-post-item'));
     const pager = document.getElementById('pager');
@@ -54,6 +55,7 @@ const tags = getAllTags(posts);
     let page = 1;
     let filtered = cards;
 
+    // 将当前筛选条件写回 URL，方便分享与刷新保持状态
     function updateUrlParams() {
       const params = new URLSearchParams(window.location.search);
       const q = (searchInput.value || '').trim();
@@ -76,6 +78,7 @@ const tags = getAllTags(posts);
       history.replaceState(null, '', nextUrl);
     }
 
+    // 首次加载时从 URL 读取筛选参数
     function applyParamsFromUrl() {
       const params = new URLSearchParams(window.location.search);
       const q = params.get('q') || '';
@@ -96,6 +99,7 @@ const tags = getAllTags(posts);
       }
     }
 
+    // 执行筛选（可控制是否重置页码）
     function applyFilter({ resetPage = true } = {}) {
       const keyword = (searchInput.value || '').toLowerCase();
       const category = categoryFilter.value;
@@ -117,6 +121,7 @@ const tags = getAllTags(posts);
       render();
     }
 
+    // 渲染分页控件
     function renderPager(totalPages) {
       pager.innerHTML = '';
       if (totalPages <= 1) return;
@@ -152,6 +157,7 @@ const tags = getAllTags(posts);
       if (page < totalPages) pager.appendChild(next);
     }
 
+    // 根据当前页渲染可见卡片
     function render() {
       const totalPages = Math.max(1, Math.ceil(filtered.length / POSTS_PER_PAGE));
       if (page > totalPages) page = totalPages;
@@ -165,10 +171,12 @@ const tags = getAllTags(posts);
       updateUrlParams();
     }
 
+    // 事件绑定
     searchInput.addEventListener('input', () => applyFilter({ resetPage: true }));
     categoryFilter.addEventListener('change', () => applyFilter({ resetPage: true }));
     tagFilter.addEventListener('change', () => applyFilter({ resetPage: true }));
 
+    // 初始化流程：先恢复 URL 状态，再执行筛选渲染
     applyParamsFromUrl();
     applyFilter({ resetPage: false });
   </script>

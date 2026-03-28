@@ -3,6 +3,7 @@ import '../styles/global.css';
 import { SITE_DESCRIPTION, SITE_NAME, SITE_URL } from '../config/site';
 import LeftSidebar from '../components/LeftSidebar.astro';
 
+// 布局支持页面级 SEO 覆盖；未传参时使用站点默认值
 const { title = SITE_NAME, description = SITE_DESCRIPTION, image = '/assets/images/hero-purple.svg', canonical = '/' } = Astro.props;
 const fullTitle = title === SITE_NAME ? SITE_NAME : `${title} · ${SITE_NAME}`;
 const canonicalUrl = new URL(canonical, SITE_URL).toString();
@@ -33,6 +34,7 @@ const ogImage = new URL(image, SITE_URL).toString();
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
     <script is:inline>
       (() => {
+        // 主题初始化：优先读取用户本地选择，否则跟随系统明暗偏好
         const saved = localStorage.getItem('theme-mode');
         const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
         const mode = saved || (prefersDark ? 'dark' : 'light');
@@ -41,7 +43,9 @@ const ogImage = new URL(image, SITE_URL).toString();
     </script>
   </head>
   <body class="theme-dark">
+    <!-- 顶部阅读进度条 -->
     <div id="readingProgress"></div>
+    <!-- 背景动态层：粒子 + 公式泡泡 + 光晕网格 + 侧幕毛玻璃 -->
     <div id="tsparticles" class="particles-layer" aria-hidden="true"></div>
     <div id="formulaBubbles" class="formula-bubbles-layer" aria-hidden="true"></div>
     <div class="bg-orb orb-1"></div>
@@ -50,6 +54,7 @@ const ogImage = new URL(image, SITE_URL).toString();
     <div class="side-glass side-glass-left" aria-hidden="true"></div>
     <div class="side-glass side-glass-right" aria-hidden="true"></div>
 
+    <!-- 顶部导航：站点入口 + 主题切换 -->
     <header class="site-header">
       <div class="container header-inner">
         <a class="brand" href="/">
@@ -92,6 +97,7 @@ const ogImage = new URL(image, SITE_URL).toString();
       </div>
     </header>
 
+    <!-- 主体：左侧信息栏 + 页面内容插槽 -->
     <main class="site-main page-enter" id="pageMain">
       <div class="layout-shell container">
         <LeftSidebar />
@@ -101,6 +107,7 @@ const ogImage = new URL(image, SITE_URL).toString();
       </div>
     </main>
 
+    <!-- 页脚 -->
     <footer class="site-footer">
       <div class="container footer-inner">
         <p>© {new Date().getFullYear()} {SITE_NAME} · 紫色星云里记录生活与代码</p>
@@ -108,6 +115,7 @@ const ogImage = new URL(image, SITE_URL).toString();
       </div>
     </footer>
 
+    <!-- 页面增强脚本：基础增强 + UI 特效 -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tsparticles/3.5.0/tsparticles.bundle.min.js"></script>
     <script type="module" src="/assets/js/blog-enhance.js"></script>
     <script type="module" src="/assets/js/ui-effects.js"></script>

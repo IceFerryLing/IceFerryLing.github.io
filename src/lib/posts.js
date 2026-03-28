@@ -8,6 +8,7 @@ import { POSTS_PER_PAGE } from '../config/site';
 const contentPostsDirectory = path.join(process.cwd(), 'content', 'posts');
 const legacyPostsDirectory = path.join(process.cwd(), 'legacy', 'archived-root', '_posts');
 
+// 将 Markdown 转为纯文本，便于摘要/字数统计
 function stripMarkdown(markdown = '') {
   return markdown
     .replace(/```[\s\S]*?```/g, '')
@@ -19,6 +20,7 @@ function stripMarkdown(markdown = '') {
     .trim();
 }
 
+// 生成稳定 slug（兼容中英文）
 function slugify(text = '') {
   return String(text)
     .toLowerCase()
@@ -29,6 +31,7 @@ function slugify(text = '') {
     .replace(/-+/g, '-');
 }
 
+// 提取 H2~H4 标题并生成唯一锚点 id（供目录使用）
 function extractHeadings(markdown = '') {
   const lines = markdown.split('\n');
   const headings = [];
@@ -49,12 +52,14 @@ function extractHeadings(markdown = '') {
   return headings;
 }
 
+// 统一日期格式为 YYYY-MM-DD
 function normalizeDate(rawDate) {
   if (!rawDate) return '1970-01-01';
   if (rawDate instanceof Date) return rawDate.toISOString().slice(0, 10);
   return String(rawDate).slice(0, 10);
 }
 
+// 兼容 Jekyll 风格文件名：yyyy-mm-dd-slug.md
 function resolveMetaFromFilename(fileName) {
   const matched = fileName.match(/^(\d{4}-\d{2}-\d{2})-(.+)\.md$/);
   if (!matched) {
@@ -70,11 +75,13 @@ function resolveMetaFromFilename(fileName) {
   };
 }
 
+// 优先读取 content/posts；不存在则回退 legacy 目录
 function getPostsDirectory() {
   if (fs.existsSync(contentPostsDirectory)) return contentPostsDirectory;
   return legacyPostsDirectory;
 }
 
+// 读取并解析所有文章，附加摘要、字数、阅读时长等派生字段
 export function getSortedPosts() {
   const postsDirectory = getPostsDirectory();
   if (!fs.existsSync(postsDirectory)) return [];
@@ -113,10 +120,12 @@ export function getSortedPosts() {
   return allPosts.sort((a, b) => (a.date < b.date ? 1 : -1));
 }
 
+// 根据 slug 获取单篇文章
 export function getPostBySlug(slug) {
   return getSortedPosts().find((post) => post.slug === slug) || null;
 }
 
+// 文章前后导航（上一篇/下一篇）
 export function getAdjacentPosts(slug) {
   const posts = getSortedPosts();
   const index = posts.findIndex((post) => post.slug === slug);
@@ -131,6 +140,7 @@ export function getAdjacentPosts(slug) {
   };
 }
 
+// 聚合分类计数
 export function getAllCategories(posts = getSortedPosts()) {
   const map = new Map();
   posts.forEach((post) => {
@@ -140,6 +150,7 @@ export function getAllCategories(posts = getSortedPosts()) {
   return Array.from(map.entries()).map(([name, count]) => ({ name, count }));
 }
 
+// 聚合标签计数
 export function getAllTags(posts = getSortedPosts()) {
   const map = new Map();
   posts.forEach((post) => {
@@ -148,6 +159,7 @@ export function getAllTags(posts = getSortedPosts()) {
   return Array.from(map.entries()).map(([name, count]) => ({ name, count }));
 }
 
+// 通用分页函数
 export function paginatePosts(posts, page = 1, pageSize = POSTS_PER_PAGE) {
   const total = posts.length;
   const totalPages = Math.max(1, Math.ceil(total / pageSize));
@@ -163,6 +175,7 @@ export function paginatePosts(posts, page = 1, pageSize = POSTS_PER_PAGE) {
   };
 }
 
+// 使用 Shiki 渲染代码块（失败时回退为 text）
 async function renderCodeBlock(code, lang) {
   const language = (lang || 'text').toLowerCase().trim() || 'text';
   try {
@@ -184,6 +197,7 @@ async function renderCodeBlock(code, lang) {
   }
 }
 
+// Markdown -> HTML：先占位代码块，再整体解析并回填，最后注入标题 id
 export async function markdownToHtml(markdown = '') {
   const headings = extractHeadings(markdown);
   const codeBlocks = [];

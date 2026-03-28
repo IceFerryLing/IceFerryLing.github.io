@@ -3,15 +3,18 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getAdjacentPosts, getPostBySlug, getSortedPosts, markdownToHtml } from '../../lib/posts';
 import { GISCUS_CONFIG } from '../../config/site';
 
+// 预构建所有文章路由
 export async function getStaticPaths() {
   return getSortedPosts().map((post) => ({ params: { slug: post.slug } }));
 }
 
+// 读取当前文章并渲染 markdown；同时计算前后导航
 const { slug } = Astro.params;
 const post = getPostBySlug(slug);
 if (!post) throw new Error(`Post not found: ${slug}`);
 const { html, headings } = await markdownToHtml(post.content);
 const { prev, next } = getAdjacentPosts(post.slug);
+// 仅当 Giscus 必要配置齐全时才渲染评论区
 const giscusEnabled = Boolean(
   GISCUS_CONFIG.repo && GISCUS_CONFIG.repoId && GISCUS_CONFIG.category && GISCUS_CONFIG.categoryId
 );
@@ -23,6 +26,7 @@ const giscusEnabled = Boolean(
   image={post.image}
   canonical={`/posts/${post.slug}/`}
 >
+  <!-- 文章头部信息 -->
   <section class="post-hero">
     <div class="container">
       <p class="post-meta">{post.date}</p>
@@ -31,6 +35,7 @@ const giscusEnabled = Boolean(
     </div>
   </section>
 
+  <!-- 正文与目录 -->
   <section class="post-content">
     <div class="container post-layout">
       <article class="prose" set:html={html}></article>
@@ -57,6 +62,7 @@ const giscusEnabled = Boolean(
     </div>
   </section>
 
+  <!-- 评论区 -->
   <section class="post-comments">
     <div class="container glass comments-wrap">
       <h3>评论</h3>
@@ -84,6 +90,7 @@ const giscusEnabled = Boolean(
     </div>
   </section>
 
+  <!-- 上一篇 / 下一篇 导航 -->
   <section class="post-nav-wrap">
     <div class="container post-nav-grid">
       {

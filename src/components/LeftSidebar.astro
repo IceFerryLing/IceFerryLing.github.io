@@ -2,6 +2,7 @@
 import { AUTHOR_PROFILE } from '../config/site';
 import { getAllCategories, getAllTags, getSortedPosts } from '../lib/posts';
 
+// 侧栏所需的聚合数据：基础统计 + 最近文章
 const posts = getSortedPosts();
 const categories = getAllCategories(posts);
 const tags = getAllTags(posts);
@@ -9,6 +10,7 @@ const latest = posts.slice(0, 5);
 ---
 
 <aside class="left-sidebar">
+  <!-- 作者信息卡 -->
   <section class="glass-card side-card profile-card">
     <img class="profile-avatar" src={AUTHOR_PROFILE.avatar} alt="avatar" />
     <h3>{AUTHOR_PROFILE.name}</h3>
@@ -19,6 +21,7 @@ const latest = posts.slice(0, 5);
     </div>
   </section>
 
+  <!-- 站点统计卡 -->
   <section class="glass-card side-card">
     <h4>网站统计</h4>
     <ul class="side-list muted">
@@ -28,6 +31,7 @@ const latest = posts.slice(0, 5);
     </ul>
   </section>
 
+  <!-- 最近文章卡 -->
   <section class="glass-card side-card">
     <h4>最近文章</h4>
     <ul class="side-list latest-links">

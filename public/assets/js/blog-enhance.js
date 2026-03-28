@@ -1,5 +1,6 @@
 const THEME_KEY = 'theme-mode';
 
+// 按需加载外部脚本（避免重复注入同一个资源）
 function loadScriptOnce(src, id) {
   return new Promise((resolve, reject) => {
     if (id && document.getElementById(id)) {
@@ -17,6 +18,7 @@ function loadScriptOnce(src, id) {
   });
 }
 
+// 按需加载外部样式（用于 Fancybox 等可选能力）
 function loadStyleOnce(href, id) {
   if (id && document.getElementById(id)) return;
   const link = document.createElement('link');
@@ -26,6 +28,7 @@ function loadStyleOnce(href, id) {
   document.head.appendChild(link);
 }
 
+// 主题切换：同步 html[data-theme] + 本地存储 + 按钮状态
 function initThemeToggle() {
   const btn = document.getElementById('themeToggle');
   if (!btn) return;
@@ -49,6 +52,7 @@ function initThemeToggle() {
   updateIcon();
 }
 
+// 阅读进度条：根据正文滚动比例更新顶部进度
 function initReadingProgress() {
   const bar = document.getElementById('readingProgress');
   const article = document.querySelector('.post-layout .prose');
@@ -74,6 +78,7 @@ function initReadingProgress() {
   window.addEventListener('resize', update);
 }
 
+// 代码块复制按钮：为每个 pre 注入复制交互
 function initCodeCopyButtons() {
   const blocks = document.querySelectorAll('.prose pre');
   blocks.forEach((pre) => {
@@ -100,6 +105,7 @@ function initCodeCopyButtons() {
   });
 }
 
+// 目录高亮与章节进度：滚动时同步 TOC active 状态
 function initTocActive() {
   const toc = document.getElementById('tocFloating');
   if (!toc) return;
@@ -183,6 +189,7 @@ function initTocActive() {
   window.addEventListener('scroll', activate, { passive: true });
 }
 
+// 归档筛选栏吸顶效果
 function initArchiveFilterSticky() {
   const filterBar = document.getElementById('archiveFilterBar');
   if (!filterBar) return;
@@ -196,6 +203,7 @@ function initArchiveFilterSticky() {
   window.addEventListener('scroll', update, { passive: true });
 }
 
+// 评论系统：延迟注入 giscus 脚本，避免首屏阻塞
 function initGiscus() {
   const target = document.querySelector('.giscus');
   if (!target) return;
@@ -216,6 +224,7 @@ function initGiscus() {
   target.replaceWith(script);
 }
 
+// 文章图片灯箱：自动包裹图片并按需加载 Fancybox
 async function initFancybox() {
   const images = Array.from(document.querySelectorAll('.prose img'));
   if (!images.length) return;
@@ -248,6 +257,7 @@ async function initFancybox() {
   }
 }
 
+// 站内跳转过渡：点击内部链接时执行离场动画
 function initPageTransitions() {
   document.addEventListener('click', (event) => {
     const link = event.target.closest('a[href]');
@@ -273,6 +283,7 @@ function initPageTransitions() {
   });
 }
 
+// 页面增强功能入口
 initThemeToggle();
 initReadingProgress();
 initCodeCopyButtons();
