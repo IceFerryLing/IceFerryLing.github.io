@@ -2,12 +2,15 @@ import { notFound } from "next/navigation";
 import { getPostBySlug, getSortedPosts, markdownToHtml } from "@/lib/posts";
 import { SITE_NAME } from "@/lib/site";
 
+export const dynamic = "force-static";
+export const dynamicParams = false;
+
 export function generateStaticParams() {
   return getSortedPosts().map((post) => ({ slug: post.slug }));
 }
 
-export async function generateMetadata({ params }) {
-  const { slug } = await params;
+export function generateMetadata({ params }) {
+  const { slug } = params;
   const post = getPostBySlug(slug);
 
   if (!post) {
@@ -40,7 +43,7 @@ export async function generateMetadata({ params }) {
 }
 
 export default async function PostDetailPage({ params }) {
-  const { slug } = await params;
+  const { slug } = params;
   const post = getPostBySlug(slug);
 
   if (!post) {

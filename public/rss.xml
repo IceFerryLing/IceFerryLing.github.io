@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0">
+  <channel>
+    <title>IceFerryLing</title>
+    <link>https://example.com/</link>
+    <description>以紫色星云为基调的个人博客，记录代码、生活与灵感。</description>
+    <language>zh-cn</language>
+    <lastBuildDate>Sat, 28 Mar 2026 07:13:38 GMT</lastBuildDate>
+    
+        <item>
+          <title><![CDATA[紫色笔记清单]]></title>
+          <link>https://example.com/posts/purple-notes</link>
+          <guid>https://example.com/posts/purple-notes</guid>
+          <pubDate>Invalid Date</pubDate>
+          <description><![CDATA[给未来的自己留几条导航。]]></description>
+        </item>
+
+        <item>
+          <title><![CDATA[你好，紫色星云]]></title>
+          <link>https://example.com/posts/hello-purple-world</link>
+          <guid>https://example.com/posts/hello-purple-world</guid>
+          <pubDate>Invalid Date</pubDate>
+          <description><![CDATA[用紫色把灵感装进盒子里，开始写第一篇博客。]]></description>
+        </item>
+
+        <item>
+          <title><![CDATA[README]]></title>
+          <link>https://example.com/posts/README</link>
+          <guid>https://example.com/posts/README</guid>
+          <pubDate>Thu, 01 Jan 1970 00:00:00 GMT</pubDate>
+          <description><![CDATA[发文方式（Markdown）  以后新增文章只需要：  1. 在  下新建一个  文件（可复制 ）。 2. 填写 frontmatter：     : 标题     : 日期（YYYYMMDD）     ]]></description>
+        </item>
+  </channel>
+</rss>

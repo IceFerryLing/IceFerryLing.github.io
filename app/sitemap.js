@@ -1,17 +1,14 @@
-import { getSortedPosts, getTotalPostPages } from "@/lib/posts";
+import { getSortedPosts } from "@/lib/posts";
 import { toAbsoluteUrl } from "@/lib/site";
+
+export const dynamic = "force-static";
 
 export default function sitemap() {
   const posts = getSortedPosts();
-  const totalPages = getTotalPostPages();
 
   const staticRoutes = ["/", "/about", "/archive", "/rss.xml"];
 
-  const paginatedArchiveRoutes = Array.from({ length: Math.max(0, totalPages - 1) }, (_, index) =>
-    `/archive/page/${index + 2}`
-  );
-
-  const staticEntries = [...staticRoutes, ...paginatedArchiveRoutes].map((route) => ({
+  const staticEntries = staticRoutes.map((route) => ({
     url: toAbsoluteUrl(route),
     lastModified: new Date(),
     changeFrequency: route === "/" ? "daily" : "weekly",

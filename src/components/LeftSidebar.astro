@@ -1,0 +1,39 @@
+---
+import { AUTHOR_PROFILE } from '../config/site';
+import { getAllCategories, getAllTags, getSortedPosts } from '../lib/posts';
+
+const posts = getSortedPosts();
+const categories = getAllCategories(posts);
+const tags = getAllTags(posts);
+const latest = posts.slice(0, 5);
+---
+
+<aside class="left-sidebar">
+  <section class="glass side-card profile-card">
+    <img class="profile-avatar" src={AUTHOR_PROFILE.avatar} alt="avatar" />
+    <h3>{AUTHOR_PROFILE.name}</h3>
+    <p class="muted">{AUTHOR_PROFILE.bio}</p>
+    <div class="profile-links">
+      <a href={AUTHOR_PROFILE.github} target="_blank" rel="noreferrer">GitHub</a>
+      <a href={AUTHOR_PROFILE.email}>Email</a>
+    </div>
+  </section>
+
+  <section class="glass side-card">
+    <h4>网站统计</h4>
+    <ul class="side-list muted">
+      <li>文章：{posts.length}</li>
+      <li>分类：{categories.length}</li>
+      <li>标签：{tags.length}</li>
+    </ul>
+  </section>
+
+  <section class="glass side-card">
+    <h4>最近文章</h4>
+    <ul class="side-list latest-links">
+      {latest.map((p) => (
+        <li><a href={`/posts/${p.slug}/`}>{p.title}</a></li>
+      ))}
+    </ul>
+  </section>
+</aside>

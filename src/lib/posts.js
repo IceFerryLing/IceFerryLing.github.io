@@ -1,0 +1,212 @@
+import fs from 'node:fs';
+import path from 'node:path';
+import matter from 'gray-matter';
+import { marked } from 'marked';
+import { codeToHtml } from 'shiki';
+import { POSTS_PER_PAGE } from '../config/site';
+
+const contentPostsDirectory = path.join(process.cwd(), 'content', 'posts');
+const legacyPostsDirectory = path.join(process.cwd(), '_posts');
+
+function stripMarkdown(markdown = '') {
+  return markdown
+    .replace(/```[\s\S]*?```/g, '')
+    .replace(/`.*?`/g, '')
+    .replace(/!\[.*?\]\(.*?\)/g, '')
+    .replace(/\[(.*?)\]\(.*?\)/g, '$1')
+    .replace(/[>#*_~-]/g, '')
+    .replace(/\n+/g, ' ')
+    .trim();
+}
+
+function slugify(text = '') {
+  return String(text)
+    .toLowerCase()
+    .trim()
+    .replace(/[\u4e00-\u9fa5]/g, (m) => m)
+    .replace(/[^\w\u4e00-\u9fa5\s-]/g, '')
+    .replace(/\s+/g, '-')
+    .replace(/-+/g, '-');
+}
+
+function extractHeadings(markdown = '') {
+  const lines = markdown.split('\n');
+  const headings = [];
+  const used = new Map();
+
+  lines.forEach((line) => {
+    const matched = line.match(/^(#{2,4})\s+(.+)$/);
+    if (!matched) return;
+    const depth = matched[1].length;
+    const text = matched[2].replace(/`/g, '').trim();
+    const base = slugify(text) || 'section';
+    const count = used.get(base) || 0;
+    used.set(base, count + 1);
+    const id = count === 0 ? base : `${base}-${count + 1}`;
+    headings.push({ depth, text, id });
+  });
+
+  return headings;
+}
+
+function normalizeDate(rawDate) {
+  if (!rawDate) return '1970-01-01';
+  if (rawDate instanceof Date) return rawDate.toISOString().slice(0, 10);
+  return String(rawDate).slice(0, 10);
+}
+
+function resolveMetaFromFilename(fileName) {
+  const matched = fileName.match(/^(\d{4}-\d{2}-\d{2})-(.+)\.md$/);
+  if (!matched) {
+    return {
+      dateFromName: '1970-01-01',
+      slugFromName: fileName.replace(/\.md$/, '')
+    };
+  }
+
+  return {
+    dateFromName: matched[1],
+    slugFromName: matched[2]
+  };
+}
+
+function getPostsDirectory() {
+  if (fs.existsSync(contentPostsDirectory)) return contentPostsDirectory;
+  return legacyPostsDirectory;
+}
+
+export function getSortedPosts() {
+  const postsDirectory = getPostsDirectory();
+  if (!fs.existsSync(postsDirectory)) return [];
+
+  const fileNames = fs
+    .readdirSync(postsDirectory)
+    .filter((name) => name.endsWith('.md') && !name.startsWith('_') && name.toLowerCase() !== 'readme.md');
+
+  const allPosts = fileNames.map((fileName) => {
+    const fullPath = path.join(postsDirectory, fileName);
+    const fileContents = fs.readFileSync(fullPath, 'utf8');
+    const { data, content } = matter(fileContents);
+    const { dateFromName, slugFromName } = resolveMetaFromFilename(fileName);
+
+    const slug = data.slug || slugFromName;
+    const date = normalizeDate(data.date || dateFromName);
+    const excerptRaw = data.description || stripMarkdown(content);
+    const excerpt = excerptRaw.length > 120 ? `${excerptRaw.slice(0, 120)}...` : excerptRaw;
+    const words = stripMarkdown(content).split(/\s+/).filter(Boolean).length;
+
+    return {
+      slug,
+      title: data.title || slug,
+      description: data.description || '',
+      image: data.image || '/assets/images/hero-purple.svg',
+      date,
+      category: data.category || '未分类',
+      tags: Array.isArray(data.tags) ? data.tags : [],
+      content,
+      excerpt,
+      words,
+      readingMinutes: Math.max(1, Math.ceil(words / 250))
+    };
+  });
+
+  return allPosts.sort((a, b) => (a.date < b.date ? 1 : -1));
+}
+
+export function getPostBySlug(slug) {
+  return getSortedPosts().find((post) => post.slug === slug) || null;
+}
+
+export function getAdjacentPosts(slug) {
+  const posts = getSortedPosts();
+  const index = posts.findIndex((post) => post.slug === slug);
+
+  if (index === -1) {
+    return { prev: null, next: null };
+  }
+
+  return {
+    prev: index < posts.length - 1 ? posts[index + 1] : null,
+    next: index > 0 ? posts[index - 1] : null
+  };
+}
+
+export function getAllCategories(posts = getSortedPosts()) {
+  const map = new Map();
+  posts.forEach((post) => {
+    const key = post.category || '未分类';
+    map.set(key, (map.get(key) || 0) + 1);
+  });
+  return Array.from(map.entries()).map(([name, count]) => ({ name, count }));
+}
+
+export function getAllTags(posts = getSortedPosts()) {
+  const map = new Map();
+  posts.forEach((post) => {
+    post.tags.forEach((tag) => map.set(tag, (map.get(tag) || 0) + 1));
+  });
+  return Array.from(map.entries()).map(([name, count]) => ({ name, count }));
+}
+
+export function paginatePosts(posts, page = 1, pageSize = POSTS_PER_PAGE) {
+  const total = posts.length;
+  const totalPages = Math.max(1, Math.ceil(total / pageSize));
+  const safePage = Math.min(Math.max(1, Number(page) || 1), totalPages);
+  const start = (safePage - 1) * pageSize;
+
+  return {
+    page: safePage,
+    pageSize,
+    total,
+    totalPages,
+    data: posts.slice(start, start + pageSize)
+  };
+}
+
+async function renderCodeBlock(code, lang) {
+  const language = (lang || 'text').toLowerCase().trim() || 'text';
+  try {
+    return await codeToHtml(code, {
+      lang: language,
+      themes: {
+        dark: 'github-dark',
+        light: 'github-light'
+      }
+    });
+  } catch {
+    return await codeToHtml(code, {
+      lang: 'text',
+      themes: {
+        dark: 'github-dark',
+        light: 'github-light'
+      }
+    });
+  }
+}
+
+export async function markdownToHtml(markdown = '') {
+  const headings = extractHeadings(markdown);
+  const codeBlocks = [];
+  const markdownWithPlaceholders = markdown.replace(/```([^\n]*)\n([\s\S]*?)```/g, (_, lang = '', code = '') => {
+    const index = codeBlocks.push({ lang: String(lang).trim(), code }) - 1;
+    return `@@CODE_BLOCK_${index}@@`;
+  });
+
+  let html = marked.parse(markdownWithPlaceholders);
+
+  for (let i = 0; i < codeBlocks.length; i++) {
+    const block = codeBlocks[i];
+    const rendered = await renderCodeBlock(block.code, block.lang);
+    const placeholder = `@@CODE_BLOCK_${i}@@`;
+    html = html.replace(`<p>${placeholder}</p>`, rendered).replace(placeholder, rendered);
+  }
+
+  headings.forEach((heading) => {
+    const tag = `h${heading.depth}`;
+    const plainText = heading.text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const pattern = new RegExp(`<${tag}>\\s*${plainText}\\s*<\\/${tag}>`);
+    html = html.replace(pattern, `<${tag} id="${heading.id}">${heading.text}</${tag}>`);
+  });
+
+  return { html, headings };
+}

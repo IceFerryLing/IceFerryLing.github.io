@@ -1,0 +1,55 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PostCard from '../components/PostCard.astro';
+import { getSortedPosts, getAllCategories, getAllTags } from '../lib/posts';
+
+const posts = getSortedPosts();
+const latest = posts.slice(0, 6);
+const categories = getAllCategories(posts).slice(0, 6);
+const tags = getAllTags(posts).slice(0, 12);
+---
+
+<BaseLayout title="首页">
+  <section class="hero">
+    <div class="container">
+      <div class="hero-overlay"></div>
+      <img src="/assets/images/hero-purple.svg" alt="紫色风格博客封面" class="hero-image" />
+      <img src="/assets/images/anime-01.png" alt="二次元头像点缀" class="hero-deco" />
+      <div class="hero-content">
+        <p class="eyebrow">ICEFERRYLING BLOG</p>
+        <h1>欢迎来到我的紫色星云博客</h1>
+        <p class="subtitle">记录代码、生活、灵感与每一次“啊哈”时刻。</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="dashboard container">
+    <aside class="info-card glass">
+      <h3>站点信息</h3>
+      <p>文章 {posts.length} 篇</p>
+      <p>分类 {getAllCategories(posts).length} 个 · 标签 {getAllTags(posts).length} 个</p>
+      <a href="/rss.xml" class="link-pill">订阅 RSS</a>
+    </aside>
+    <aside class="info-card glass">
+      <h3>热门分类</h3>
+      <div class="chip-wrap">
+        {categories.map((c) => <span class="chip">{c.name} · {c.count}</span>)}
+      </div>
+    </aside>
+    <aside class="info-card glass">
+      <h3>热门标签</h3>
+      <div class="chip-wrap">
+        {tags.map((t) => <span class="chip">#{t.name}</span>)}
+      </div>
+    </aside>
+  </section>
+
+  <section class="post-list-wrap">
+    <div class="container">
+      <h2>最新文章</h2>
+      <div class="post-grid">
+        {latest.map((post) => <PostCard post={post} />)}
+      </div>
+    </div>
+  </section>
+</BaseLayout>

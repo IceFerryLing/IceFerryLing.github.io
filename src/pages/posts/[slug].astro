@@ -1,0 +1,122 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getAdjacentPosts, getPostBySlug, getSortedPosts, markdownToHtml } from '../../lib/posts';
+import { GISCUS_CONFIG } from '../../config/site';
+
+export async function getStaticPaths() {
+  return getSortedPosts().map((post) => ({ params: { slug: post.slug } }));
+}
+
+const { slug } = Astro.params;
+const post = getPostBySlug(slug);
+if (!post) throw new Error(`Post not found: ${slug}`);
+const { html, headings } = await markdownToHtml(post.content);
+const { prev, next } = getAdjacentPosts(post.slug);
+const giscusEnabled = Boolean(
+  GISCUS_CONFIG.repo && GISCUS_CONFIG.repoId && GISCUS_CONFIG.category && GISCUS_CONFIG.categoryId
+);
+---
+
+<BaseLayout
+  title={post.title}
+  description={post.description || post.excerpt}
+  image={post.image}
+  canonical={`/posts/${post.slug}/`}
+>
+  <section class="post-hero">
+    <div class="container">
+      <p class="post-meta">{post.date}</p>
+      <h1 class="post-title">{post.title}</h1>
+      {post.description && <p class="post-subtitle">{post.description}</p>}
+    </div>
+  </section>
+
+  <section class="post-content">
+    <div class="container post-layout">
+      <article class="prose" set:html={html}></article>
+
+      <aside class="toc-floating glass" id="tocFloating">
+        <h3>目录</h3>
+        <div class="toc-section-progress" aria-live="polite">
+          <div class="toc-section-progress-head">
+            <span id="tocSectionLabel">本章节进度</span>
+            <span id="tocSectionPercent">0%</span>
+          </div>
+          <div class="toc-section-progress-track">
+            <span id="tocSectionBar"></span>
+          </div>
+        </div>
+        <ul>
+          {headings.map((h) => (
+            <li class={`toc-depth-${h.depth}`}>
+              <a href={`#${h.id}`}>{h.text}</a>
+            </li>
+          ))}
+        </ul>
+      </aside>
+    </div>
+  </section>
+
+  <section class="post-comments">
+    <div class="container glass comments-wrap">
+      <h3>评论</h3>
+      {
+        giscusEnabled ? (
+          <div
+            class="giscus"
+            data-repo={GISCUS_CONFIG.repo}
+            data-repo-id={GISCUS_CONFIG.repoId}
+            data-category={GISCUS_CONFIG.category}
+            data-category-id={GISCUS_CONFIG.categoryId}
+            data-mapping="pathname"
+            data-strict="0"
+            data-reactions-enabled="1"
+            data-emit-metadata="0"
+            data-input-position="top"
+            data-theme="preferred_color_scheme"
+            data-lang="zh-CN"
+            data-loading="lazy"
+          ></div>
+        ) : (
+          <p class="muted">请在 `.env` 中补全 Giscus 配置后启用评论区。</p>
+        )
+      }
+    </div>
+  </section>
+
+  <section class="post-nav-wrap">
+    <div class="container post-nav-grid">
+      {
+        prev ? (
+          <a class="glass post-nav-card" href={`/posts/${prev.slug}/`}>
+            <span class="muted">← 上一篇</span>
+            <img class="post-nav-thumb" src={prev.image} alt={prev.title} loading="lazy" />
+            <strong>{prev.title}</strong>
+            <small class="muted">约 {prev.readingMinutes} 分钟阅读</small>
+          </a>
+        ) : (
+          <div class="glass post-nav-card disabled">
+            <span class="muted">← 上一篇</span>
+            <strong>已经是第一篇了</strong>
+          </div>
+        )
+      }
+
+      {
+        next ? (
+          <a class="glass post-nav-card align-right" href={`/posts/${next.slug}/`}>
+            <span class="muted">下一篇 →</span>
+            <img class="post-nav-thumb" src={next.image} alt={next.title} loading="lazy" />
+            <strong>{next.title}</strong>
+            <small class="muted">约 {next.readingMinutes} 分钟阅读</small>
+          </a>
+        ) : (
+          <div class="glass post-nav-card align-right disabled">
+            <span class="muted">下一篇 →</span>
+            <strong>已经是最新文章</strong>
+          </div>
+        )
+      }
+    </div>
+  </section>
+</BaseLayout>

@@ -1,23 +1,5 @@
-import Link from "next/link";
-import { getPaginatedPosts } from "@/lib/posts";
-
-function Pagination({ page, totalPages }) {
-  if (totalPages <= 1) {
-    return null;
-  }
-
-  return (
-    <nav className="pagination" aria-label="文章分页导航">
-      {page > 1 ? <Link href={page === 2 ? "/archive" : `/archive/page/${page - 1}`}>上一页</Link> : null}
-
-      <span className="pagination-info">
-        第 {page} / {totalPages} 页
-      </span>
-
-      {page < totalPages ? <Link href={`/archive/page/${page + 1}`}>下一页</Link> : null}
-    </nav>
-  );
-}
+import { getSortedPosts } from "@/lib/posts";
+import ArchiveClient from "@/components/archive-client";
 
 export const metadata = {
   title: "归档",
@@ -33,7 +15,7 @@ export const metadata = {
 };
 
 export default function ArchivePage() {
-  const { posts, page, totalPages } = getPaginatedPosts(1);
+  const posts = getSortedPosts();
 
   return (
     <>
@@ -46,18 +28,7 @@ export default function ArchivePage() {
 
       <section className="page-content">
         <div className="container">
-          <div className="post-grid">
-            {posts.map((post) => (
-              <article className="post-card" key={post.slug}>
-                <p className="post-meta">{post.date}</p>
-                <h3>
-                  <Link href={`/posts/${post.slug}`}>{post.title}</Link>
-                </h3>
-                <p>{post.excerpt}</p>
-              </article>
-            ))}
-          </div>
-          <Pagination page={page} totalPages={totalPages} />
+          <ArchiveClient posts={posts} />
         </div>
       </section>
     </>
