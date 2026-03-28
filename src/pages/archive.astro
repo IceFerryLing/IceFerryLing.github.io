@@ -19,7 +19,7 @@ const tags = getAllTags(posts);
 
   <section class="page-content">
     <div class="container">
-      <div class="archive-filter archive-filter-sticky glass" id="archiveFilterBar">
+      <div class="archive-filter archive-filter-sticky glass-card" id="archiveFilterBar">
         <input id="searchInput" placeholder="搜索标题/摘要..." />
         <select id="categoryFilter">
           <option value="">全部分类</option>
@@ -31,8 +31,12 @@ const tags = getAllTags(posts);
         </select>
       </div>
 
-      <div id="archiveGrid" class="post-grid">
-        {posts.map((post) => <PostCard post={post} />)}
+      <div id="archiveGrid" class="post-grid row g-4">
+        {posts.map((post) => (
+          <div class="col-md-6 col-xl-4 archive-post-item">
+            <PostCard post={post} />
+          </div>
+        ))}
       </div>
 
       <nav class="pagination" id="pager" aria-label="分页"></nav>
@@ -41,7 +45,7 @@ const tags = getAllTags(posts);
 
   <script define:vars={{ POSTS_PER_PAGE }}>
     const grid = document.getElementById('archiveGrid');
-    const cards = Array.from(grid.querySelectorAll('.post-card'));
+    const cards = Array.from(grid.querySelectorAll('.archive-post-item'));
     const pager = document.getElementById('pager');
     const searchInput = document.getElementById('searchInput');
     const categoryFilter = document.getElementById('categoryFilter');
@@ -98,9 +102,11 @@ const tags = getAllTags(posts);
       const tag = tagFilter.value;
 
       filtered = cards.filter((card) => {
+        const article = card.querySelector('.post-card');
+        if (!article) return false;
         const text = card.innerText.toLowerCase();
-        const c = card.dataset.category || '';
-        const tags = (card.dataset.tags || '').split(',').filter(Boolean);
+        const c = article.dataset.category || '';
+        const tags = (article.dataset.tags || '').split(',').filter(Boolean);
         const hitKeyword = !keyword || text.includes(keyword);
         const hitCategory = !category || c === category;
         const hitTag = !tag || tags.includes(tag);

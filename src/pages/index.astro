@@ -14,6 +14,7 @@ const tags = getAllTags(posts).slice(0, 12);
     <div class="hero-bg"></div>
     <div class="hero-overlay"></div>
     <div class="hero-content">
+      <p class="announcement-pill">📢 公告：欢迎来到我的数字花园，持续更新中</p>
       <p class="eyebrow">ICEFERRYLING BLOG</p>
       <h1>欢迎来到我的紫色星云博客</h1>
       <p class="subtitle">记录代码、生活、灵感与每一次“啊哈”时刻。</p>
@@ -23,6 +24,30 @@ const tags = getAllTags(posts).slice(0, 12);
         <span class="glass-badge">鼠标轨迹</span>
       </div>
     </div>
+  </section>
+
+  <section class="quick-feature-grid mt-4">
+    <a class="glass-card quick-feature" href="/archive/">
+      <span class="feature-icon">🗂️</span>
+      <div>
+        <h3>归档导航</h3>
+        <p>按分类、标签和关键词快速定位内容</p>
+      </div>
+    </a>
+    <a class="glass-card quick-feature" href="/about/">
+      <span class="feature-icon">🪐</span>
+      <div>
+        <h3>关于本站</h3>
+        <p>了解我、博客定位与未来更新计划</p>
+      </div>
+    </a>
+    <a class="glass-card quick-feature" href="/rss.xml">
+      <span class="feature-icon">📡</span>
+      <div>
+        <h3>RSS 订阅</h3>
+        <p>用你习惯的阅读器追更，不错过每次灵感</p>
+      </div>
+    </a>
   </section>
 
   <section class="dashboard mt-4">
@@ -59,12 +84,43 @@ const tags = getAllTags(posts).slice(0, 12);
       <h2 class="section-title mb-0">最新文章</h2>
       <a href="/archive/" class="link-light small">查看全部 →</a>
     </div>
+
+    <div class="home-filter mt-3">
+      <button class="chip is-active" type="button" data-home-filter="all">全部</button>
+      {categories.map((c) => (
+        <button class="chip" type="button" data-home-filter={c.name}>{c.name}</button>
+      ))}
+    </div>
+
     <div class="row g-4 mt-1">
       {latest.map((post) => (
-        <div class="col-md-6 col-xl-4">
+        <div class="col-md-6 col-xl-4" data-home-card={post.category}>
           <PostCard post={post} />
         </div>
       ))}
     </div>
   </section>
+
+  <script is:inline>
+    (() => {
+      const buttons = Array.from(document.querySelectorAll('[data-home-filter]'));
+      const cards = Array.from(document.querySelectorAll('[data-home-card]'));
+      if (!buttons.length || !cards.length) return;
+
+      function setFilter(category) {
+        buttons.forEach((btn) => {
+          btn.classList.toggle('is-active', btn.dataset.homeFilter === category);
+        });
+
+        cards.forEach((card) => {
+          const matched = category === 'all' || card.dataset.homeCard === category;
+          card.style.display = matched ? '' : 'none';
+        });
+      }
+
+      buttons.forEach((btn) => {
+        btn.addEventListener('click', () => setFilter(btn.dataset.homeFilter || 'all'));
+      });
+    })();
+  </script>
 </BaseLayout>

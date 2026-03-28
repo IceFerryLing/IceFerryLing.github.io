@@ -11,13 +11,36 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   </section>
 
   <section class="page-content">
-    <div class="container prose">
-      <p>这里可以写你的个人介绍，比如：</p>
-      <ul>
-        <li>你是谁</li>
-        <li>你在做什么</li>
-        <li>你希望这个博客传递什么</li>
-      </ul>
+    <div class="container">
+      <div class="glass-card p-4 prose">
+        <p>你好，我是 <strong>IceFerryLing</strong>。</p>
+        <p>这个博客主要记录三件事：代码实践、学习笔记、以及生活中那些值得收藏的小灵感。</p>
+      </div>
+
+      <div class="row g-3 mt-1">
+        <div class="col-md-6">
+          <section class="glass-card p-4 h-100">
+            <h3 class="section-title">我在做什么</h3>
+            <ul class="prose mb-0">
+              <li>持续构建一个优雅、好读、可长期维护的个人博客</li>
+              <li>沉淀前端开发与效率工具使用经验</li>
+              <li>把复杂知识写成可复用的清晰笔记</li>
+            </ul>
+          </section>
+        </div>
+        <div class="col-md-6">
+          <section class="glass-card p-4 h-100">
+            <h3 class="section-title">站点技术栈</h3>
+            <div class="chip-wrap">
+              <span class="chip">Astro</span>
+              <span class="chip">Bootstrap</span>
+              <span class="chip">Markdown</span>
+              <span class="chip">Shiki</span>
+              <span class="chip">tsParticles</span>
+            </div>
+          </section>
+        </div>
+      </div>
     </div>
   </section>
 </BaseLayout>

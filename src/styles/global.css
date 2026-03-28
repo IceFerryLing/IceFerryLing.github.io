@@ -48,7 +48,23 @@ a:hover { color: var(--accent-soft); }
 .header-inner { display: flex; align-items: center; justify-content: space-between; padding: 18px 0; }
 .brand { display: inline-flex; align-items: center; gap: 10px; font-weight: 700; }
 .brand-mark { width: 34px; height: 34px; border-radius: 12px; display: grid; place-items: center; background: linear-gradient(135deg, #b38cff, #6d36ff); }
-.site-nav { display: flex; gap: 18px; color: var(--muted); }
+.site-nav { display: flex; align-items: center; gap: 12px; color: var(--muted); }
+.site-nav-links { display: flex; align-items: center; gap: 8px; }
+.site-nav-links a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 7px 12px;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  transition: all .22s ease;
+}
+
+.site-nav-links a:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.15);
+  color: var(--text);
+}
 .theme-toggle {
   border: 1px solid var(--border);
   background: var(--card);
@@ -129,6 +145,15 @@ a:hover { color: var(--accent-soft); }
   backdrop-filter: blur(22px);
 }
 
+.glass {
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  background: color-mix(in oklab, var(--card) 82%, #0f0a1f 18%);
+  box-shadow: var(--shadow);
+  -webkit-backdrop-filter: blur(22px);
+  backdrop-filter: blur(22px);
+}
+
 .hero-block {
   position: relative;
   overflow: hidden;
@@ -154,6 +179,19 @@ a:hover { color: var(--accent-soft); }
   position: relative;
   z-index: 1;
   max-width: 640px;
+}
+
+.announcement-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+  padding: 6px 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.08);
+  color: rgba(231, 220, 255, 0.92);
+  font-size: 0.8rem;
 }
 
 .hero-content h1 {
@@ -197,6 +235,49 @@ a:hover { color: var(--accent-soft); }
 
 .dashboard {
   position: relative;
+}
+
+.quick-feature-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.quick-feature {
+  padding: 16px;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  color: inherit;
+  text-decoration: none;
+  transition: transform .2s ease, border-color .2s ease;
+}
+
+.quick-feature:hover {
+  transform: translateY(-3px);
+  border-color: rgba(166, 124, 255, 0.6);
+}
+
+.quick-feature h3 {
+  margin: 0 0 6px;
+  font-size: 1rem;
+}
+
+.quick-feature p {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.feature-icon {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  flex-shrink: 0;
 }
 
 .chip-wrap {
@@ -252,7 +333,51 @@ a:hover { color: var(--accent-soft); }
   font-size: 0.82rem;
 }
 
+.home-filter {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.home-filter .chip {
+  cursor: pointer;
+}
+
+.home-filter .chip.is-active {
+  border-color: rgba(182, 144, 255, 0.8);
+  background: rgba(157, 120, 245, 0.24);
+  color: #fff;
+}
+
+.archive-filter {
+  padding: 14px;
+  display: grid;
+  gap: 10px;
+  grid-template-columns: 1fr 220px 220px;
+  margin-bottom: 16px;
+}
+
+.archive-filter input,
+.archive-filter select {
+  background: rgba(255,255,255,.05);
+  border: 1px solid var(--border);
+  color: var(--text);
+  border-radius: 10px;
+  padding: 10px 12px;
+  outline: none;
+}
+
+.archive-filter input::placeholder {
+  color: rgba(190, 171, 235, 0.9);
+}
+
 :root[data-theme='light'] .glass-card {
+  background: color-mix(in oklab, var(--card) 92%, #ffffff 8%);
+  border-color: rgba(124, 96, 200, 0.18);
+  box-shadow: 0 18px 40px rgba(124, 96, 200, 0.12);
+}
+
+:root[data-theme='light'] .glass {
   background: color-mix(in oklab, var(--card) 92%, #ffffff 8%);
   border-color: rgba(124, 96, 200, 0.18);
   box-shadow: 0 18px 40px rgba(124, 96, 200, 0.12);
@@ -280,6 +405,27 @@ a:hover { color: var(--accent-soft); }
   background: rgba(125, 96, 200, 0.12);
   border-color: rgba(125, 96, 200, 0.25);
   color: rgba(72, 52, 118, 0.9);
+}
+
+:root[data-theme='light'] .announcement-pill {
+  background: rgba(125, 96, 200, 0.14);
+  border-color: rgba(125, 96, 200, 0.28);
+  color: rgba(72, 52, 118, 0.92);
+}
+
+:root[data-theme='light'] .feature-icon {
+  background: rgba(125, 96, 200, 0.12);
+  border-color: rgba(125, 96, 200, 0.24);
+}
+
+:root[data-theme='light'] .site-header {
+  background: rgba(244, 239, 255, .82);
+  border-bottom-color: rgba(128, 96, 214, .16);
+}
+
+:root[data-theme='light'] .site-nav-links a:hover {
+  background: rgba(125, 96, 200, 0.12);
+  border-color: rgba(125, 96, 200, 0.2);
 }
 
 :root[data-theme='light'] .post-excerpt {
@@ -536,7 +682,6 @@ a:hover { color: var(--accent-soft); }
     transform: translateY(-10px) scale(.998);
   }
 }
-.archive-filter { padding: 14px; display:grid; gap:10px; grid-template-columns: 1fr 220px 220px; margin-bottom: 16px; }
 .archive-filter-sticky {
   position: sticky;
   top: 86px;
@@ -550,7 +695,6 @@ a:hover { color: var(--accent-soft); }
   background: color-mix(in oklab, var(--card) 90%, #180a31 10%);
 }
 
-.archive-filter input,.archive-filter select { background: rgba(255,255,255,.04); border:1px solid var(--border); color: var(--text); border-radius: 10px; padding: 10px 12px; }
 .pagination { margin-top: 24px; display:flex; justify-content:center; gap: 12px; }
 .pagination a { border:1px solid var(--border); border-radius:999px; padding:8px 14px; }
 .site-footer { border-top:1px solid rgba(128,96,214,.2); padding: 28px 0 50px; color: var(--muted); }
@@ -573,3 +717,25 @@ a:hover { color: var(--accent-soft); }
 }
 
 @media (max-width: 900px){ .dashboard{grid-template-columns:1fr;} .archive-filter{grid-template-columns:1fr;} .header-inner{flex-direction:column;gap:10px;} }
+
+@media (max-width: 1100px) {
+  .quick-feature-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 760px) {
+  .site-nav {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .site-nav-links {
+    gap: 4px;
+  }
+
+  .site-nav-links a {
+    padding: 6px 10px;
+    font-size: 0.9rem;
+  }
+}
