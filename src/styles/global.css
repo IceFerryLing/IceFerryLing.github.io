@@ -398,12 +398,19 @@ a:hover { color: var(--accent-soft); }
 }
 
 .glass-badge {
+  display: inline-flex;
+  align-items: center;
   padding: 6px 14px;
   border-radius: 999px;
   border: 1px solid rgba(255, 255, 255, 0.16);
   background: rgba(255, 255, 255, 0.08);
   font-size: 0.8rem;
   color: rgba(230, 220, 255, 0.85);
+}
+
+.glass-badge i {
+  font-size: 0.85rem;
+  line-height: 1;
 }
 
 .section-title {
