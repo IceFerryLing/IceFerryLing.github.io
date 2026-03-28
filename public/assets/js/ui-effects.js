@@ -1,5 +1,6 @@
 window.addEventListener('DOMContentLoaded', () => {
   if (!window.tsParticles) {
+    initMouseDroplets();
     return;
   }
 
@@ -49,4 +50,37 @@ window.addEventListener('DOMContentLoaded', () => {
       detectRetina: true
     }
   });
+
+  initMouseDroplets();
 });
+
+function initMouseDroplets() {
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    return;
+  }
+
+  let last = 0;
+  const throttle = 26;
+
+  window.addEventListener('pointermove', (event) => {
+    const now = performance.now();
+    if (now - last < throttle) return;
+    last = now;
+
+    const drop = document.createElement('span');
+    drop.className = 'mouse-droplet';
+    drop.style.left = `${event.clientX}px`;
+    drop.style.top = `${event.clientY}px`;
+
+    const driftX = (Math.random() - 0.5) * 18;
+    const driftY = -12 - Math.random() * 28;
+    const size = 8 + Math.random() * 8;
+    drop.style.setProperty('--dx', `${driftX}px`);
+    drop.style.setProperty('--dy', `${driftY}px`);
+    drop.style.width = `${size}px`;
+    drop.style.height = `${size}px`;
+
+    document.body.appendChild(drop);
+    drop.addEventListener('animationend', () => drop.remove(), { once: true });
+  }, { passive: true });
+}
