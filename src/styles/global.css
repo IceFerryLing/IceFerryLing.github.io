@@ -43,6 +43,52 @@ body {
   pointer-events: none;
 }
 
+.formula-bubbles-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.formula-bubble {
+  position: absolute;
+  left: 0;
+  top: 0;
+  transform: translate(-50%, -50%);
+  font-family: "JetBrains Mono", "Fira Code", Consolas, monospace;
+  font-size: var(--formula-size, 0.86rem);
+  letter-spacing: .02em;
+  color: rgba(224, 209, 255, 0.2);
+  border: 1px solid rgba(196, 164, 255, 0.15);
+  background: rgba(130, 94, 218, 0.08);
+  border-radius: 999px;
+  padding: 5px 12px;
+  white-space: nowrap;
+  opacity: 0;
+  filter: blur(.1px);
+  animation: formula-bubble-rise var(--formula-duration, 20s) linear infinite;
+  animation-delay: var(--formula-delay, 0s);
+}
+
+@keyframes formula-bubble-rise {
+  0% {
+    opacity: 0;
+    transform: translate(var(--fx, 0px), 110vh) scale(.9);
+  }
+  8% {
+    opacity: .7;
+  }
+  50% {
+    opacity: .52;
+    transform: translate(calc(var(--fx, 0px) + var(--sway, 12px)), 52vh) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(var(--fx, 0px), -14vh) scale(1.04);
+  }
+}
+
 .side-glass {
   position: fixed;
   top: 0;
@@ -692,6 +738,12 @@ a:hover { color: var(--accent-soft); }
   border-color: rgba(125, 96, 200, 0.2);
 }
 
+:root[data-theme='light'] .formula-bubble {
+  color: rgba(100, 76, 170, 0.26);
+  border-color: rgba(130, 102, 210, 0.2);
+  background: rgba(160, 136, 235, 0.12);
+}
+
 :root[data-theme='light'] .side-glass {
   background:
     linear-gradient(180deg, rgba(161, 130, 243, 0.18), rgba(190, 173, 243, 0.14) 45%, rgba(167, 145, 238, 0.18));
@@ -1023,5 +1075,10 @@ a:hover { color: var(--accent-soft); }
 @media (max-width: 1180px) {
   .side-glass {
     display: none;
+  }
+
+  .formula-bubble {
+    font-size: 0.74rem;
+    padding: 4px 10px;
   }
 }
