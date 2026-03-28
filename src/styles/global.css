@@ -251,6 +251,40 @@ a:hover { color: var(--accent-soft); }
   color: var(--muted);
   font-size: 0.82rem;
 }
+
+:root[data-theme='light'] .glass-card {
+  background: color-mix(in oklab, var(--card) 92%, #ffffff 8%);
+  border-color: rgba(124, 96, 200, 0.18);
+  box-shadow: 0 18px 40px rgba(124, 96, 200, 0.12);
+}
+
+:root[data-theme='light'] .hero-bg {
+  opacity: 0.85;
+}
+
+:root[data-theme='light'] .hero-overlay {
+  background: radial-gradient(circle at top left, rgba(150, 110, 255, 0.25), transparent 55%),
+              linear-gradient(135deg, rgba(245, 242, 255, 0.85), rgba(198, 178, 255, 0.4));
+}
+
+:root[data-theme='light'] .eyebrow {
+  color: rgba(98, 70, 160, 0.7);
+}
+
+:root[data-theme='light'] .subtitle {
+  color: rgba(78, 64, 120, 0.85);
+}
+
+:root[data-theme='light'] .glass-badge,
+:root[data-theme='light'] .chip {
+  background: rgba(125, 96, 200, 0.12);
+  border-color: rgba(125, 96, 200, 0.25);
+  color: rgba(72, 52, 118, 0.9);
+}
+
+:root[data-theme='light'] .post-excerpt {
+  color: rgba(72, 52, 118, 0.85);
+}
 .post-list-wrap { margin-top: 36px; }
 .post-meta,.muted { color: var(--muted); font-size: .85rem; }
 .page-hero,.post-hero { padding: 20px 0 10px; }
