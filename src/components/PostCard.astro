@@ -2,14 +2,14 @@
 const { post } = Astro.props;
 ---
 
-<article class="group rounded-2xl border border-white/10 bg-white/5 p-5 backdrop-blur-xl transition hover:-translate-y-1" data-category={post.category} data-tags={post.tags.join(',')}>
-  <p class="text-xs text-purple-100/60">{post.date}</p>
-  <h3 class="mt-2 text-lg font-semibold text-white">
-    <a href={`/posts/${post.slug}/`} class="transition group-hover:text-purple-100">{post.title}</a>
+<article class="glass-card post-card p-4 h-100" data-category={post.category} data-tags={post.tags.join(',')}>
+  <p class="meta">{post.date}</p>
+  <h3 class="post-title">
+    <a href={`/posts/${post.slug}/`} class="link-light text-decoration-none">{post.title}</a>
   </h3>
-  <p class="mt-2 text-sm text-purple-100/70">{post.excerpt}</p>
-  <div class="mt-4 flex items-center justify-between gap-3 text-xs text-purple-100/60">
-    <span class="rounded-full border border-white/10 bg-white/10 px-3 py-1">{post.category}</span>
-    <span>{post.words} words · {post.readingMinutes} min</span>
+  <p class="post-excerpt">{post.excerpt}</p>
+  <div class="post-footer">
+    <span class="chip">{post.category}</span>
+    <span class="meta">{post.words} words · {post.readingMinutes} min</span>
   </div>
 </article>
