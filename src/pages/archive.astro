@@ -31,7 +31,16 @@ const tags = getAllTags(posts);
         <label class="filter-field" for="categoryFilter">
           <span class="filter-field-label">分类</span>
           <span class="filter-control-wrap">
-            <select id="categoryFilter" aria-label="按分类筛选">
+            <div class="custom-filter-select" data-native="categoryFilter">
+              <button type="button" class="custom-filter-trigger" id="categoryFilterTrigger" aria-haspopup="listbox" aria-expanded="false" aria-controls="categoryFilterMenu">
+                <span class="custom-filter-value" id="categoryFilterValue">全部分类</span>
+              </button>
+              <div class="custom-filter-menu" id="categoryFilterMenu" role="listbox" aria-labelledby="categoryFilterTrigger">
+                <button type="button" class="custom-filter-option is-active" data-value="">全部分类</button>
+                {categories.map((c) => <button type="button" class="custom-filter-option" data-value={c.name}>{c.name} ({c.count})</button>)}
+              </div>
+            </div>
+            <select id="categoryFilter" class="native-filter-select" aria-label="按分类筛选">
               <option value="">全部分类</option>
               {categories.map((c) => <option value={c.name}>{c.name} ({c.count})</option>)}
             </select>
@@ -41,7 +50,16 @@ const tags = getAllTags(posts);
         <label class="filter-field" for="tagFilter">
           <span class="filter-field-label">标签</span>
           <span class="filter-control-wrap">
-            <select id="tagFilter" aria-label="按标签筛选">
+            <div class="custom-filter-select" data-native="tagFilter">
+              <button type="button" class="custom-filter-trigger" id="tagFilterTrigger" aria-haspopup="listbox" aria-expanded="false" aria-controls="tagFilterMenu">
+                <span class="custom-filter-value" id="tagFilterValue">全部标签</span>
+              </button>
+              <div class="custom-filter-menu" id="tagFilterMenu" role="listbox" aria-labelledby="tagFilterTrigger">
+                <button type="button" class="custom-filter-option is-active" data-value="">全部标签</button>
+                {tags.map((t) => <button type="button" class="custom-filter-option" data-value={t.name}>{t.name} ({t.count})</button>)}
+              </div>
+            </div>
+            <select id="tagFilter" class="native-filter-select" aria-label="按标签筛选">
               <option value="">全部标签</option>
               {tags.map((t) => <option value={t.name}>{t.name} ({t.count})</option>)}
             </select>
@@ -87,6 +105,8 @@ const tags = getAllTags(posts);
 
     let page = 1;
     let filtered = cards;
+    const customSelectRoots = Array.from(document.querySelectorAll('.custom-filter-select'));
+    const customSelectSyncFns = [];
 
     function debounce(fn, wait = 180) {
       let timer = null;
@@ -102,6 +122,60 @@ const tags = getAllTags(posts);
       const hasKeyword = String(searchInput.value || '').trim().length > 0;
       clearSearchBtn.classList.toggle('is-visible', hasKeyword);
       clearSearchBtn.disabled = !hasKeyword;
+    }
+
+    function closeCustomSelect(root) {
+      const trigger = root.querySelector('.custom-filter-trigger');
+      root.classList.remove('is-open');
+      if (trigger) trigger.setAttribute('aria-expanded', 'false');
+    }
+
+    function closeAllCustomSelects(exceptRoot = null) {
+      customSelectRoots.forEach((root) => {
+        if (exceptRoot && root === exceptRoot) return;
+        closeCustomSelect(root);
+      });
+    }
+
+    function initCustomSelect({ nativeSelect, trigger, valueEl, menu }) {
+      if (!nativeSelect || !trigger || !valueEl || !menu) return () => {};
+
+      const root = trigger.closest('.custom-filter-select');
+      if (!root) return () => {};
+
+      function syncFromNative() {
+        const selectedOption = nativeSelect.selectedOptions?.[0] || nativeSelect.options?.[0];
+        valueEl.textContent = selectedOption ? selectedOption.textContent || '' : '';
+
+        menu.querySelectorAll('.custom-filter-option').forEach((optionBtn) => {
+          optionBtn.classList.toggle('is-active', optionBtn.dataset.value === nativeSelect.value);
+        });
+      }
+
+      trigger.addEventListener('click', () => {
+        const willOpen = !root.classList.contains('is-open');
+        closeAllCustomSelects(root);
+        root.classList.toggle('is-open', willOpen);
+        trigger.setAttribute('aria-expanded', willOpen ? 'true' : 'false');
+      });
+
+      menu.addEventListener('click', (event) => {
+        const optionBtn = event.target.closest('.custom-filter-option');
+        if (!optionBtn) return;
+        const nextValue = optionBtn.dataset.value || '';
+        if (nativeSelect.value !== nextValue) {
+          nativeSelect.value = nextValue;
+          nativeSelect.dispatchEvent(new Event('change', { bubbles: true }));
+        } else {
+          syncFromNative();
+        }
+        closeCustomSelect(root);
+      });
+
+      nativeSelect.addEventListener('change', syncFromNative);
+      syncFromNative();
+
+      return syncFromNative;
     }
 
     function animateVisibleCards(visibleCards) {
@@ -155,6 +229,8 @@ const tags = getAllTags(posts);
       if (Array.from(tagFilter.options).some((o) => o.value === tag)) {
         tagFilter.value = tag;
       }
+
+      customSelectSyncFns.forEach((sync) => sync());
 
       if (Number.isInteger(fromPage) && fromPage > 0) {
         page = fromPage;
@@ -262,6 +338,35 @@ const tags = getAllTags(posts);
 
     categoryFilter.addEventListener('change', () => applyFilter({ resetPage: true }));
     tagFilter.addEventListener('change', () => applyFilter({ resetPage: true }));
+
+    customSelectSyncFns.push(
+      initCustomSelect({
+        nativeSelect: categoryFilter,
+        trigger: document.getElementById('categoryFilterTrigger'),
+        valueEl: document.getElementById('categoryFilterValue'),
+        menu: document.getElementById('categoryFilterMenu')
+      }),
+      initCustomSelect({
+        nativeSelect: tagFilter,
+        trigger: document.getElementById('tagFilterTrigger'),
+        valueEl: document.getElementById('tagFilterValue'),
+        menu: document.getElementById('tagFilterMenu')
+      })
+    );
+
+    document.addEventListener('click', (event) => {
+      const target = event.target;
+      if (!(target instanceof Element)) return;
+      if (!target.closest('.custom-filter-select')) {
+        closeAllCustomSelects();
+      }
+    });
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape') {
+        closeAllCustomSelects();
+      }
+    });
 
     // 初始化流程：先恢复 URL 状态，再执行筛选渲染
     applyParamsFromUrl();
