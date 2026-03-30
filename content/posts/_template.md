@@ -4,6 +4,7 @@ date: 2026-03-28
 slug: your-post-slug
 description: 一句话描述这篇文章
 image: /assets/images/post-cover-1.svg
+category: 默认分类
 ---
 
 在这里开始写正文。

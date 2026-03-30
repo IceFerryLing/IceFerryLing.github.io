@@ -3,6 +3,7 @@ title: 你好，紫色星云
 date: 2026-03-19
 slug: hello-purple-world
 description: welcome to my world!
+category: 随笔
 ---
 
 欢迎来到我的博客！

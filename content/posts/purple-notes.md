@@ -3,6 +3,7 @@ title: 笔记清单
 date: 2026-03-19
 slug: purple-notes
 description: what's on your mind? 
+category: 学习笔记
 ---
 
 ## 这一周想完成的事
