@@ -268,6 +268,15 @@ async function initFancybox() {
 
 // 站内跳转过渡：点击内部链接时执行离场动画
 function initPageTransitions() {
+  const main = document.getElementById('pageMain');
+
+  // 从 bfcache（浏览器前进/后退缓存）恢复时，确保不会停留在离场状态
+  window.addEventListener('pageshow', () => {
+    if (!main) return;
+    main.classList.remove('page-leave');
+    main.classList.add('page-enter');
+  });
+
   document.addEventListener('click', (event) => {
     const link = event.target.closest('a[href]');
     if (!link) return;
@@ -275,7 +284,15 @@ function initPageTransitions() {
 
     const url = new URL(link.href, window.location.href);
     if (url.origin !== window.location.origin) return;
-    if (url.hash && url.pathname === window.location.pathname) return;
+    const currentPath = normalizePathname(window.location.pathname);
+    const targetPath = normalizePathname(url.pathname);
+    const samePath = currentPath === targetPath;
+    const sameSearch = (url.search || '') === (window.location.search || '');
+
+    // 同页跳转（含点左上角品牌回到首页）不执行离场动画拦截，避免“假空白”
+    if (samePath && sameSearch) return;
+
+    if (url.hash && samePath) return;
 
     // 记录“目标页面”用于落地后自动刷新一次
     try {
@@ -286,7 +303,6 @@ function initPageTransitions() {
     }
 
     event.preventDefault();
-    const main = document.getElementById('pageMain');
     if (!main) {
       window.location.href = url.href;
       return;
