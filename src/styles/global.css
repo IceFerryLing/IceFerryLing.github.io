@@ -121,7 +121,7 @@ body {
   width: 11px;
   height: 11px;
   border-radius: 62% 38% 55% 45% / 55% 45% 60% 40%;
-  background: radial-gradient(circle at 32% 28%, rgba(255, 255, 255, 0.85), rgba(182, 153, 255, 0.68) 55%, rgba(121, 85, 236, 0.1));
+  background: radial-gradient(circle at 32% 28%, rgba(255, 255, 255, 0.72), rgba(182, 153, 255, 0.54) 55%, rgba(121, 85, 236, 0.08));
   border: 1px solid rgba(224, 208, 255, 0.5);
   box-shadow: 0 0 14px rgba(175, 132, 255, 0.35);
   pointer-events: none;
@@ -1082,7 +1082,7 @@ a:hover { color: var(--accent-soft); }
 }
 
 :root[data-theme='light'] .mouse-droplet {
-  background: radial-gradient(circle at 32% 28%, rgba(255, 255, 255, 0.95), rgba(156, 118, 245, 0.52) 55%, rgba(130, 90, 232, 0.08));
+  background: radial-gradient(circle at 32% 28%, rgba(255, 255, 255, 0.82), rgba(156, 118, 245, 0.42) 55%, rgba(130, 90, 232, 0.06));
   border-color: rgba(153, 119, 238, 0.4);
   box-shadow: 0 0 14px rgba(140, 102, 228, 0.24);
 }
