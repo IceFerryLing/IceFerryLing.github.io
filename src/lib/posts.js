@@ -2,7 +2,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import matter from 'gray-matter';
 import { marked } from 'marked';
-import { markedKatex } from 'marked-katex-extension';
+import markedKatex from 'marked-katex-extension';
 import { codeToHtml } from 'shiki';
 import { POSTS_PER_PAGE } from '../config/site';
 
