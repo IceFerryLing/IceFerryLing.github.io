@@ -5,6 +5,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
   // 2) 如果粒子库不可用，保底启用鼠标水滴效果并退出
   if (!window.tsParticles) {
+    initClickRipples();
     initMouseDroplets();
     return;
   }
@@ -58,6 +59,7 @@ window.addEventListener('DOMContentLoaded', () => {
   });
 
   // 4) 鼠标跟随水滴（与粒子背景并行，不互斥）
+  initClickRipples();
   initMouseDroplets();
 });
 
@@ -156,6 +158,30 @@ function initMouseDroplets() {
     document.body.appendChild(drop);
     // 动画结束自动销毁节点，防止内存/DOM 堆积
     drop.addEventListener('animationend', () => drop.remove(), { once: true });
+  }, { passive: true });
+}
+
+function initClickRipples() {
+  // 无障碍：减少动态时不启用点击涟漪
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    return;
+  }
+
+  window.addEventListener('pointerdown', (event) => {
+    // 仅响应主键，避免右键菜单或辅助键触发
+    if (event.button !== 0) return;
+
+    const ripple = document.createElement('span');
+    ripple.className = 'click-ripple';
+    ripple.style.left = `${event.clientX}px`;
+    ripple.style.top = `${event.clientY}px`;
+
+    // 根据视口尺寸动态设置扩散范围，避免大屏显得太小
+    const maxRadius = Math.min(220, Math.max(120, Math.floor(Math.min(window.innerWidth, window.innerHeight) * 0.18)));
+    ripple.style.setProperty('--ripple-size', `${maxRadius}px`);
+
+    document.body.appendChild(ripple);
+    ripple.addEventListener('animationend', () => ripple.remove(), { once: true });
   }, { passive: true });
 }
 
