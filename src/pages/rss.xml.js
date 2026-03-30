@@ -34,6 +34,7 @@ export async function GET() {
     .join('\n');
 
   const xml = `<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="/rss.xsl"?>
 <rss version="2.0"><channel>
 <title>${escapeXml(SITE_NAME)}</title>
 <link>${SITE_URL}</link>
