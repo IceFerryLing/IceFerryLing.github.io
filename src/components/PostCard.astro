@@ -1,9 +1,17 @@
 ---
 const { post } = Astro.props;
+const searchText = [post.title, post.description, post.excerpt, post.category, ...(post.tags || []), post.date]
+  .filter(Boolean)
+  .join(' ');
 ---
 
 <!-- 通用文章卡片：用于首页与归档复用 -->
-<article class="glass-card post-card p-4 h-100" data-category={post.category} data-tags={post.tags.join(',')}>
+<article
+  class="glass-card post-card p-4 h-100"
+  data-category={post.category}
+  data-tags={post.tags.join(',')}
+  data-search={searchText}
+>
   <p class="meta">{post.date}</p>
   <h3 class="post-title">
     <a href={`/posts/${post.slug}/`} class="link-light text-decoration-none">{post.title}</a>

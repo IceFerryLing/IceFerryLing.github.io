@@ -46,11 +46,17 @@ const tags = getAllTags(posts);
   <script define:vars={{ POSTS_PER_PAGE }}>
     // 归档页：关键词 + 分类 + 标签筛选，并带分页与 URL 参数同步
     const grid = document.getElementById('archiveGrid');
-    const cards = Array.from(grid.querySelectorAll('.archive-post-item'));
     const pager = document.getElementById('pager');
     const searchInput = document.getElementById('searchInput');
     const categoryFilter = document.getElementById('categoryFilter');
     const tagFilter = document.getElementById('tagFilter');
+
+    if (!grid || !pager || !searchInput || !categoryFilter || !tagFilter) {
+      console.warn('[archive] missing filter elements, skip filter init.');
+    } else {
+    const cards = Array.from(grid.querySelectorAll('.archive-post-item'));
+
+    const normalize = (value = '') => String(value).trim().toLowerCase();
 
     let page = 1;
     let filtered = cards;
@@ -101,16 +107,16 @@ const tags = getAllTags(posts);
 
     // 执行筛选（可控制是否重置页码）
     function applyFilter({ resetPage = true } = {}) {
-      const keyword = (searchInput.value || '').toLowerCase();
-      const category = categoryFilter.value;
-      const tag = tagFilter.value;
+      const keyword = normalize(searchInput.value || '');
+      const category = normalize(categoryFilter.value);
+      const tag = normalize(tagFilter.value);
 
       filtered = cards.filter((card) => {
         const article = card.querySelector('.post-card');
         if (!article) return false;
-        const text = card.innerText.toLowerCase();
-        const c = article.dataset.category || '';
-        const tags = (article.dataset.tags || '').split(',').filter(Boolean);
+        const text = normalize(article.dataset.search || card.textContent || '');
+        const c = normalize(article.dataset.category || '');
+        const tags = (article.dataset.tags || '').split(',').map((t) => normalize(t)).filter(Boolean);
         const hitKeyword = !keyword || text.includes(keyword);
         const hitCategory = !category || c === category;
         const hitTag = !tag || tags.includes(tag);
@@ -179,5 +185,6 @@ const tags = getAllTags(posts);
     // 初始化流程：先恢复 URL 状态，再执行筛选渲染
     applyParamsFromUrl();
     applyFilter({ resetPage: false });
+    }
   </script>
 </BaseLayout>

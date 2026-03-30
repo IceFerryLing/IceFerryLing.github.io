@@ -59,6 +59,34 @@ function normalizeDate(rawDate) {
   return String(rawDate).slice(0, 10);
 }
 
+// 规范化分类字段（兼容字符串/数组/空值）
+function normalizeCategory(rawCategory) {
+  if (typeof rawCategory === 'string') {
+    const value = rawCategory.trim();
+    return value || '未分类';
+  }
+
+  if (Array.isArray(rawCategory)) {
+    const first = rawCategory.map((item) => String(item || '').trim()).find(Boolean);
+    return first || '未分类';
+  }
+
+  return '未分类';
+}
+
+// 规范化标签字段（兼容数组/逗号分隔字符串）
+function normalizeTags(rawTags) {
+  let tags = [];
+
+  if (Array.isArray(rawTags)) {
+    tags = rawTags;
+  } else if (typeof rawTags === 'string') {
+    tags = rawTags.split(/[,，]/g);
+  }
+
+  return Array.from(new Set(tags.map((tag) => String(tag || '').trim()).filter(Boolean)));
+}
+
 // 兼容 Jekyll 风格文件名：yyyy-mm-dd-slug.md
 function resolveMetaFromFilename(fileName) {
   const matched = fileName.match(/^(\d{4}-\d{2}-\d{2})-(.+)\.md$/);
@@ -101,6 +129,8 @@ export function getSortedPosts() {
     const excerptRaw = data.description || stripMarkdown(content);
     const excerpt = excerptRaw.length > 120 ? `${excerptRaw.slice(0, 120)}...` : excerptRaw;
     const words = stripMarkdown(content).split(/\s+/).filter(Boolean).length;
+    const category = normalizeCategory(data.category);
+    const tags = normalizeTags(data.tags);
 
     return {
       slug,
@@ -108,8 +138,8 @@ export function getSortedPosts() {
       description: data.description || '',
       image: data.image || '/assets/images/hero-purple.svg',
       date,
-      category: data.category || '未分类',
-      tags: Array.isArray(data.tags) ? data.tags : [],
+      category,
+      tags,
       content,
       excerpt,
       words,
