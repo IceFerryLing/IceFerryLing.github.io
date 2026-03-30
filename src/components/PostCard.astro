@@ -1,8 +1,23 @@
 ---
+import { pinyin } from 'pinyin-pro';
+
 const { post } = Astro.props;
-const searchText = [post.title, post.description, post.excerpt, post.category, ...(post.tags || []), post.date]
+const baseSearchText = [post.title, post.description, post.excerpt, post.category, ...(post.tags || []), post.date]
   .filter(Boolean)
   .join(' ');
+
+function buildPinyinSearchText(text = '') {
+  try {
+    const pinyinText = pinyin(String(text), { toneType: 'none', nonZh: 'consecutive' });
+    const compact = pinyinText.replace(/\s+/g, '');
+    return `${pinyinText} ${compact}`.trim();
+  } catch {
+    return '';
+  }
+}
+
+const pinyinSearchText = buildPinyinSearchText(baseSearchText);
+const searchText = `${baseSearchText} ${pinyinSearchText}`.trim();
 ---
 
 <!-- 通用文章卡片：用于首页与归档复用 -->
