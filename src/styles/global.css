@@ -1358,6 +1358,87 @@ a:hover { color: var(--accent-soft); }
 
 .comments-wrap {
   padding: 20px;
+  position: relative;
+  overflow: hidden;
+}
+
+.comments-wrap::before {
+  content: '';
+  position: absolute;
+  inset: -20% auto auto -10%;
+  width: 220px;
+  height: 220px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(165, 124, 255, 0.22), rgba(165, 124, 255, 0));
+  pointer-events: none;
+}
+
+.comments-wrap > * {
+  position: relative;
+  z-index: 1;
+}
+
+.comments-wrap h3 {
+  margin: 0;
+}
+
+.comments-title {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.comments-title .bi {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 999px;
+  font-size: .82rem;
+  color: rgba(243, 235, 255, 0.96);
+  background: linear-gradient(135deg, rgba(171, 132, 255, 0.92), rgba(109, 64, 230, 0.95));
+  box-shadow: 0 6px 14px rgba(99, 64, 194, 0.32);
+}
+
+.comments-subtitle {
+  margin: 6px 0 14px;
+  font-size: .82rem;
+}
+
+.giscus-host {
+  border-radius: 16px;
+  border: 1px solid rgba(193, 160, 255, 0.34);
+  background: color-mix(in oklab, rgba(24, 12, 50, 0.65) 78%, rgba(130, 90, 230, 0.16) 22%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 12px 28px rgba(20, 8, 45, 0.28);
+  padding: 12px;
+}
+
+.giscus-host .giscus,
+.giscus-host .giscus-frame {
+  width: 100%;
+}
+
+.giscus-host .giscus-frame {
+  min-height: 360px;
+  border: 0;
+  background: transparent;
+}
+
+:root[data-theme='light'] .giscus-host {
+  border-color: rgba(125, 96, 200, 0.28);
+  background: color-mix(in oklab, rgba(255, 255, 255, 0.9) 80%, rgba(151, 118, 236, 0.2) 20%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.8), 0 10px 24px rgba(96, 66, 176, 0.14);
+}
+
+:root[data-theme='light'] .comments-wrap::before {
+  background: radial-gradient(circle, rgba(136, 102, 222, 0.18), rgba(136, 102, 222, 0));
+}
+
+:root[data-theme='light'] .comments-title .bi {
+  color: rgba(75, 48, 142, 0.95);
+  background: linear-gradient(135deg, rgba(199, 176, 255, 0.9), rgba(152, 122, 241, 0.86));
+  box-shadow: 0 6px 12px rgba(126, 93, 214, 0.18);
 }
 
 .post-nav-wrap {

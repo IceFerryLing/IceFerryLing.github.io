@@ -218,6 +218,38 @@ function initGiscus() {
   if (!target) return;
   if (document.querySelector('script[data-giscus]')) return;
 
+  const resolveGiscusTheme = () => {
+    const mode = document.documentElement.getAttribute('data-theme') || 'dark';
+    return mode === 'light' ? 'light' : 'transparent_dark';
+  };
+
+  const pushThemeToGiscus = () => {
+    const frame = document.querySelector('iframe.giscus-frame');
+    if (!frame?.contentWindow) return false;
+    frame.contentWindow.postMessage(
+      {
+        giscus: {
+          setConfig: {
+            theme: resolveGiscusTheme()
+          }
+        }
+      },
+      'https://giscus.app'
+    );
+    return true;
+  };
+
+  const syncThemeWhenReady = (retries = 10) => {
+    const pending = document.querySelector('.giscus');
+    if (pending) {
+      pending.setAttribute('data-theme', resolveGiscusTheme());
+    }
+    if (pushThemeToGiscus() || retries <= 0) return;
+    setTimeout(() => syncThemeWhenReady(retries - 1), 280);
+  };
+
+  target.setAttribute('data-theme', resolveGiscusTheme());
+
   const script = document.createElement('script');
   script.src = 'https://giscus.app/client.js';
   script.async = true;
@@ -231,6 +263,20 @@ function initGiscus() {
   });
 
   target.replaceWith(script);
+
+  const observer = new MutationObserver((mutations) => {
+    const changedTheme = mutations.some(
+      (mutation) => mutation.type === 'attributes' && mutation.attributeName === 'data-theme'
+    );
+    if (changedTheme) syncThemeWhenReady();
+  });
+
+  observer.observe(document.documentElement, {
+    attributes: true,
+    attributeFilter: ['data-theme']
+  });
+
+  syncThemeWhenReady();
 }
 
 // 文章图片灯箱：自动包裹图片并按需加载 Fancybox

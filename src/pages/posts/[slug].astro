@@ -67,24 +67,30 @@ const giscusEnabled = Boolean(
   <!-- 评论区 -->
   <section class="post-comments">
     <div class="container glass comments-wrap">
-      <h3>评论</h3>
+      <h3 class="comments-title">
+        <i class="bi bi-chat-dots-fill" aria-hidden="true"></i>
+        <span>评论</span>
+      </h3>
+      <p class="muted comments-subtitle">欢迎友好交流，理性讨论</p>
       {
         giscusEnabled ? (
-          <div
-            class="giscus"
-            data-repo={GISCUS_CONFIG.repo}
-            data-repo-id={GISCUS_CONFIG.repoId}
-            data-category={GISCUS_CONFIG.category}
-            data-category-id={GISCUS_CONFIG.categoryId}
-            data-mapping="pathname"
-            data-strict="0"
-            data-reactions-enabled="1"
-            data-emit-metadata="0"
-            data-input-position="top"
-            data-theme="preferred_color_scheme"
-            data-lang="zh-CN"
-            data-loading="lazy"
-          ></div>
+          <div class="giscus-host">
+            <div
+              class="giscus"
+              data-repo={GISCUS_CONFIG.repo}
+              data-repo-id={GISCUS_CONFIG.repoId}
+              data-category={GISCUS_CONFIG.category}
+              data-category-id={GISCUS_CONFIG.categoryId}
+              data-mapping="pathname"
+              data-strict="0"
+              data-reactions-enabled="1"
+              data-emit-metadata="0"
+              data-input-position="top"
+              data-theme="transparent_dark"
+              data-lang="zh-CN"
+              data-loading="lazy"
+            ></div>
+          </div>
         ) : (
           <p class="muted">请在 `.env` 中补全 Giscus 配置后启用评论区。</p>
         )
