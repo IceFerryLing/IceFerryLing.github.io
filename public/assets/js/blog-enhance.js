@@ -3,6 +3,12 @@ const NAV_REFRESH_PATH_KEY = '__nav_refresh_path__';
 const NAV_REFRESH_AT_KEY = '__nav_refresh_at__';
 const NAV_REFRESH_TTL_MS = 30 * 1000;
 
+function normalizePathname(pathname = '/') {
+  const raw = String(pathname || '/').trim();
+  if (!raw || raw === '/') return '/';
+  return raw.endsWith('/') ? raw.slice(0, -1) : raw;
+}
+
 // 按需加载外部脚本（避免重复注入同一个资源）
 function loadScriptOnce(src, id) {
   return new Promise((resolve, reject) => {
@@ -273,7 +279,7 @@ function initPageTransitions() {
 
     // 记录“目标页面”用于落地后自动刷新一次
     try {
-      sessionStorage.setItem(NAV_REFRESH_PATH_KEY, `${url.pathname}${url.search}`);
+      sessionStorage.setItem(NAV_REFRESH_PATH_KEY, normalizePathname(url.pathname));
       sessionStorage.setItem(NAV_REFRESH_AT_KEY, String(Date.now()));
     } catch {
       // 忽略存储异常（如隐私模式禁用存储）
@@ -309,11 +315,21 @@ function initRefreshAfterNavigation() {
   if (!targetPath || !markedAt) return;
 
   const now = Date.now();
-  const currentPath = `${window.location.pathname}${window.location.search}`;
+  const currentPath = normalizePathname(window.location.pathname);
   const isExpired = now - markedAt > NAV_REFRESH_TTL_MS;
-  const isMatched = currentPath === targetPath;
+  const isMatched = currentPath === normalizePathname(targetPath);
 
-  if (isExpired || !isMatched) {
+  let fromSameOrigin = false;
+  try {
+    if (document.referrer) {
+      const ref = new URL(document.referrer);
+      fromSameOrigin = ref.origin === window.location.origin;
+    }
+  } catch {
+    fromSameOrigin = false;
+  }
+
+  if (isExpired || (!isMatched && !fromSameOrigin)) {
     if (isExpired) {
       try {
         sessionStorage.removeItem(NAV_REFRESH_PATH_KEY);
