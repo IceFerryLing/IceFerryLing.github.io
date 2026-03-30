@@ -1,6 +1,7 @@
 const THEME_KEY = 'theme-mode';
-const AUTO_REFRESH_INTERVAL_MS = 3 * 60 * 1000;
-const AUTO_REFRESH_IDLE_MS = 20 * 1000;
+const NAV_REFRESH_PATH_KEY = '__nav_refresh_path__';
+const NAV_REFRESH_AT_KEY = '__nav_refresh_at__';
+const NAV_REFRESH_TTL_MS = 30 * 1000;
 
 // 按需加载外部脚本（避免重复注入同一个资源）
 function loadScriptOnce(src, id) {
@@ -270,6 +271,14 @@ function initPageTransitions() {
     if (url.origin !== window.location.origin) return;
     if (url.hash && url.pathname === window.location.pathname) return;
 
+    // 记录“目标页面”用于落地后自动刷新一次
+    try {
+      sessionStorage.setItem(NAV_REFRESH_PATH_KEY, `${url.pathname}${url.search}`);
+      sessionStorage.setItem(NAV_REFRESH_AT_KEY, String(Date.now()));
+    } catch {
+      // 忽略存储异常（如隐私模式禁用存储）
+    }
+
     event.preventDefault();
     const main = document.getElementById('pageMain');
     if (!main) {
@@ -285,60 +294,47 @@ function initPageTransitions() {
   });
 }
 
-// 页面自动刷新：默认在列表页启用，避免打断用户输入或阅读
-function initAutoRefresh() {
-  const params = new URLSearchParams(window.location.search);
-  const autoRefreshFlag = (params.get('autorefresh') || '').toLowerCase();
+// 站内跳转后：目标页自动刷新一次（并立即清除标记，避免循环）
+function initRefreshAfterNavigation() {
+  let targetPath = '';
+  let markedAt = 0;
 
-  // 支持 URL 手动关闭：?autorefresh=off
-  if (autoRefreshFlag === 'off' || autoRefreshFlag === '0' || autoRefreshFlag === 'false') {
+  try {
+    targetPath = sessionStorage.getItem(NAV_REFRESH_PATH_KEY) || '';
+    markedAt = Number(sessionStorage.getItem(NAV_REFRESH_AT_KEY) || 0);
+  } catch {
     return;
   }
 
-  const path = window.location.pathname || '/';
-  const isPostDetail = /^\/posts\/[^/]+\/?$/.test(path);
+  if (!targetPath || !markedAt) return;
 
-  // 文章详情页不自动刷新，避免阅读中被打断
-  if (isPostDetail) return;
+  const now = Date.now();
+  const currentPath = `${window.location.pathname}${window.location.search}`;
+  const isExpired = now - markedAt > NAV_REFRESH_TTL_MS;
+  const isMatched = currentPath === targetPath;
 
-  let lastInteractionAt = Date.now();
-  const startedAt = Date.now();
-
-  const markInteraction = () => {
-    lastInteractionAt = Date.now();
-  };
-
-  ['pointerdown', 'keydown', 'scroll', 'touchstart', 'input'].forEach((eventName) => {
-    window.addEventListener(eventName, markInteraction, { passive: true });
-  });
-
-  function isUserBusy() {
-    const active = document.activeElement;
-    if (!active) return false;
-    const tag = (active.tagName || '').toLowerCase();
-    return tag === 'input' || tag === 'textarea' || active.isContentEditable;
-  }
-
-  function tryRefresh() {
-    if (document.visibilityState !== 'visible') return;
-    if (isUserBusy()) return;
-
-    const now = Date.now();
-    const sinceStart = now - startedAt;
-    const sinceInteraction = now - lastInteractionAt;
-
-    if (sinceStart >= AUTO_REFRESH_INTERVAL_MS && sinceInteraction >= AUTO_REFRESH_IDLE_MS) {
-      window.location.reload();
+  if (isExpired || !isMatched) {
+    if (isExpired) {
+      try {
+        sessionStorage.removeItem(NAV_REFRESH_PATH_KEY);
+        sessionStorage.removeItem(NAV_REFRESH_AT_KEY);
+      } catch {
+        // 忽略存储异常
+      }
     }
+    return;
   }
 
-  // 定时检查 + 回到前台时检查
-  const timer = window.setInterval(tryRefresh, 10 * 1000);
-  document.addEventListener('visibilitychange', tryRefresh);
+  try {
+    sessionStorage.removeItem(NAV_REFRESH_PATH_KEY);
+    sessionStorage.removeItem(NAV_REFRESH_AT_KEY);
+  } catch {
+    // 忽略存储异常
+  }
 
-  // 页面卸载时清理定时器
-  window.addEventListener('beforeunload', () => {
-    window.clearInterval(timer);
+  // 使用 requestAnimationFrame 确保在当前帧结束后刷新
+  requestAnimationFrame(() => {
+    window.location.reload();
   });
 }
 
@@ -351,4 +347,4 @@ initArchiveFilterSticky();
 initGiscus();
 initFancybox();
 initPageTransitions();
-initAutoRefresh();
+initRefreshAfterNavigation();
