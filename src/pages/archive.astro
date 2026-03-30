@@ -20,15 +20,38 @@ const tags = getAllTags(posts);
   <section class="page-content">
     <div class="container">
       <div class="archive-filter archive-filter-sticky glass-card" id="archiveFilterBar">
-        <input id="searchInput" placeholder="搜索标题/摘要..." />
-        <select id="categoryFilter">
-          <option value="">全部分类</option>
-          {categories.map((c) => <option value={c.name}>{c.name} ({c.count})</option>)}
-        </select>
-        <select id="tagFilter">
-          <option value="">全部标签</option>
-          {tags.map((t) => <option value={t.name}>{t.name} ({t.count})</option>)}
-        </select>
+        <label class="filter-field filter-field-search" for="searchInput">
+          <span class="filter-field-label">关键词</span>
+          <span class="filter-control-wrap">
+            <input id="searchInput" placeholder="搜索标题 / 摘要..." aria-label="搜索标题或摘要" />
+            <button id="clearSearchBtn" class="clear-search-btn" type="button" aria-label="清空搜索" title="清空搜索">×</button>
+          </span>
+        </label>
+
+        <label class="filter-field" for="categoryFilter">
+          <span class="filter-field-label">分类</span>
+          <span class="filter-control-wrap">
+            <select id="categoryFilter" aria-label="按分类筛选">
+              <option value="">全部分类</option>
+              {categories.map((c) => <option value={c.name}>{c.name} ({c.count})</option>)}
+            </select>
+          </span>
+        </label>
+
+        <label class="filter-field" for="tagFilter">
+          <span class="filter-field-label">标签</span>
+          <span class="filter-control-wrap">
+            <select id="tagFilter" aria-label="按标签筛选">
+              <option value="">全部标签</option>
+              {tags.map((t) => <option value={t.name}>{t.name} ({t.count})</option>)}
+            </select>
+          </span>
+        </label>
+      </div>
+
+      <div id="archiveEmptyState" class="archive-empty-state glass-card" hidden>
+        <p class="empty-state-title">没有找到匹配内容</p>
+        <p class="empty-state-subtitle">换个关键词，或者试试切换分类 / 标签，下一篇也许正好击中你。</p>
       </div>
 
       <div id="archiveGrid" class="post-grid row g-4">
@@ -48,19 +71,38 @@ const tags = getAllTags(posts);
     const grid = document.getElementById('archiveGrid');
     const pager = document.getElementById('pager');
     const searchInput = document.getElementById('searchInput');
+    const clearSearchBtn = document.getElementById('clearSearchBtn');
     const categoryFilter = document.getElementById('categoryFilter');
     const tagFilter = document.getElementById('tagFilter');
+    const emptyState = document.getElementById('archiveEmptyState');
 
-    if (!grid || !pager || !searchInput || !categoryFilter || !tagFilter) {
+    if (!grid || !pager || !searchInput || !clearSearchBtn || !categoryFilter || !tagFilter || !emptyState) {
       console.warn('[archive] missing filter elements, skip filter init.');
     } else {
     const cards = Array.from(grid.querySelectorAll('.archive-post-item'));
 
     const normalize = (value = '') => String(value).trim().toLowerCase();
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const SEARCH_DEBOUNCE_MS = 220;
 
     let page = 1;
     let filtered = cards;
+
+    function debounce(fn, wait = 180) {
+      let timer = null;
+      return (...args) => {
+        if (timer) clearTimeout(timer);
+        timer = window.setTimeout(() => {
+          fn(...args);
+        }, wait);
+      };
+    }
+
+    function syncSearchClearButton() {
+      const hasKeyword = String(searchInput.value || '').trim().length > 0;
+      clearSearchBtn.classList.toggle('is-visible', hasKeyword);
+      clearSearchBtn.disabled = !hasKeyword;
+    }
 
     function animateVisibleCards(visibleCards) {
       if (prefersReducedMotion) return;
@@ -106,6 +148,7 @@ const tags = getAllTags(posts);
       const fromPage = Number(params.get('page'));
 
       searchInput.value = q;
+      syncSearchClearButton();
       if (Array.from(categoryFilter.options).some((o) => o.value === category)) {
         categoryFilter.value = category;
       }
@@ -187,16 +230,36 @@ const tags = getAllTags(posts);
       cards.forEach((card) => (card.style.display = 'none'));
       visibleCards.forEach((card) => (card.style.display = 'block'));
 
-      if (animate) {
+      const hasResults = filtered.length > 0;
+      emptyState.hidden = hasResults;
+      grid.hidden = !hasResults;
+      pager.hidden = !hasResults;
+
+      if (animate && hasResults) {
         animateVisibleCards(visibleCards);
       }
 
       renderPager(totalPages);
       updateUrlParams();
+      syncSearchClearButton();
     }
 
     // 事件绑定
-    searchInput.addEventListener('input', () => applyFilter({ resetPage: true }));
+    const debouncedSearchFilter = debounce(() => applyFilter({ resetPage: true }), SEARCH_DEBOUNCE_MS);
+
+    searchInput.addEventListener('input', () => {
+      syncSearchClearButton();
+      debouncedSearchFilter();
+    });
+
+    clearSearchBtn.addEventListener('click', () => {
+      if (!searchInput.value) return;
+      searchInput.value = '';
+      syncSearchClearButton();
+      applyFilter({ resetPage: true });
+      searchInput.focus();
+    });
+
     categoryFilter.addEventListener('change', () => applyFilter({ resetPage: true }));
     tagFilter.addEventListener('change', () => applyFilter({ resetPage: true }));
 
