@@ -146,7 +146,24 @@ const tags = getAllTags(posts).slice(0, 12);
 
       // 绑定分类按钮点击事件
       buttons.forEach((btn) => {
-        btn.addEventListener('click', () => setFilter(btn.dataset.homeFilter || 'all'));
+        btn.addEventListener('click', (event) => {
+          const rect = btn.getBoundingClientRect();
+          const x = event.clientX - rect.left;
+          const y = event.clientY - rect.top;
+          btn.style.setProperty('--ripple-x', `${x}px`);
+          btn.style.setProperty('--ripple-y', `${y}px`);
+
+          btn.classList.remove('chip-pop', 'chip-ripple');
+          // 强制重排，让连续点击也能重复触发动画
+          void btn.offsetWidth;
+          btn.classList.add('chip-pop', 'chip-ripple');
+
+          setFilter(btn.dataset.homeFilter || 'all');
+        });
+
+        btn.addEventListener('animationend', () => {
+          btn.classList.remove('chip-pop', 'chip-ripple');
+        });
       });
     })();
   </script>
