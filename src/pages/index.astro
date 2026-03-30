@@ -52,7 +52,28 @@ const tags = getAllTags(posts).slice(0, 12);
           <h3 class="section-title">站点信息</h3>
           <p class="muted">文章 {posts.length} 篇</p>
           <p class="muted">分类 {getAllCategories(posts).length} 个 · 标签 {getAllTags(posts).length} 个</p>
-          <a href="/rss.xml" class="btn btn-outline-light btn-sm mt-2">订阅 RSS</a>
+          <div class="d-flex flex-wrap gap-2 mt-2">
+            <a href="/rss.xml" class="btn btn-outline-light btn-sm" target="_blank" rel="noopener noreferrer">
+              <i class="bi bi-rss-fill" aria-hidden="true"></i>
+              <span class="ms-1">查看源</span>
+            </a>
+            <button type="button" class="btn btn-outline-light btn-sm" id="copyRssBtn" data-rss-copy>
+              <i class="bi bi-clipboard-check" aria-hidden="true"></i>
+              <span class="ms-1" data-rss-copy-label>复制地址</span>
+            </button>
+            <a
+              href="https://feedly.com/i/subscription/feed/https://iceferryling.github.io/rss.xml"
+              class="btn btn-outline-light btn-sm"
+              target="_blank"
+              rel="noopener noreferrer"
+              id="feedlySubscribeBtn"
+              data-feedly-subscribe
+            >
+              <i class="bi bi-box-arrow-up-right" aria-hidden="true"></i>
+              <span class="ms-1">Feedly 订阅</span>
+            </a>
+          </div>
+          <p class="muted mt-2 mb-0" id="rssHintText">提示：可复制地址到任意 RSS 阅读器订阅。</p>
         </aside>
       </div>
       <div class="col-lg-4">
@@ -98,6 +119,39 @@ const tags = getAllTags(posts).slice(0, 12);
 
   <script is:inline>
     (() => {
+      const rssUrl = `${window.location.origin}/rss.xml`;
+      const copyRssBtn = document.querySelector('[data-rss-copy]');
+      const copyRssLabel = document.querySelector('[data-rss-copy-label]');
+      const rssHintText = document.getElementById('rssHintText');
+      const feedlySubscribeBtn = document.querySelector('[data-feedly-subscribe]');
+
+      if (feedlySubscribeBtn) {
+        feedlySubscribeBtn.setAttribute('href', `https://feedly.com/i/subscription/feed/${encodeURIComponent(rssUrl)}`);
+      }
+
+      if (copyRssBtn && copyRssLabel) {
+        copyRssBtn.addEventListener('click', async () => {
+          let copied = false;
+          try {
+            await navigator.clipboard.writeText(rssUrl);
+            copied = true;
+          } catch {
+            window.prompt('请手动复制 RSS 地址：', rssUrl);
+            copied = false;
+          }
+
+          copyRssLabel.textContent = copied ? '已复制' : '复制失败';
+          if (rssHintText) {
+            rssHintText.textContent = copied ? `已复制：${rssUrl}` : '复制失败，请手动复制 /rss.xml';
+          }
+
+          window.setTimeout(() => {
+            copyRssLabel.textContent = '复制地址';
+            if (rssHintText) rssHintText.textContent = '提示：可复制地址到任意 RSS 阅读器订阅。';
+          }, 1600);
+        });
+      }
+
       // 首页快筛：按分类切换“最新文章”列表显示
       const buttons = Array.from(document.querySelectorAll('[data-home-filter]'));
       const cards = Array.from(document.querySelectorAll('[data-home-card]'));
