@@ -29,6 +29,7 @@ const giscusEnabled = Boolean(
   <!-- 文章头部信息 -->
   <section class="post-hero">
     <div class="container">
+      <a href="/archive/" class="post-back-link" id="postBackLink" aria-label="返回上一页">← 返回</a>
       <p class="post-meta">{post.date}</p>
       <h1 class="post-title">{post.title}</h1>
       {post.description && <p class="post-subtitle">{post.description}</p>}
@@ -126,4 +127,18 @@ const giscusEnabled = Boolean(
       }
     </div>
   </section>
+
+  <script is:inline>
+    (() => {
+      const backLink = document.getElementById('postBackLink');
+      if (!backLink) return;
+
+      backLink.addEventListener('click', (event) => {
+        if (window.history.length > 1) {
+          event.preventDefault();
+          window.history.back();
+        }
+      });
+    })();
+  </script>
 </BaseLayout>
