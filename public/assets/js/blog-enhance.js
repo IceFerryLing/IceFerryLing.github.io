@@ -1,4 +1,6 @@
 const THEME_KEY = 'theme-mode';
+const AUTO_REFRESH_INTERVAL_MS = 3 * 60 * 1000;
+const AUTO_REFRESH_IDLE_MS = 20 * 1000;
 
 // 按需加载外部脚本（避免重复注入同一个资源）
 function loadScriptOnce(src, id) {
@@ -283,6 +285,63 @@ function initPageTransitions() {
   });
 }
 
+// 页面自动刷新：默认在列表页启用，避免打断用户输入或阅读
+function initAutoRefresh() {
+  const params = new URLSearchParams(window.location.search);
+  const autoRefreshFlag = (params.get('autorefresh') || '').toLowerCase();
+
+  // 支持 URL 手动关闭：?autorefresh=off
+  if (autoRefreshFlag === 'off' || autoRefreshFlag === '0' || autoRefreshFlag === 'false') {
+    return;
+  }
+
+  const path = window.location.pathname || '/';
+  const isPostDetail = /^\/posts\/[^/]+\/?$/.test(path);
+
+  // 文章详情页不自动刷新，避免阅读中被打断
+  if (isPostDetail) return;
+
+  let lastInteractionAt = Date.now();
+  const startedAt = Date.now();
+
+  const markInteraction = () => {
+    lastInteractionAt = Date.now();
+  };
+
+  ['pointerdown', 'keydown', 'scroll', 'touchstart', 'input'].forEach((eventName) => {
+    window.addEventListener(eventName, markInteraction, { passive: true });
+  });
+
+  function isUserBusy() {
+    const active = document.activeElement;
+    if (!active) return false;
+    const tag = (active.tagName || '').toLowerCase();
+    return tag === 'input' || tag === 'textarea' || active.isContentEditable;
+  }
+
+  function tryRefresh() {
+    if (document.visibilityState !== 'visible') return;
+    if (isUserBusy()) return;
+
+    const now = Date.now();
+    const sinceStart = now - startedAt;
+    const sinceInteraction = now - lastInteractionAt;
+
+    if (sinceStart >= AUTO_REFRESH_INTERVAL_MS && sinceInteraction >= AUTO_REFRESH_IDLE_MS) {
+      window.location.reload();
+    }
+  }
+
+  // 定时检查 + 回到前台时检查
+  const timer = window.setInterval(tryRefresh, 10 * 1000);
+  document.addEventListener('visibilitychange', tryRefresh);
+
+  // 页面卸载时清理定时器
+  window.addEventListener('beforeunload', () => {
+    window.clearInterval(timer);
+  });
+}
+
 // 页面增强功能入口
 initThemeToggle();
 initReadingProgress();
@@ -292,3 +351,4 @@ initArchiveFilterSticky();
 initGiscus();
 initFancybox();
 initPageTransitions();
+initAutoRefresh();
