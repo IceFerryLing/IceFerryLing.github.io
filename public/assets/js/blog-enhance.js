@@ -118,6 +118,8 @@ function initCodeCopyButtons() {
 function initTocActive() {
   const toc = document.getElementById('tocFloating');
   if (!toc) return;
+  const tocToggle = toc.querySelector('[data-toc-toggle]');
+  const TOC_COLLAPSE_KEY = '__toc_collapsed__';
   const sectionBar = document.getElementById('tocSectionBar');
   const sectionPercent = document.getElementById('tocSectionPercent');
   const sectionLabel = document.getElementById('tocSectionLabel');
@@ -134,6 +136,36 @@ function initTocActive() {
   if (!sections.length) {
     toc.style.display = 'none';
     return;
+  }
+
+  const setTocCollapsed = (collapsed, { persist = true } = {}) => {
+    toc.classList.toggle('is-collapsed', collapsed);
+    if (tocToggle) {
+      tocToggle.setAttribute('aria-expanded', String(!collapsed));
+      tocToggle.setAttribute('aria-label', collapsed ? '展开目录' : '折叠目录');
+      tocToggle.setAttribute('title', collapsed ? '展开目录' : '折叠目录');
+    }
+    if (persist) {
+      try {
+        localStorage.setItem(TOC_COLLAPSE_KEY, collapsed ? '1' : '0');
+      } catch {
+        // 忽略存储异常
+      }
+    }
+  };
+
+  if (tocToggle) {
+    let collapsedByDefault = false;
+    try {
+      collapsedByDefault = localStorage.getItem(TOC_COLLAPSE_KEY) === '1';
+    } catch {
+      collapsedByDefault = false;
+    }
+
+    setTocCollapsed(collapsedByDefault, { persist: false });
+    tocToggle.addEventListener('click', () => {
+      setTocCollapsed(!toc.classList.contains('is-collapsed'));
+    });
   }
 
   let lastScrollY = window.scrollY;

@@ -43,23 +43,37 @@ const giscusEnabled = Boolean(
       <article class="prose" set:html={html}></article>
 
       <aside class="toc-floating glass" id="tocFloating">
-        <h3>目录</h3>
-        <div class="toc-section-progress" aria-live="polite">
-          <div class="toc-section-progress-head">
-            <span id="tocSectionLabel">本章节进度</span>
-            <span id="tocSectionPercent">0%</span>
-          </div>
-          <div class="toc-section-progress-track">
-            <span id="tocSectionBar"></span>
-          </div>
+        <div class="toc-head">
+          <h3>目录</h3>
+          <button
+            type="button"
+            class="toc-toggle"
+            data-toc-toggle
+            aria-label="折叠目录"
+            aria-controls="tocBody"
+            aria-expanded="true"
+          >
+            <i class="bi bi-chevron-up" aria-hidden="true"></i>
+          </button>
         </div>
-        <ul>
-          {headings.map((h) => (
-            <li class={`toc-depth-${h.depth}`}>
-              <a href={`#${h.id}`}>{h.text}</a>
-            </li>
-          ))}
-        </ul>
+        <div class="toc-body" id="tocBody">
+          <div class="toc-section-progress" aria-live="polite">
+            <div class="toc-section-progress-head">
+              <span id="tocSectionLabel">本章节进度</span>
+              <span id="tocSectionPercent">0%</span>
+            </div>
+            <div class="toc-section-progress-track">
+              <span id="tocSectionBar"></span>
+            </div>
+          </div>
+          <ul>
+            {headings.map((h) => (
+              <li class={`toc-depth-${h.depth}`}>
+                <a href={`#${h.id}`}>{h.text}</a>
+              </li>
+            ))}
+          </ul>
+        </div>
       </aside>
     </div>
   </section>
