@@ -1,9 +1,8 @@
 ---
-title: 紫色笔记清单
+title: 笔记清单
 date: 2026-03-19
 slug: purple-notes
-image: /assets/images/post-cover-2.svg
-description: 给未来的自己留几条导航。
+description: what's on your mind? 
 ---
 
 ## 这一周想完成的事
@@ -18,4 +17,3 @@ description: 给未来的自己留几条导航。
 - 你在做的个人项目
 - 想分享的学习路径
 
-![封面示例](/assets/images/post-cover-2.svg)

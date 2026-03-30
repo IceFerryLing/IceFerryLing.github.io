@@ -2,8 +2,7 @@
 title: 你好，紫色星云
 date: 2026-03-19
 slug: hello-purple-world
-image: /assets/images/post-cover-1.svg
-description: 用紫色把灵感装进盒子里，开始写第一篇博客。
+description: welcome to my world!
 ---
 
 欢迎来到我的博客！
@@ -12,8 +11,7 @@ description: 用紫色把灵感装进盒子里，开始写第一篇博客。
 
 - 最近的项目进展
 - 学到的新知识
-- 生活里的小确幸
 
 > 写作就像点亮星云，文字会把日子照得更清晰。
 
-![封面示例](/assets/images/post-cover-1.svg)
+
