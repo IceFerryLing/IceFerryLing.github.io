@@ -817,7 +817,12 @@ a:hover { color: var(--accent-soft); }
 }
 
 :root[data-theme='light'] .home-filter .chip.is-active {
-  box-shadow: 0 8px 16px rgba(125, 96, 200, 0.2);
+  border-color: rgba(109, 67, 212, 0.72);
+  background: rgba(126, 93, 220, 0.2);
+  color: rgba(49, 33, 92, 0.98);
+  box-shadow:
+    0 0 0 1px rgba(145, 108, 236, 0.25) inset,
+    0 8px 16px rgba(125, 96, 200, 0.22);
 }
 
 @media (prefers-reduced-motion: reduce) {

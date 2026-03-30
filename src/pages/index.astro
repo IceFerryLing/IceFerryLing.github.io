@@ -148,8 +148,10 @@ const tags = getAllTags(posts).slice(0, 12);
       buttons.forEach((btn) => {
         btn.addEventListener('click', (event) => {
           const rect = btn.getBoundingClientRect();
-          const x = event.clientX - rect.left;
-          const y = event.clientY - rect.top;
+          const fallbackX = rect.width / 2;
+          const fallbackY = rect.height / 2;
+          const x = Number.isFinite(event.clientX) ? event.clientX - rect.left : fallbackX;
+          const y = Number.isFinite(event.clientY) ? event.clientY - rect.top : fallbackY;
           btn.style.setProperty('--ripple-x', `${x}px`);
           btn.style.setProperty('--ripple-y', `${y}px`);
 
@@ -158,11 +160,12 @@ const tags = getAllTags(posts).slice(0, 12);
           void btn.offsetWidth;
           btn.classList.add('chip-pop', 'chip-ripple');
 
-          setFilter(btn.dataset.homeFilter || 'all');
-        });
+          clearTimeout(btn.__chipAnimTimer);
+          btn.__chipAnimTimer = setTimeout(() => {
+            btn.classList.remove('chip-pop', 'chip-ripple');
+          }, 460);
 
-        btn.addEventListener('animationend', () => {
-          btn.classList.remove('chip-pop', 'chip-ripple');
+          setFilter(btn.dataset.homeFilter || 'all');
         });
       });
     })();
