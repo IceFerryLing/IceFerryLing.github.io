@@ -131,6 +131,19 @@ const tags = getAllTags(posts).slice(0, 12);
       const buttons = Array.from(document.querySelectorAll('[data-home-filter]'));
       const cards = Array.from(document.querySelectorAll('[data-home-card]'));
       if (!buttons.length || !cards.length) return;
+      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      function animateVisibleCards(visibleCards) {
+        if (prefersReducedMotion) return;
+
+        visibleCards.forEach((card, index) => {
+          card.classList.remove('filter-pop-in');
+          card.style.removeProperty('--filter-delay');
+          void card.offsetWidth;
+          card.style.setProperty('--filter-delay', `${Math.min(index, 8) * 48}ms`);
+          card.classList.add('filter-pop-in');
+        });
+      }
 
       // 根据分类过滤卡片，并更新按钮激活态
       function setFilter(category) {
@@ -138,10 +151,14 @@ const tags = getAllTags(posts).slice(0, 12);
           btn.classList.toggle('is-active', btn.dataset.homeFilter === category);
         });
 
+        const visibleCards = [];
         cards.forEach((card) => {
           const matched = category === 'all' || card.dataset.homeCard === category;
           card.style.display = matched ? '' : 'none';
+          if (matched) visibleCards.push(card);
         });
+
+        animateVisibleCards(visibleCards);
       }
 
       // 绑定分类按钮点击事件
@@ -168,6 +185,8 @@ const tags = getAllTags(posts).slice(0, 12);
           setFilter(btn.dataset.homeFilter || 'all');
         });
       });
+
+      setFilter('all');
     })();
   </script>
 </BaseLayout>

@@ -650,6 +650,27 @@ a:hover { color: var(--accent-soft); }
   border-color: rgba(168, 126, 255, 0.55);
 }
 
+.filter-pop-in {
+  animation: filter-pop-in .52s cubic-bezier(.2,.85,.25,1) both;
+  animation-delay: var(--filter-delay, 0ms);
+  will-change: transform, opacity;
+}
+
+@keyframes filter-pop-in {
+  0% {
+    opacity: .22;
+    transform: translateY(12px) scale(.97);
+  }
+  58% {
+    opacity: .92;
+    transform: translateY(-4px) scale(1.01);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
 .post-title {
   font-size: 1.1rem;
   margin: 0;
@@ -866,6 +887,7 @@ a:hover { color: var(--accent-soft); }
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .filter-pop-in,
   .home-filter .chip,
   .home-filter .chip::after {
     animation: none !important;

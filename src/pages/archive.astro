@@ -57,9 +57,22 @@ const tags = getAllTags(posts);
     const cards = Array.from(grid.querySelectorAll('.archive-post-item'));
 
     const normalize = (value = '') => String(value).trim().toLowerCase();
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     let page = 1;
     let filtered = cards;
+
+    function animateVisibleCards(visibleCards) {
+      if (prefersReducedMotion) return;
+
+      visibleCards.forEach((card, index) => {
+        card.classList.remove('filter-pop-in');
+        card.style.removeProperty('--filter-delay');
+        void card.offsetWidth;
+        card.style.setProperty('--filter-delay', `${Math.min(index, 10) * 42}ms`);
+        card.classList.add('filter-pop-in');
+      });
+    }
 
     // 将当前筛选条件写回 URL，方便分享与刷新保持状态
     function updateUrlParams() {
@@ -106,7 +119,7 @@ const tags = getAllTags(posts);
     }
 
     // 执行筛选（可控制是否重置页码）
-    function applyFilter({ resetPage = true } = {}) {
+    function applyFilter({ resetPage = true, animate = true } = {}) {
       const keyword = normalize(searchInput.value || '');
       const category = normalize(categoryFilter.value);
       const tag = normalize(tagFilter.value);
@@ -124,7 +137,7 @@ const tags = getAllTags(posts);
       });
 
       if (resetPage) page = 1;
-      render();
+      render({ animate });
     }
 
     // 渲染分页控件
@@ -164,14 +177,19 @@ const tags = getAllTags(posts);
     }
 
     // 根据当前页渲染可见卡片
-    function render() {
+    function render({ animate = true } = {}) {
       const totalPages = Math.max(1, Math.ceil(filtered.length / POSTS_PER_PAGE));
       if (page > totalPages) page = totalPages;
       const start = (page - 1) * POSTS_PER_PAGE;
       const end = start + POSTS_PER_PAGE;
+      const visibleCards = filtered.slice(start, end);
 
       cards.forEach((card) => (card.style.display = 'none'));
-      filtered.slice(start, end).forEach((card) => (card.style.display = 'block'));
+      visibleCards.forEach((card) => (card.style.display = 'block'));
+
+      if (animate) {
+        animateVisibleCards(visibleCards);
+      }
 
       renderPager(totalPages);
       updateUrlParams();
@@ -184,7 +202,7 @@ const tags = getAllTags(posts);
 
     // 初始化流程：先恢复 URL 状态，再执行筛选渲染
     applyParamsFromUrl();
-    applyFilter({ resetPage: false });
+    applyFilter({ resetPage: false, animate: false });
     }
   </script>
 </BaseLayout>
