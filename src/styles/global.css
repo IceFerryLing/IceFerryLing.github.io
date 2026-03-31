@@ -2,6 +2,9 @@
 
 :root {
   color-scheme: dark;
+  --font-ui: "Inter", "PingFang SC", "Noto Sans SC", "Microsoft YaHei", system-ui, -apple-system, sans-serif;
+  --font-reading: "Noto Serif SC", "Source Han Serif SC", "Songti SC", "STSong", "SimSun", serif;
+  --font-mono: "JetBrains Mono", "Fira Code", Consolas, "Courier New", monospace;
   --bg: #090412;
   --card: rgba(24, 14, 46, 0.75);
   --text: #f4f1ff;
@@ -28,8 +31,11 @@
 }
 *, *::before, *::after { box-sizing: border-box; }
 body {
-  font-family: "PingFang SC", "Noto Sans SC", system-ui, -apple-system, sans-serif;
+  font-family: var(--font-ui);
   margin: 0;
+  font-size: 16.5px;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
   background: radial-gradient(1200px circle at 12% 10%, rgba(123, 76, 255, 0.22), transparent 55%),
               radial-gradient(900px circle at 88% 24%, rgba(168, 108, 255, 0.18), transparent 55%),
               var(--bg);
@@ -58,7 +64,7 @@ body {
   left: 0;
   top: 0;
   transform: translate(-50%, -50%);
-  font-family: "JetBrains Mono", "Fira Code", Consolas, monospace;
+  font-family: var(--font-mono);
   font-size: var(--formula-size, 0.86rem);
   letter-spacing: .02em;
   color: rgba(224, 209, 255, 0.2);
@@ -1196,7 +1202,18 @@ a:hover { color: var(--accent-soft); }
   background: rgba(255, 255, 255, 0.1);
   color: var(--text);
 }
-.prose { line-height: 1.85; }
+.prose {
+  font-family: var(--font-reading);
+  font-size: 1.06rem;
+  line-height: 1.95;
+  letter-spacing: .01em;
+}
+.prose h1,
+.prose h2,
+.prose h3,
+.prose h4 {
+  font-family: var(--font-ui);
+}
 .prose h2,.prose h3 { margin-top: 24px; margin-bottom: 10px; }
 .prose p,.prose ul,.prose ol { margin: 14px 0; }
 .prose ul,.prose ol { padding-left: 1.4rem; }
@@ -1230,7 +1247,7 @@ a:hover { color: var(--accent-soft); }
 }
 
 .prose pre code {
-  font-family: "JetBrains Mono", "Fira Code", Consolas, monospace;
+  font-family: var(--font-mono);
   font-size: 0.9rem;
 }
 
