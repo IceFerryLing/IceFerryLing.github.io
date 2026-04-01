@@ -1119,6 +1119,146 @@ a:hover { color: var(--accent-soft); }
   flex-shrink: 0;
 }
 
+.series-shell {
+  display: grid;
+  grid-template-columns: 320px minmax(0, 1fr);
+  gap: 16px;
+  align-items: start;
+}
+
+.series-sidebar {
+  position: sticky;
+  top: 90px;
+  max-height: calc(100vh - 120px);
+  overflow: auto;
+  padding: 10px;
+}
+
+.series-sidebar-title {
+  margin: 0 0 10px;
+  font-size: 1rem;
+  color: rgba(217, 201, 255, 0.95);
+}
+
+.series-content {
+  padding: 20px;
+  min-width: 0;
+}
+
+.series-doc-title {
+  margin-bottom: 14px;
+}
+
+.series-tree-root,
+.series-tree-branch {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.series-tree-branch {
+  margin-top: 4px;
+  margin-left: 18px;
+  border-left: 1px solid rgba(182, 152, 255, 0.26);
+  padding-left: 8px;
+}
+
+.series-tree-folder,
+.series-tree-file {
+  margin: 4px 0;
+}
+
+.series-folder > summary {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  min-height: 40px;
+  border-radius: 10px;
+  padding: 0 10px;
+  cursor: pointer;
+  color: rgba(236, 226, 255, 0.95);
+  background: rgba(255, 255, 255, 0.03);
+  transition: background .2s ease, color .2s ease;
+}
+
+.series-folder > summary::-webkit-details-marker {
+  display: none;
+}
+
+.series-folder-name {
+  position: relative;
+  padding-right: 18px;
+  font-size: .98rem;
+  line-height: 1.3;
+}
+
+.series-folder-name::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 50%;
+  width: 8px;
+  height: 8px;
+  border-right: 2px solid rgba(227, 209, 255, 0.92);
+  border-bottom: 2px solid rgba(227, 209, 255, 0.92);
+  transform: translateY(-54%) rotate(-45deg);
+  transition: transform .2s ease;
+}
+
+.series-folder[open] > summary .series-folder-name::after {
+  transform: translateY(-46%) rotate(45deg);
+}
+
+.series-folder-count {
+  min-width: 28px;
+  height: 22px;
+  border-radius: 999px;
+  border: 1px solid rgba(181, 149, 255, 0.42);
+  background: rgba(124, 80, 215, 0.32);
+  color: rgba(245, 239, 255, 0.92);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: .78rem;
+  line-height: 1;
+  padding: 0 8px;
+}
+
+.series-folder > summary:hover {
+  background: rgba(149, 110, 234, 0.3);
+}
+
+.series-tree-file-link {
+  min-height: 36px;
+  border-radius: 9px;
+  padding: 7px 10px;
+  display: flex;
+  align-items: center;
+  color: rgba(230, 218, 255, 0.9);
+  background: rgba(255, 255, 255, 0.015);
+  border: 1px solid transparent;
+  transition: background .2s ease, border-color .2s ease, color .2s ease;
+}
+
+.series-tree-file-link:hover {
+  background: rgba(132, 91, 224, 0.36);
+  border-color: rgba(205, 176, 255, 0.44);
+  color: #fff;
+}
+
+.series-tree-file-link.is-active {
+  background: #3f7fba;
+  border-color: rgba(182, 221, 255, 0.56);
+  color: #fff;
+}
+
+.series-tree-file-title {
+  font-size: .95rem;
+  line-height: 1.35;
+}
+
 .empty-state-title {
   margin: 0;
   font-weight: 600;
@@ -1273,6 +1413,43 @@ a:hover { color: var(--accent-soft); }
 
 :root[data-theme='light'] .archive-tree-file-link time {
   color: rgba(105, 83, 160, 0.8);
+}
+
+:root[data-theme='light'] .series-sidebar-title {
+  color: rgba(74, 54, 123, 0.92);
+}
+
+:root[data-theme='light'] .series-folder > summary {
+  background: rgba(123, 95, 195, 0.08);
+  color: rgba(66, 48, 113, 0.92);
+}
+
+:root[data-theme='light'] .series-folder-name::after {
+  border-color: rgba(95, 71, 158, 0.92);
+}
+
+:root[data-theme='light'] .series-folder > summary:hover {
+  background: rgba(123, 95, 195, 0.16);
+}
+
+:root[data-theme='light'] .series-tree-branch {
+  border-left-color: rgba(136, 111, 196, 0.34);
+}
+
+:root[data-theme='light'] .series-tree-file-link {
+  background: rgba(255, 255, 255, 0.48);
+  color: rgba(76, 58, 121, 0.92);
+}
+
+:root[data-theme='light'] .series-tree-file-link:hover {
+  background: rgba(120, 92, 194, 0.2);
+  border-color: rgba(133, 104, 198, 0.35);
+}
+
+:root[data-theme='light'] .series-tree-file-link.is-active {
+  background: #3f7fba;
+  color: #fff;
+  border-color: rgba(141, 192, 235, 0.7);
 }
 
 :root[data-theme='light'] .filter-field-label {
@@ -1807,6 +1984,15 @@ a:hover { color: var(--accent-soft); }
 
   .archive-tree-file-link time {
     display: none;
+  }
+
+  .series-shell {
+    grid-template-columns: 1fr;
+  }
+
+  .series-sidebar {
+    position: static;
+    max-height: none;
   }
 }
 

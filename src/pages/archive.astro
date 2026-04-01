@@ -86,9 +86,21 @@ const tree = finalizeNode(root).folders;
   <script is:inline>
     (() => {
       const links = Array.from(document.querySelectorAll('.archive-tree-file-link'));
-      const currentPath = window.location.pathname.replace(/\/+$/, '') || '/';
-      const slugMatch = currentPath.match(/^\/posts\/([^/]+)$/);
-      const currentSlug = slugMatch ? decodeURIComponent(slugMatch[1]) : '';
+      const params = new URLSearchParams(window.location.search);
+      const querySlug = String(params.get('post') || '').trim();
+      const storedSlug = String(sessionStorage.getItem('archive-active-post') || '').trim();
+      const referrerPath = (() => {
+        try {
+          if (!document.referrer) return '';
+          const refUrl = new URL(document.referrer);
+          return refUrl.pathname.replace(/\/+$/, '');
+        } catch {
+          return '';
+        }
+      })();
+      const referrerMatch = referrerPath.match(/^\/posts\/([^/]+)$/);
+      const referrerSlug = referrerMatch ? decodeURIComponent(referrerMatch[1]) : '';
+      const currentSlug = querySlug || referrerSlug || storedSlug;
 
       function activateLink(link) {
         links.forEach((item) => item.classList.remove('is-active'));
@@ -116,6 +128,10 @@ const tree = finalizeNode(root).folders;
 
       links.forEach((link) => {
         link.addEventListener('click', () => {
+          const clickedSlug = String(link.dataset.postSlug || '').trim();
+          if (clickedSlug) {
+            sessionStorage.setItem('archive-active-post', clickedSlug);
+          }
           activateLink(link);
           expandAncestors(link);
         });

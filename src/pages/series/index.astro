@@ -1,0 +1,67 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import SeriesTreeBranch from '../../components/SeriesTreeBranch.astro';
+import { getSeriesTree, renderSeriesMarkdown } from '../../lib/series';
+
+const { tree, documents } = getSeriesTree();
+const firstDocument = documents[0] || null;
+const firstRendered = firstDocument ? await renderSeriesMarkdown(firstDocument.slug) : null;
+---
+
+<BaseLayout title="系列" description="Linux 源码分析系列文档树。" canonical="/series/" showSidebar={false}>
+  <section class="page-hero">
+    <div class="container">
+      <h1>系列</h1>
+      <p class="page-subtitle">左侧是仓库里的 Markdown 文件树，点击节点即可阅读对应文档。</p>
+    </div>
+  </section>
+
+  <section class="page-content">
+    <div class="container series-shell">
+      <aside class="series-sidebar glass-card">
+        <h3 class="series-sidebar-title">linux-source-code-analyze</h3>
+        <ul class="series-tree-root">
+          {
+            tree.map((folder) => (
+              <li class="series-tree-folder">
+                <details class="series-folder" open>
+                  <summary>
+                    <span class="series-folder-name">{folder.name}</span>
+                    <span class="series-folder-count">{folder.total}</span>
+                  </summary>
+                  <SeriesTreeBranch node={folder} activeSlug={firstDocument?.slug || ''} />
+                </details>
+              </li>
+            ))
+          }
+        </ul>
+      </aside>
+
+      <article class="series-content glass-card">
+        {
+          firstRendered ? (
+            <>
+              <h2 class="series-doc-title">{firstRendered.title}</h2>
+              <div class="prose" set:html={firstRendered.html}></div>
+            </>
+          ) : (
+            <p class="muted">系列目录下暂无 Markdown 文件。</p>
+          )
+        }
+      </article>
+    </div>
+  </section>
+
+  <script is:inline>
+    (() => {
+      const active = document.querySelector('.series-tree-file-link.is-active');
+      if (!active) return;
+      let parent = active.parentElement;
+      while (parent) {
+        if (parent.tagName === 'DETAILS') parent.open = true;
+        parent = parent.parentElement;
+      }
+      active.scrollIntoView({ block: 'nearest' });
+    })();
+  </script>
+</BaseLayout>

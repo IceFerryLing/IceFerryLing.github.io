@@ -1,0 +1,35 @@
+---
+import SeriesTreeBranch from './SeriesTreeBranch.astro';
+import { seriesSlugToUrl } from '../lib/series';
+
+const { node, activeSlug = '', openByDefault = false } = Astro.props;
+---
+
+<ul class="series-tree-branch">
+  {
+    node.folders.map((folder) => (
+      <li class="series-tree-folder">
+        <details class="series-folder" open={openByDefault}>
+          <summary>
+            <span class="series-folder-name">{folder.name}</span>
+            <span class="series-folder-count">{folder.total}</span>
+          </summary>
+          <SeriesTreeBranch node={folder} activeSlug={activeSlug} />
+        </details>
+      </li>
+    ))
+  }
+  {
+    node.files.map((file) => (
+      <li class="series-tree-file">
+        <a
+          class={`series-tree-file-link ${activeSlug === file.slug ? 'is-active' : ''}`}
+          href={seriesSlugToUrl(file.slug)}
+          data-series-slug={file.slug}
+        >
+          <span class="series-tree-file-title">{file.title}</span>
+        </a>
+      </li>
+    ))
+  }
+</ul>
