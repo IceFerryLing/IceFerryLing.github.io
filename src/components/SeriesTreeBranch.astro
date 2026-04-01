@@ -11,6 +11,7 @@ const { node, activeSlug = '', openByDefault = false } = Astro.props;
       <li class="series-tree-folder">
         <details class="series-folder" open={openByDefault}>
           <summary>
+            <span class="tree-caret" aria-hidden="true"></span>
             <span class="series-folder-name">{folder.name}</span>
             <span class="series-folder-count">{folder.total}</span>
           </summary>
