@@ -84,7 +84,7 @@ static inline void write_seqlock(seqlock_t *sl)
 
 `write_seqlock()` 函数首先会获取自旋锁（所以写锁与写锁之间是互斥的），然后对序号进行加一操作。所以，在修改临界区数据前，写锁先会增加序号的值，这样就会导致读锁前后两次获取的序号不一致。我们可以用下图来说明这种情况：
 
-![image-20230903130923123]([./images/seqlock.png](https://github.com/liexusong/linux-source-code-analyze/blob/master/images/seqlock.png))
+![image-20230903130923123](https://github.com/liexusong/linux-source-code-analyze/blob/master/images/seqlock.png)
 
 可以看出，当在读临界区前后获取的序号值不一致时，就表示数据已经被修改，这时就需要重新读取被修改后的数据。
 
