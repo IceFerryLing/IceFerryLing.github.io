@@ -1,0 +1,31 @@
+---
+import ArchiveTreeBranch from './ArchiveTreeBranch.astro';
+
+const { node, openByDefault = false } = Astro.props;
+---
+
+<ul class="archive-tree-branch">
+  {
+    node.folders.map((folder) => (
+      <li class="archive-tree-folder">
+        <details class="archive-folder" open={openByDefault}>
+          <summary>
+            <span class="archive-folder-name">{folder.name}</span>
+            <span class="archive-folder-count">{folder.total}</span>
+          </summary>
+          <ArchiveTreeBranch node={folder} />
+        </details>
+      </li>
+    ))
+  }
+  {
+    node.posts.map((post) => (
+      <li class="archive-tree-file">
+        <a class="archive-tree-file-link" href={`/posts/${post.slug}/`} data-post-slug={post.slug}>
+          <span class="archive-tree-file-title">{post.title}</span>
+          <time datetime={post.date}>{post.date}</time>
+        </a>
+      </li>
+    ))
+  }
+</ul>

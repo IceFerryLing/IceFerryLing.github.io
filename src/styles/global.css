@@ -997,6 +997,128 @@ a:hover { color: var(--accent-soft); }
   border-style: dashed;
 }
 
+.archive-tree-wrap {
+  padding: 10px;
+}
+
+.archive-tree-root,
+.archive-tree-branch {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.archive-tree-branch {
+  margin-top: 4px;
+  margin-left: 18px;
+  border-left: 1px solid rgba(182, 152, 255, 0.26);
+  padding-left: 8px;
+}
+
+.archive-tree-folder,
+.archive-tree-file {
+  margin: 4px 0;
+}
+
+.archive-folder > summary {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  min-height: 44px;
+  border-radius: 10px;
+  padding: 0 14px;
+  cursor: pointer;
+  color: rgba(236, 226, 255, 0.95);
+  background: rgba(255, 255, 255, 0.03);
+  transition: background .2s ease, color .2s ease;
+}
+
+.archive-folder > summary::-webkit-details-marker {
+  display: none;
+}
+
+.archive-folder-name {
+  position: relative;
+  padding-right: 18px;
+  font-size: 1.05rem;
+  line-height: 1.35;
+}
+
+.archive-folder-name::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 50%;
+  width: 8px;
+  height: 8px;
+  border-right: 2px solid rgba(227, 209, 255, 0.92);
+  border-bottom: 2px solid rgba(227, 209, 255, 0.92);
+  transform: translateY(-54%) rotate(-45deg);
+  transition: transform .2s ease;
+}
+
+.archive-folder[open] > summary .archive-folder-name::after {
+  transform: translateY(-46%) rotate(45deg);
+}
+
+.archive-folder-count {
+  min-width: 30px;
+  height: 24px;
+  border-radius: 999px;
+  border: 1px solid rgba(181, 149, 255, 0.42);
+  background: rgba(124, 80, 215, 0.32);
+  color: rgba(245, 239, 255, 0.92);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: .82rem;
+  line-height: 1;
+  padding: 0 8px;
+}
+
+.archive-folder > summary:hover {
+  background: rgba(149, 110, 234, 0.3);
+}
+
+.archive-tree-file-link {
+  min-height: 42px;
+  border-radius: 10px;
+  padding: 9px 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  color: rgba(230, 218, 255, 0.9);
+  background: rgba(255, 255, 255, 0.015);
+  border: 1px solid transparent;
+  transition: background .2s ease, border-color .2s ease, color .2s ease;
+}
+
+.archive-tree-file-link:hover {
+  background: rgba(132, 91, 224, 0.36);
+  border-color: rgba(205, 176, 255, 0.44);
+  color: #fff;
+}
+
+.archive-tree-file-link.is-active {
+  background: #3f7fba;
+  border-color: rgba(182, 221, 255, 0.56);
+  color: #fff;
+}
+
+.archive-tree-file-title {
+  font-size: 1rem;
+  line-height: 1.35;
+}
+
+.archive-tree-file-link time {
+  font-size: .78rem;
+  color: rgba(195, 174, 239, 0.9);
+  flex-shrink: 0;
+}
+
 .empty-state-title {
   margin: 0;
   font-weight: 600;
@@ -1114,6 +1236,43 @@ a:hover { color: var(--accent-soft); }
 :root[data-theme='light'] .archive-filter {
   --filter-input-bg: rgba(255, 255, 255, 0.76);
   --filter-input-border: rgba(126, 93, 214, 0.3);
+}
+
+:root[data-theme='light'] .archive-folder > summary {
+  background: rgba(123, 95, 195, 0.08);
+  color: rgba(66, 48, 113, 0.92);
+}
+
+:root[data-theme='light'] .archive-folder-name::after {
+  border-color: rgba(95, 71, 158, 0.92);
+}
+
+:root[data-theme='light'] .archive-folder > summary:hover {
+  background: rgba(123, 95, 195, 0.16);
+}
+
+:root[data-theme='light'] .archive-tree-branch {
+  border-left-color: rgba(136, 111, 196, 0.34);
+}
+
+:root[data-theme='light'] .archive-tree-file-link {
+  background: rgba(255, 255, 255, 0.48);
+  color: rgba(76, 58, 121, 0.92);
+}
+
+:root[data-theme='light'] .archive-tree-file-link:hover {
+  background: rgba(120, 92, 194, 0.2);
+  border-color: rgba(133, 104, 198, 0.35);
+}
+
+:root[data-theme='light'] .archive-tree-file-link.is-active {
+  background: #3f7fba;
+  color: #fff;
+  border-color: rgba(141, 192, 235, 0.7);
+}
+
+:root[data-theme='light'] .archive-tree-file-link time {
+  color: rgba(105, 83, 160, 0.8);
 }
 
 :root[data-theme='light'] .filter-field-label {
@@ -1630,6 +1789,26 @@ a:hover { color: var(--accent-soft); }
 }
 
 @media (max-width: 900px){ .dashboard{grid-template-columns:1fr;} .archive-filter{grid-template-columns:1fr;} .header-inner{flex-direction:column;gap:10px;} }
+
+@media (max-width: 900px) {
+  .archive-tree-wrap {
+    padding: 8px;
+  }
+
+  .archive-folder > summary {
+    min-height: 40px;
+    padding: 0 10px;
+  }
+
+  .archive-tree-file-link {
+    min-height: 38px;
+    padding: 8px 10px;
+  }
+
+  .archive-tree-file-link time {
+    display: none;
+  }
+}
 
 @media (max-width: 900px) {
   .filter-field-label {
