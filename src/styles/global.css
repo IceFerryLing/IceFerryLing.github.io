@@ -101,7 +101,7 @@ body {
   position: fixed;
   top: 0;
   bottom: 0;
-  width: max(0px, calc((100vw - 1100px) / 2));
+  width: max(0px, calc((100vw - 1250px) / 2));
   pointer-events: none;
   z-index: 2;
   -webkit-backdrop-filter: blur(16px) saturate(120%);
