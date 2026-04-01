@@ -15,7 +15,7 @@
   --shadow: 0 24px 60px rgba(29, 11, 63, 0.45);
   --radius: 20px;
   --radius-sm: 12px;
-  --container: min(1100px, 92vw);
+  --container: min(1250px, 92vw);
 }
 
 :root[data-theme='light'] {
