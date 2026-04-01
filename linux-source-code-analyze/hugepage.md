@@ -7,7 +7,7 @@
 
 我们通过 图1 来描述虚拟内存地址转换成物理内存地址的过程：
 
-![](./images/hugepages/vmemory-pmemory.png)
+![](/assets/images/linux-source-code/hugepages/vmemory-pmemory.png)
 
 
 
@@ -19,7 +19,7 @@
 
 我们来看看在 64 位的 Linux 系统中（英特尔 x64 CPU），虚拟内存地址转换成物理内存地址的过程，如图2：
 
-![](./images/hugepages/vmemory-mapping.png)
+![](/assets/images/linux-source-code/hugepages/vmemory-mapping.png)
 
 
 
@@ -59,7 +59,7 @@
 
 要映射更大的内存页，只需要增加偏移量部分，如 图3 所示：
 
-![](./images/hugepages/hugepages-mapping.png)
+![](/assets/images/linux-source-code/hugepages/hugepages-mapping.png)
 
 
 

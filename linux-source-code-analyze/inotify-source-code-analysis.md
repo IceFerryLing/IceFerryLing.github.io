@@ -16,7 +16,7 @@
 
 >   当用户调用 `read` 或者 `write` 等系统调用对文件进行读写操作时，内核会把事件保存到 `inotify_device` 对象的事件队列中，然后唤醒等待 `inotify` 事件的进程。正所谓一图胜千言，所以我们通过下图来描述此过程：
 
-![](./images/inotify2/inotify-principle.png)
+![](/assets/images/linux-source-code/inotify2/inotify-principle.png)
 
 
 
@@ -69,7 +69,7 @@ struct inotify_device {
 
 下图描述了 `inotify_device` 对象中两个比较重要的队列（`等待队列` 和 `事件队列`）：
 
-![](./images/inotify2/inotify-device.png)
+![](/assets/images/linux-source-code/inotify2/inotify-device.png)
 
 
 
@@ -141,7 +141,7 @@ struct inotify_watch {
 
 现在，我们通过下图来描述一下 `inotify_device`、`inotify_handle` 和 `inotify_watch` 三者的关系：
 
-![](./images/inotify2/inotify-device-handle-watch.png)
+![](/assets/images/linux-source-code/inotify2/inotify-device-handle-watch.png)
 
 
 

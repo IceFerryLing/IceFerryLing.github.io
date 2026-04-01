@@ -12,7 +12,7 @@
 
 图 1 展示了 `用户空间` 与 `内核空间` 在进程虚拟内存空间所在的位置：
 
-![](./images/zerocopy/userspace-kernelspace.png)
+![](/assets/images/linux-source-code/zerocopy/userspace-kernelspace.png)
 
 ### 发送文件
 
@@ -34,13 +34,13 @@ while ((n = read(file, buf, 4069)) > 0) {
 
 在上面的过程中，调用了 `read` 和 `write` 两个系统调用。`read` 系统调用是从文件中读取数据到用户空间的缓冲区中，所以调用 `read` 时需要从内核空间复制数据到用户空间，如图 2 所示：
 
-![](./images/zerocopy/read.png)
+![](/assets/images/linux-source-code/zerocopy/read.png)
 
 图2 就是数据的复制过程，首先会从文件中读取数据到内核的 `页缓存（page cache）`，然后再从页缓存中复制到用户空间的缓冲区中。
 
 而当调用 `write` 系统调用把用户空间缓冲区中的数据发送到客户端 Socket 时，首先会把缓冲区的数据复制到内核的 Socket 缓冲区中，网卡驱动会把 Socket 缓冲区的数据发送出去，如图 3 所示：
 
-![](./images/zerocopy/write.png)
+![](/assets/images/linux-source-code/zerocopy/write.png)
 
 
 
@@ -48,7 +48,7 @@ while ((n = read(file, buf, 4069)) > 0) {
 
 仔细观察我们可以发现，上图中的页缓存其实可以直接复制到 Socket 缓冲区，而不需要复制到用户空间缓冲区的。如图 4 所示：
 
-![](./images/zerocopy/sendfile.png)
+![](/assets/images/linux-source-code/zerocopy/sendfile.png)
 
 
 
@@ -69,7 +69,7 @@ ssize_t sendfile(int out_fd, int in_fd, off_t *offset, size_t count);
 
 `sendfile` 发送数据的过程如图 5 所示：
 
-![](./images/zerocopy/sendfile2.png)
+![](/assets/images/linux-source-code/zerocopy/sendfile2.png)
 
 
 

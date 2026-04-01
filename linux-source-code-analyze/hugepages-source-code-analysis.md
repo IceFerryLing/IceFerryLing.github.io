@@ -102,7 +102,7 @@ static void enqueue_huge_page(struct page *page)
 
 假如我们设置了系统能够使用的大内存页为 100 个，那么空闲大内存页链表 `hugepage_freelists` 的结构如下图所示：
 
-![](./images/hugepages/hugepages-free-list.png)
+![](/assets/images/linux-source-code/hugepages/hugepages-free-list.png)
 
 所以，HugePages 分配器初始化的调用链为：
 
@@ -159,7 +159,7 @@ hugetlbfs_file_mmap(struct file *file, struct vm_area_struct *vma)
 
 我们来看看整个流程，如下图所示：
 
-![](./images/hugepages/mmap-syscall.png)
+![](/assets/images/linux-source-code/hugepages/mmap-syscall.png)
 
 
 
@@ -214,7 +214,7 @@ int handle_mm_fault(struct mm_struct *mm, struct vm_area_struct *vma,
 
 `hugetlb_fault` 函数主要对进程的页表进行填充，所以我们先来回顾一下 HugePages 对应的页表结构，如下图：
 
-![](./images/hugepages/hugepages-mapping.png)
+![](/assets/images/linux-source-code/hugepages/hugepages-mapping.png)
 
 
 
