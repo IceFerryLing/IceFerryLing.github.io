@@ -30,6 +30,10 @@ const { root, tree } = getSeriesTree();
     <div class="container series-shell">
       <aside class="series-sidebar glass-card">
         <h3 class="series-sidebar-title">linux-source-code-analyze</h3>
+        <div class="tree-toolbar" aria-label="系列树控制">
+          <button type="button" class="tree-toolbar-btn" data-tree-action="expand">全部展开</button>
+          <button type="button" class="tree-toolbar-btn" data-tree-action="collapse">全部折叠</button>
+        </div>
         <ul class="series-tree-root">
           {
             root.files.map((file) => (
@@ -69,7 +73,15 @@ const { root, tree } = getSeriesTree();
 
   <script is:inline>
     (() => {
+      const treeContainer = document.querySelector('.series-sidebar');
       const active = document.querySelector('.series-tree-file-link.is-active');
+      const detailsNodes = Array.from(document.querySelectorAll('details.series-folder'));
+
+      const expandBtn = treeContainer?.querySelector('[data-tree-action="expand"]');
+      const collapseBtn = treeContainer?.querySelector('[data-tree-action="collapse"]');
+      expandBtn?.addEventListener('click', () => detailsNodes.forEach((item) => (item.open = true)));
+      collapseBtn?.addEventListener('click', () => detailsNodes.forEach((item) => (item.open = false)));
+
       if (!active) return;
       let parent = active.parentElement;
       while (parent) {

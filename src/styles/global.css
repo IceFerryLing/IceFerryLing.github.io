@@ -1001,6 +1001,33 @@ a:hover { color: var(--accent-soft); }
   padding: 10px;
 }
 
+.tree-toolbar {
+  display: flex;
+  gap: 8px;
+  margin: 0 0 10px;
+}
+
+.tree-toolbar-btn {
+  min-height: 30px;
+  padding: 0 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(181, 149, 255, 0.42);
+  background: rgba(124, 80, 215, 0.22);
+  color: rgba(245, 239, 255, 0.95);
+  font-size: 0.82rem;
+  cursor: pointer;
+  transition: background .2s ease, border-color .2s ease, transform .18s ease;
+}
+
+.tree-toolbar-btn:hover {
+  background: rgba(149, 110, 234, 0.34);
+  border-color: rgba(205, 176, 255, 0.55);
+}
+
+.tree-toolbar-btn:active {
+  transform: scale(.98);
+}
+
 .archive-tree-root,
 .archive-tree-branch {
   list-style: none;
@@ -1539,27 +1566,94 @@ a:hover { color: var(--accent-soft); }
   color: var(--text);
 }
 .prose {
-  font-family: var(--font-reading);
-  font-size: 1.06rem;
-  line-height: 1.95;
-  letter-spacing: .01em;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans SC", "Helvetica Neue", Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.75;
+  letter-spacing: 0;
+  color: #e6edf3;
 }
 .prose h1,
 .prose h2,
 .prose h3,
 .prose h4 {
-  font-family: var(--font-ui);
+  font-family: inherit;
+  line-height: 1.25;
+  font-weight: 600;
+  margin: 24px 0 16px;
+  color: #f0f6fc;
 }
-.prose h2,.prose h3 { margin-top: 24px; margin-bottom: 10px; }
-.prose p,.prose ul,.prose ol { margin: 14px 0; }
-.prose ul,.prose ol { padding-left: 1.4rem; }
+.prose h1 { font-size: 2em; padding-bottom: .3em; border-bottom: 1px solid #30363d; }
+.prose h2 { font-size: 1.5em; padding-bottom: .3em; border-bottom: 1px solid #30363d; }
+.prose h3 { font-size: 1.25em; }
+.prose h4 { font-size: 1em; }
+.prose h5,
+.prose h6 {
+  font-family: inherit;
+  margin: 20px 0 10px;
+  font-weight: 600;
+  line-height: 1.25;
+  color: #f0f6fc;
+}
+.prose h5 { font-size: 0.875em; }
+.prose h6 { font-size: 0.85em; color: #8b949e; }
+.prose p,
+.prose ul,
+.prose ol,
+.prose blockquote,
+.prose pre,
+.prose table {
+  margin: 0 0 16px;
+}
+.prose ul,
+.prose ol {
+  padding-left: 2em;
+}
+.prose li + li {
+  margin-top: .25em;
+}
+.prose li > p {
+  margin-bottom: .6em;
+}
+.prose a {
+  color: #58a6ff;
+  text-decoration: none;
+}
+.prose a:hover {
+  text-decoration: underline;
+}
+.prose strong {
+  font-weight: 600;
+}
+.prose hr {
+  border: 0;
+  border-top: 1px solid #30363d;
+  margin: 24px 0;
+}
+.prose blockquote {
+  padding: 0 1em;
+  color: #8b949e;
+  border-left: .25em solid #30363d;
+}
+.prose code {
+  font-family: ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas, "Liberation Mono", monospace;
+  font-size: .85em;
+  padding: .2em .4em;
+  border-radius: 6px;
+  background: rgba(110, 118, 129, .22);
+}
+.prose pre code {
+  font-size: 12px;
+  padding: 0;
+  border-radius: 0;
+  background: transparent;
+}
 .prose img {
   display: block;
   width: auto;
-  max-width: min(100%, 560px);
+  max-width: 100%;
   height: auto;
-  border-radius: 14px;
-  margin: 20px auto;
+  border-radius: 6px;
+  margin: 16px auto;
   object-fit: contain;
 }
 
@@ -1574,27 +1668,94 @@ a:hover { color: var(--accent-soft); }
   margin: 0 auto;
 }
 .prose pre {
-  margin: 16px 0;
-  padding: 14px;
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  background: rgba(8, 6, 16, 0.8);
+  padding: 16px;
+  border: 1px solid #30363d;
+  border-radius: 6px;
+  background: #161b22;
   overflow: auto;
 }
 
 .prose pre code {
-  font-family: var(--font-mono);
-  font-size: 0.9rem;
+  font-family: ui-monospace, SFMono-Regular, SF Mono, Menlo, Consolas, "Liberation Mono", monospace;
 }
 
 .prose .shiki {
-  border-radius: 12px;
-  border: 1px solid var(--border);
-  box-shadow: inset 0 0 0 1px rgba(255,255,255,.03);
+  border-radius: 6px;
+  border: 1px solid #30363d;
+  box-shadow: none;
+}
+
+.prose table {
+  display: block;
+  width: max-content;
+  max-width: 100%;
+  border-collapse: collapse;
+  overflow: auto;
+}
+
+.prose table th,
+.prose table td {
+  border: 1px solid #30363d;
+  padding: 6px 13px;
+}
+
+.prose table th {
+  font-weight: 600;
+  background: #161b22;
+}
+
+.prose table tr:nth-child(2n) {
+  background: rgba(110, 118, 129, .12);
 }
 
 :root[data-theme='light'] .prose pre {
-  background: rgba(241, 234, 255, 0.8);
+  background: #f6f8fa;
+  border-color: #d0d7de;
+}
+
+:root[data-theme='light'] .prose {
+  color: #24292f;
+}
+
+:root[data-theme='light'] .prose h1,
+:root[data-theme='light'] .prose h2,
+:root[data-theme='light'] .prose h3,
+:root[data-theme='light'] .prose h4,
+:root[data-theme='light'] .prose h5 {
+  color: #24292f;
+}
+
+:root[data-theme='light'] .prose h1,
+:root[data-theme='light'] .prose h2,
+:root[data-theme='light'] .prose hr {
+  border-color: #d0d7de;
+}
+
+:root[data-theme='light'] .prose h6,
+:root[data-theme='light'] .prose blockquote {
+  color: #57606a;
+}
+
+:root[data-theme='light'] .prose blockquote {
+  border-left-color: #d0d7de;
+}
+
+:root[data-theme='light'] .prose code {
+  background: rgba(175, 184, 193, .2);
+}
+
+:root[data-theme='light'] .prose .shiki,
+:root[data-theme='light'] .prose table th,
+:root[data-theme='light'] .prose table td {
+  border-color: #d0d7de;
+}
+
+:root[data-theme='light'] .prose table th {
+  background: #f6f8fa;
+}
+
+:root[data-theme='light'] .prose table tr:nth-child(2n) {
+  background: #f6f8fa;
 }
 
 :root[data-theme='light'] .post-back-link {

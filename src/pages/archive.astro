@@ -64,6 +64,10 @@ const tree = finalizeNode(root).folders;
   <section class="page-content">
     <div class="container">
       <div class="archive-tree-wrap glass-card">
+        <div class="tree-toolbar" aria-label="归档树控制">
+          <button type="button" class="tree-toolbar-btn" data-tree-action="expand">全部展开</button>
+          <button type="button" class="tree-toolbar-btn" data-tree-action="collapse">全部折叠</button>
+        </div>
         <ul class="archive-tree-root">
           {
             tree.map((folder) => (
@@ -85,6 +89,7 @@ const tree = finalizeNode(root).folders;
 
   <script is:inline>
     (() => {
+      const treeContainer = document.querySelector('.archive-tree-wrap');
       const links = Array.from(document.querySelectorAll('.archive-tree-file-link'));
       const params = new URLSearchParams(window.location.search);
       const querySlug = String(params.get('post') || '').trim();
@@ -116,6 +121,17 @@ const tree = finalizeNode(root).folders;
           parent = parent.parentElement;
         }
       }
+
+      function bindTreeControls(container) {
+        if (!container) return;
+        const detailsNodes = Array.from(container.querySelectorAll('details.archive-folder'));
+        const expandBtn = container.querySelector('[data-tree-action="expand"]');
+        const collapseBtn = container.querySelector('[data-tree-action="collapse"]');
+        expandBtn?.addEventListener('click', () => detailsNodes.forEach((item) => (item.open = true)));
+        collapseBtn?.addEventListener('click', () => detailsNodes.forEach((item) => (item.open = false)));
+      }
+
+      bindTreeControls(treeContainer);
 
       if (currentSlug) {
         const matched = links.find((link) => link.dataset.postSlug === currentSlug);
