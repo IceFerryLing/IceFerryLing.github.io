@@ -9,7 +9,7 @@ tags:
    - 内存管理
    - 操作系统
 ---
-# Linux 内核 struct page 超详细深度解析（MD 完整版）
+# Linux 内核 struct page 超详细深度解析
 
 `struct page` 是 Linux 内核**内存管理子系统的绝对核心**。系统中**每一个**物理内存页（Page Frame，通常大小为 4KB），在内存中都对应一个 `struct page` 结构体实例。
 
@@ -92,7 +92,7 @@ tags:
 
     - `pprev_hash`：指向**前一个节点的 `next_hash` 指针**。这是一个二级指针，实现了 O(1) 时间复杂度的删除操作，非常高效。
 
-## 5. `atomic_t count;` 🌟 **核心中的核心**
+## 5. `atomic_t count;`  *核心中的核心*
 
 - **本质**：**引用计数器（原子操作）**。
 
