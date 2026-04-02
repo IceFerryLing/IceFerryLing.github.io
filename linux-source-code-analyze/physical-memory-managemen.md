@@ -100,7 +100,7 @@ typedef struct zone_struct {
     /*
      * 不连续内存模型字段:
      */
-    struct pglist_data   *zone_pgdat; 
+    struct pglist_data   *zone_pgdat;   
     unsigned long        zone_start_paddr;
     unsigned long        zone_start_mapnr;
     struct page          *zone_mem_map;
@@ -137,13 +137,13 @@ typedef struct pglist_data {
 ### 物理内存页分配
 Linux内核使用 `alloc_pages()` 函数来进行分配物理内存页，alloc_pages()函数的原型如下：
 ```cpp
-struct page * alloc_pages(int gfp_mask, unsigned long order);
+struct page * alloc_pages(int gfp_mask, unsigned long order); 
 ```
 参数 `gfp_mask` 是分配策略, 而 `order` 是分配 `1<<order` 个页面.
 
 Linux内核有UMA和NUMA两个版本的alloc_pages(), 为了简单起见, 我们直接选用UMA版本的, 因为UMA只有一个内存节点. 我们先来看看UMA版本的alloc_pages()源码:
 ```cpp
-static bootmem_data_t contig_bootmem_data;
+static bootmem_data_t contig_bootmem_data; 
 pg_data_t contig_page_data = { bdata: &contig_bootmem_data };
 
 static inline struct page * alloc_pages(int gfp_mask, unsigned long order)
@@ -160,7 +160,7 @@ UMA架构的系统只有一个内存节点, Linux使用变量 `contig_page_data`
 ```cpp
 // 标志位
 #define __GFP_WAIT	0x01
-#define __GFP_HIGH	0x02
+#define __GFP_HIGH	0x02  
 #define __GFP_IO	0x04
 #define __GFP_DMA	0x08
 #ifdef CONFIG_HIGHMEM
@@ -232,7 +232,10 @@ static inline void build_zonelists(pg_data_t *pgdat)
 	}
 }
 ```
-分配策略的初始化很简单, 就是根据标志位的不同来为 `zonelist` 添加不同的内存管理区.
+分配策略的初始化很简单, 就是根据标志位的不同来为 `zonelist` 添加不同的内存管理区.分配策略大概的规则如下:
+- 如果设置了 `__GFP_HIGHMEM` 标志, 那么就把 `ZONE_HIGHMEM` 内存管理区添加到 `zonelist` 中.
+- 如果设置了 `__GFP_DMA` 标志, 那么就把 `ZONE_DMA` 内存管理区添加到 `zonelist` 中.
+- 如果既没有设置 `__GFP_HIGHMEM` 标志也没有设置 `__GFP_DMA` 标志, 那么就把 `ZONE_NORMAL` 内存管理区添加到 `zonelist` 中.
 
 现在回头来看看 `__alloc_pages()` 函数的实现, 由于这个函数比较长, 所以我们分段开看:
 ```cpp
