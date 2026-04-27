@@ -2,8 +2,23 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { markdownToHtml } from './posts';
 
-const seriesRootDirectory = path.join(process.cwd(), 'linux-source-code-analyze');
-const seriesReadmePath = path.join(seriesRootDirectory, 'README.md');
+const SERIES_DEFINITIONS = [
+  {
+    key: 'linux-source-code-analyze',
+    title: 'Linux 源码分析',
+    description: 'Linux 源码分析系列文档树。',
+    rootDirectory: path.join(process.cwd(), 'linux-source-code-analyze'),
+    readmeFileName: 'README.md'
+  },
+  {
+    key: 'csapp-learning',
+    title: 'CSAPP Learning',
+    description: 'CSAPP 学习笔记系列文档树。',
+    rootDirectory: path.join(process.cwd(), 'csapp-learning'),
+    readmeFileName: 'README.md'
+  }
+];
+
 const ignoredDirectories = new Set(['.git', 'node_modules']);
 
 function ensurePosixPath(filePath = '') {
@@ -60,6 +75,18 @@ function createFolderNode(name, key) {
 
 function createOrderedFolderNode(name, key) {
   return { name, key, folders: [], files: [] };
+}
+
+function getSeriesDefinition(seriesKey = '') {
+  const key = String(seriesKey || '').trim();
+  if (!key) return SERIES_DEFINITIONS[0] || null;
+  return SERIES_DEFINITIONS.find((item) => item.key === key) || null;
+}
+
+function getSeriesReadmePath(seriesKey = '') {
+  const definition = getSeriesDefinition(seriesKey);
+  if (!definition) return null;
+  return path.join(definition.rootDirectory, definition.readmeFileName || 'README.md');
 }
 
 function finalizeFolder(node) {
@@ -119,8 +146,9 @@ function finalizeOrderedFolder(node) {
   return { ...node, folders, files, total };
 }
 
-function buildTreeFromReadme(documents) {
-  if (!fs.existsSync(seriesReadmePath)) return null;
+function buildTreeFromReadme(documents, seriesKey = '') {
+  const seriesReadmePath = getSeriesReadmePath(seriesKey);
+  if (!seriesReadmePath || !fs.existsSync(seriesReadmePath)) return null;
 
   const readme = fs.readFileSync(seriesReadmePath, 'utf8');
   const lines = readme.split(/\r?\n/);
@@ -199,20 +227,30 @@ function buildTreeFromReadme(documents) {
   };
 }
 
-export function seriesSlugToUrl(slug = '') {
+export function getSeriesDefinitions() {
+  return SERIES_DEFINITIONS.map((definition) => ({ ...definition }));
+}
+
+export function seriesSlugToUrl(seriesKey = '', slug = '') {
+  const seriesSegment = String(seriesKey || '').trim();
   const encoded = String(slug || '')
     .split('/')
     .map((segment) => encodeURIComponent(segment))
     .join('/');
-  return `/series/${encoded}/`;
+  return seriesSegment ? `/series/${encodeURIComponent(seriesSegment)}/${encoded}/` : `/series/${encoded}/`;
 }
 
-export function getSeriesDocuments() {
-  const files = readMarkdownFiles(seriesRootDirectory);
+export function getSeriesDocuments(seriesKey = '') {
+  const definition = getSeriesDefinition(seriesKey);
+  if (!definition) return [];
+
+  const files = readMarkdownFiles(definition.rootDirectory);
   const documents = files.map((file) => {
     const content = fs.readFileSync(file.fullPath, 'utf8');
     const slug = file.relativePath.replace(/\.md$/i, '');
     return {
+      seriesKey: definition.key,
+      seriesTitle: definition.title,
       slug,
       fileName: file.fileName,
       relativePath: file.relativePath,
@@ -224,25 +262,26 @@ export function getSeriesDocuments() {
   return documents.sort((a, b) => a.relativePath.localeCompare(b.relativePath, 'zh-CN'));
 }
 
-export function getSeriesTree() {
-  const fallbackDocuments = getSeriesDocuments();
-  const readmeTree = buildTreeFromReadme(fallbackDocuments);
+export function getSeriesTree(seriesKey = '') {
+  const fallbackDocuments = getSeriesDocuments(seriesKey);
+  const readmeTree = buildTreeFromReadme(fallbackDocuments, seriesKey);
   const documents = readmeTree?.documents?.length ? readmeTree.documents : fallbackDocuments;
   const tree = readmeTree?.tree || buildTree(fallbackDocuments);
   return {
+    series: getSeriesDefinition(seriesKey),
     root: tree,
     tree: tree.folders,
     documents
   };
 }
 
-export function getSeriesDocumentBySlug(slugPath) {
+export function getSeriesDocumentBySlug(seriesKey = '', slugPath) {
   const slug = decodeSlugPath(slugPath);
-  return getSeriesDocuments().find((doc) => doc.slug === slug) || null;
+  return getSeriesDocuments(seriesKey).find((doc) => doc.slug === slug) || null;
 }
 
-export async function renderSeriesMarkdown(slugPath) {
-  const doc = getSeriesDocumentBySlug(slugPath);
+export async function renderSeriesMarkdown(seriesKey = '', slugPath) {
+  const doc = getSeriesDocumentBySlug(seriesKey, slugPath);
   if (!doc) return null;
   const rendered = await markdownToHtml(doc.content);
   return { ...doc, ...rendered };

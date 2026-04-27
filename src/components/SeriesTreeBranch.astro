@@ -1,8 +1,16 @@
 ---
-import SeriesTreeBranch from './SeriesTreeBranch.astro';
+import SeriesTreeBranchItem from './SeriesTreeBranch.astro';
 import { seriesSlugToUrl } from '../lib/series';
 
-const { node, activeSlug = '', openByDefault = false } = Astro.props;
+type SeriesTreeFile = { slug: string; title: string; fileName: string };
+type SeriesTreeFolder = { name: string; key: string; folders: SeriesTreeFolder[]; files: SeriesTreeFile[]; total: number };
+
+const { node, seriesKey = '', activeSlug = '', openByDefault = false } = Astro.props as {
+  node: SeriesTreeFolder;
+  seriesKey?: string;
+  activeSlug?: string;
+  openByDefault?: boolean;
+};
 ---
 
 <ul class="series-tree-branch">
@@ -15,7 +23,7 @@ const { node, activeSlug = '', openByDefault = false } = Astro.props;
             <span class="series-folder-name">{folder.name}</span>
             <span class="series-folder-count">{folder.total}</span>
           </summary>
-          <SeriesTreeBranch node={folder} activeSlug={activeSlug} />
+          <SeriesTreeBranchItem node={folder} seriesKey={seriesKey} activeSlug={activeSlug} />
         </details>
       </li>
     ))
@@ -25,7 +33,7 @@ const { node, activeSlug = '', openByDefault = false } = Astro.props;
       <li class="series-tree-file">
         <a
           class={`series-tree-file-link ${activeSlug === file.slug ? 'is-active' : ''}`}
-          href={seriesSlugToUrl(file.slug)}
+          href={seriesSlugToUrl(seriesKey, file.slug)}
           data-series-slug={file.slug}
         >
           <span class="series-tree-file-title">{file.title}</span>

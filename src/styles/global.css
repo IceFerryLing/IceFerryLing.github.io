@@ -1139,6 +1139,37 @@ a:hover { color: var(--accent-soft); }
   align-items: start;
 }
 
+.series-index-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 16px;
+}
+
+.series-index-card {
+  display: block;
+  padding: 20px;
+  text-decoration: none;
+  color: inherit;
+  transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease;
+}
+
+.series-index-card:hover {
+  transform: translateY(-2px);
+  border-color: rgba(182, 221, 255, 0.56);
+  box-shadow: 0 16px 34px rgba(110, 84, 190, 0.18);
+}
+
+.series-index-card h2 {
+  margin: 0 0 8px;
+  font-size: 1.2rem;
+}
+
+.series-index-meta {
+  margin: 12px 0 0;
+  font-size: .92rem;
+  color: rgba(198, 178, 239, 0.92);
+}
+
 .series-sidebar {
   position: sticky;
   top: 90px;

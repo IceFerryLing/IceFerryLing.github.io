@@ -1,46 +1,79 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import SeriesTreeBranch from '../../components/SeriesTreeBranch.astro';
-import { getSeriesTree, renderSeriesMarkdown } from '../../lib/series';
+import {
+  getSeriesDefinitions,
+  getSeriesTree,
+  renderSeriesMarkdown,
+  seriesSlugToUrl
+} from '../../lib/series';
+
+type SeriesTreeFile = { slug: string; title: string; fileName: string };
+type SeriesTreeFolder = { name: string; key: string; folders: SeriesTreeFolder[]; files: SeriesTreeFile[]; total: number };
 
 export function getStaticPaths() {
-  const { documents } = getSeriesTree();
-  return documents.map((doc) => ({
-    params: { slug: doc.slug }
-  }));
+  const definitions = getSeriesDefinitions();
+  const paths = [];
+
+  for (const series of definitions) {
+    const { documents } = getSeriesTree(series.key);
+    paths.push({ params: { slug: series.key } });
+    for (const doc of documents) {
+      paths.push({ params: { slug: `${series.key}/${doc.slug}` } });
+      if (series.key === 'linux-source-code-analyze') {
+        paths.push({ params: { slug: doc.slug } });
+      }
+    }
+  }
+
+  return paths;
 }
 
 const { slug } = Astro.params;
 const slugPath = String(slug || '');
-const doc = await renderSeriesMarkdown(slugPath);
-if (!doc) throw new Error(`Series doc not found: ${slugPath}`);
+const seriesKeys = new Set(getSeriesDefinitions().map((series) => series.key));
+const parts = slugPath.split('/').filter(Boolean);
+const firstPart = parts[0] || '';
+const hasSeriesPrefix = seriesKeys.has(firstPart);
+const seriesKey = hasSeriesPrefix ? firstPart : 'linux-source-code-analyze';
+const docSlug = hasSeriesPrefix ? parts.slice(1).join('/') : slugPath;
+const { series, root, tree, documents } = getSeriesTree(seriesKey) as {
+  series: { key: string; title: string; description: string } | null;
+  root: { files: SeriesTreeFile[]; folders: SeriesTreeFolder[] };
+  tree: SeriesTreeFolder[];
+  documents: Array<{ slug: string; title: string }>;
+};
+const seriesLabel = series?.title || seriesKey;
+const doc = docSlug ? await renderSeriesMarkdown(seriesKey, docSlug) : null;
+const firstDocument = documents[0] || null;
+const landingDocument = doc || (firstDocument ? await renderSeriesMarkdown(seriesKey, firstDocument.slug) : null);
 
-const { root, tree } = getSeriesTree();
+if (!landingDocument) throw new Error(`Series doc not found: ${slugPath}`);
 ---
 
-<BaseLayout title={`系列 · ${doc.title}`} description={doc.title} canonical={`/series/${doc.slug}/`} showSidebar={false}>
+<BaseLayout title={`系列 · ${landingDocument.title}`} description={landingDocument.title} canonical={seriesSlugToUrl(seriesKey, docSlug || landingDocument.slug)} showSidebar={false}>
   <section class="page-hero">
     <div class="container">
       <h1>系列</h1>
-      <p class="page-subtitle">Linux 源码分析文档树</p>
+      <p class="page-subtitle">{seriesLabel}</p>
     </div>
   </section>
 
   <section class="page-content">
     <div class="container series-shell">
       <aside class="series-sidebar glass-card">
-        <h3 class="series-sidebar-title">linux-source-code-analyze</h3>
+        <h3 class="series-sidebar-title">{seriesLabel}</h3>
         <div class="tree-toolbar" aria-label="系列树控制">
           <button type="button" class="tree-toolbar-btn" data-tree-action="expand">全部展开</button>
           <button type="button" class="tree-toolbar-btn" data-tree-action="collapse">全部折叠</button>
         </div>
         <ul class="series-tree-root">
           {
-            root.files.map((file) => (
+            root.files.map((file: SeriesTreeFile) => (
               <li class="series-tree-file">
                 <a
-                  class={`series-tree-file-link ${doc.slug === file.slug ? 'is-active' : ''}`}
-                  href={`/series/${file.slug}/`}
+                  class={`series-tree-file-link ${landingDocument.slug === file.slug ? 'is-active' : ''}`}
+                  href={seriesSlugToUrl(seriesKey, file.slug)}
                   data-series-slug={file.slug}
                 >
                   <span class="series-tree-file-title">{file.title}</span>
@@ -49,7 +82,7 @@ const { root, tree } = getSeriesTree();
             ))
           }
           {
-            tree.map((folder) => (
+            tree.map((folder: SeriesTreeFolder) => (
               <li class="series-tree-folder">
                 <details class="series-folder">
                   <summary>
@@ -57,7 +90,7 @@ const { root, tree } = getSeriesTree();
                     <span class="series-folder-name">{folder.name}</span>
                     <span class="series-folder-count">{folder.total}</span>
                   </summary>
-                  <SeriesTreeBranch node={folder} activeSlug={doc.slug} />
+                  <SeriesTreeBranch node={folder} seriesKey={seriesKey} activeSlug={landingDocument.slug} />
                 </details>
               </li>
             ))
@@ -66,8 +99,8 @@ const { root, tree } = getSeriesTree();
       </aside>
 
       <article class="series-content glass-card">
-        <h2 class="series-doc-title">{doc.title}</h2>
-        <div class="prose" set:html={doc.html}></div>
+        <h2 class="series-doc-title">{landingDocument.title}</h2>
+        <div class="prose" set:html={landingDocument.html}></div>
       </article>
     </div>
   </section>
