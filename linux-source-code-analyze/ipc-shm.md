@@ -114,7 +114,7 @@ int main(int argc, char *argv[])
 
 ## 共享内存实现原理
 我们先通过一幅图来了解一下共享内存的大概原理，如下图：
-![shm-map](/assets/linux-source-code/images/shm-map.jpg)
+![shm-map](/assets/images/linux-source-code/shm-map.jpg)
 
 通过上图可知，共享内存是通过将不同进程的虚拟内存地址映射到相同的物理内存地址来实现的，下面将会介绍Linux的实现方式。
 

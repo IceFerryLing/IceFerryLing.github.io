@@ -20,7 +20,7 @@ LVS的工作模式分为三种：`NAT模式（网络地址转换）`、`DR模式
 
 `NAT模式` 的运行方式如下图：
 
-![NAT-ARCH](/assets/linux-source-code/images/nat-arch.jpg)
+![NAT-ARCH](/assets/images/linux-source-code/nat-arch.jpg)
 
 __请求过程说明：__
 
@@ -34,7 +34,7 @@ __请求过程说明：__
 
 下面通过一幅图来说明一个请求数据包在 LVS 服务器中的地址变化情况：
 
-![NAT-PACKAGE](/assets/linux-source-code/images/nat-package.jpg)
+![NAT-PACKAGE](/assets/images/linux-source-code/nat-package.jpg)
 
 下面解释一下请求数据包的地址变化过程：
 
@@ -50,7 +50,7 @@ __请求过程说明：__
 
 `DR模式` 的运行方式如下图：
 
-![DR-ARCH](/assets/linux-source-code/images/dr-arch.jpg)
+![DR-ARCH](/assets/images/linux-source-code/dr-arch.jpg)
 
 __请求过程说明：__
 
@@ -64,7 +64,7 @@ __请求过程说明：__
 
 下面通过一幅图来说明一个请求数据包在 LVS 服务器中的地址变化情况：
 
-![DR-PACKAGE](/assets/linux-source-code/images/dr-package.jpg)
+![DR-PACKAGE](/assets/images/linux-source-code/dr-package.jpg)
 
 下面解释一下请求数据包的地址变化过程：
 
