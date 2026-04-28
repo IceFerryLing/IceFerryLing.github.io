@@ -4,7 +4,7 @@
 
 ![tcp-ip-layer](https://raw.githubusercontent.com/liexusong/linux-source-code-analyze/master/images/udp/tcp-ip-layer.png)
 
-也就是说 `UDP协议` 是建立中 `IP协议`（网络层）之上的，`IP协议` 用于区分网络上不同的主机（[IP协议源码分析](https://github.com/liexusong/linux-source-code-analyze/blob/master/ip-source-code.md)），而 `UDP协议` 用于区分同一台主机上不同的进程发送（接收）的网络数据，如下图所示：
+也就是说 `UDP协议` 是建立中 `IP协议`（网络层）之上的，`IP协议` 用于区分网络上不同的主机（[IP协议源码分析](https://iceferryling.github.io/series/linux-source-code-analyze//ip-source-code)），而 `UDP协议` 用于区分同一台主机上不同的进程发送（接收）的网络数据，如下图所示：
 
 ![udp-schedule](https://raw.githubusercontent.com/liexusong/linux-source-code-analyze/master/images/udp/udp-schedule.png)
 
@@ -165,7 +165,7 @@ out:
 
 上面的代码主要把 `路由信息对象` 的源IP地址复制到 `ufh` 变量中，然后调用 `ip_build_xmit()` 函数完成数据发送的后续工作。`ip_build_xmit()` 函数的第一个参数用于复制 `UDP头部` 和负载数据到数据包的函数指针，IP 层通过调用此函数把 `UDP头部` 和负载数据复制到数据包中。
 
-`ip_build_xmit()` 函数是 IP 协议层的实现，这里就不作说明，可以参考此文章：[IP协议源码分析](https://github.com/liexusong/linux-source-code-analyze/blob/master/ip-source-code.md)。
+`ip_build_xmit()` 函数是 IP 协议层的实现，这里就不作说明，可以参考此文章：[IP协议源码分析](https://iceferryling.github.io/series/linux-source-code-analyze//ip-source-code)。
 
 总的来说，`udp_sendmsg()` 函数的主要工作就是为要发送的数据包构建 `UDP头部`，然后把数据包交由 IP 层完成接下来的发送操作，所以 `UDP协议` 的发送过程比较简单。
 

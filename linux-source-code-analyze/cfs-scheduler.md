@@ -6,7 +6,7 @@ Linux 进程调度算法经历了以下几个版本的发展：
 *   O(1) 调度算法。(2.6.23之前的版本)
 *   完全公平调度算法。(2.6.23以及之后的版本)
 
-之前我写过一篇分析 `O(1)调度算法` 的文章：[O(1)调度算法](https://github.com/liexusong/linux-source-code-analyze/blob/master/process-schedule-o1.md)，而这篇主要分析 Linux 现在所使用的 `完全公平调度算法`。
+之前我写过一篇分析 `O(1)调度算法` 的文章：[O(1)调度算法](https://iceferryling.github.io/series/linux-source-code-analyze//process-schedule-o1)，而这篇主要分析 Linux 现在所使用的 `完全公平调度算法`。
 
 分析 `完全公平调度算法` 前，我们先了解下 `完全公平调度算法` 的基本原理。
 

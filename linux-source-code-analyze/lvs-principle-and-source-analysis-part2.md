@@ -383,7 +383,7 @@ struct ip_vs_conn {
 
 `ip_vs_conn` 对象各个字段的作用都在注释中进行说明了，客户端与真实服务器的连接关系就是通过 `协议类型`、`客户端IP`、`客户端端口`、`虚拟IP` 和 `虚拟端口` 来进行关联的，也就是说根据这五元组能够确定一个 `ip_vs_conn` 对象。
 
-另外，在《[原理篇](https://github.com/liexusong/linux-source-code-analyze/blob/master/lvs-principle-and-source-analysis-part1.md)》我们说过，LVS 有3中运行模式：`NAT模式`、`DR模式` 和 `TUN模式`。而对于不同的运行模式，发送数据包的接口是不一样的，所以 `ip_vs_conn` 对象的 `packet_xmit` 字段会根据不同的运行模式来选择不同的发送数据包接口，绑定发送数据包接口是通过 `ip_vs_bind_xmit()` 函数完成，如下：
+另外，在《[原理篇](https://iceferryling.github.io/series/linux-source-code-analyze//lvs-principle-and-source-analysis-part1)》我们说过，LVS 有3中运行模式：`NAT模式`、`DR模式` 和 `TUN模式`。而对于不同的运行模式，发送数据包的接口是不一样的，所以 `ip_vs_conn` 对象的 `packet_xmit` 字段会根据不同的运行模式来选择不同的发送数据包接口，绑定发送数据包接口是通过 `ip_vs_bind_xmit()` 函数完成，如下：
 
 ```c
 static inline void ip_vs_bind_xmit(struct ip_vs_conn *cp)

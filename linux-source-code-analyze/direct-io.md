@@ -98,7 +98,7 @@ out:
 }
 ```
 
-打开文件的整个流程比较复杂，但对我们分析 `直接I/O` 并没有太大关系，之前在虚拟文件系统一章已经分析过，这里就不再重复了，可以参考之前的文章：[虚拟文件系统](https://github.com/liexusong/linux-source-code-analyze/blob/master/virtual_file_system.md)
+打开文件的整个流程比较复杂，但对我们分析 `直接I/O` 并没有太大关系，之前在虚拟文件系统一章已经分析过，这里就不再重复了，可以参考之前的文章：[虚拟文件系统](https://iceferryling.github.io/series/linux-source-code-analyze//virtual_file_system)
 
 我们主要关注的是，`sys_open()` 函数最后会调用 `dentry_open()` 把 `flags` 参数保存到文件对象的 `f_flags` 字段中，调用链：`sys_open() -> filp_open() -> dentry_open()`：
 
@@ -197,7 +197,7 @@ static ssize_t generic_file_direct_IO(int rw, struct file *filp, char *buf, size
 * 调用 `map_user_kiobuf()` 函数为用户虚拟内存空间申请物理内存页。
 * 调用真实文件系统的 `direct_IO()` 接口对 `直接I/O` 进行处理。
 
-`map_user_kiobuf()` 函数属于内存管理部分，可以参考之前的 [内存管理](https://github.com/liexusong/linux-source-code-analyze/blob/master/virtual_memory_address_manager.md) 相关的文章进行分析，这里就不重复了。
+`map_user_kiobuf()` 函数属于内存管理部分，可以参考之前的 [内存管理](https://iceferryling.github.io/series/linux-source-code-analyze//virtual_memory_address_manager) 相关的文章进行分析，这里就不重复了。
 
 `generic_file_direct_IO()` 函数最终会调用真实文件系统的 `direct_IO()` 接口，对于 `ext2文件系统`，`direct_IO()` 接口对应的是 `ext2_direct_IO()` 函数，而 `ext2_direct_IO()` 函数只是简单的封装了 `generic_direct_IO()` 函数，所以我们来分析下 `generic_direct_IO()` 函数的实现：
 

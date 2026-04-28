@@ -186,7 +186,7 @@ unsigned int tcp_poll(struct file *file, struct socket *sock, poll_table *wait)
     return mask;
 }
 ```
-每个 `socket` 对象都有个等待队列（`waitqueue`, 关于等待队列可以参考文章: [等待队列原理与实现](https://github.com/liexusong/linux-source-code-analyze/blob/master/waitqueue.md)），用于存放等待 socket 状态更改的进程。
+每个 `socket` 对象都有个等待队列（`waitqueue`, 关于等待队列可以参考文章: [等待队列原理与实现](https://iceferryling.github.io/series/linux-source-code-analyze//waitqueue)），用于存放等待 socket 状态更改的进程。
 
 从上述代码可以知道，`tcp_poll()` 调用了 `poll_wait()` 函数，而 `poll_wait()` 最终会调用 `ep_ptable_queue_proc()` 函数，`ep_ptable_queue_proc()` 函数实现如下：
 ```cpp

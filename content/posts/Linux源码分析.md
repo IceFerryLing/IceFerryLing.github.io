@@ -1,3 +1,15 @@
+---
+title: Linux 内核系列
+date: 2026-04-29
+slug: linux-kernel
+description: Linux 内核系列重定向页，包含 Linux 内核源码分析的所有文章目录。
+category:
+  - 操作系统
+tags:
+   - 操作系统
+   - Linux
+---
+
 # Linux源码分析
 
 ## 目录
@@ -74,6 +86,4 @@
 ### 3、Linux-5.x
 * 文件系统与I/O
    * io_uring
-
-
 
