@@ -51,7 +51,7 @@ struct eventpoll {
 
 下图展示了 `eventpoll` 对象与被监听的文件关系：
 
-![epoll-eventpoll](/assets/linux-source-code/epoll-eventpoll.jpg)
+![epoll-eventpoll](/assets/linux-source-code/images/epoll-eventpoll.jpg)
 
 由于被监听的文件是通过 `epitem` 对象来管理的，所以上图中的节点都是以 `epitem` 对象的形式存在的。为什么要使用红黑树来管理被监听的文件呢？这是为了能够通过文件句柄快速查找到其对应的 `epitem` 对象。红黑树是一种平衡二叉树，如果对其不了解可以查阅相关的文档。
 
@@ -298,7 +298,7 @@ static int ep_poll(struct eventpoll *ep,
 
 最后，我们通过一张图来总结epoll的原理：
 
-![epoll-principle](/assets/linux-source-code/epoll_principle.jpg)
+![epoll-principle](/assets/linux-source-code/images/epoll_principle.jpg)
 
 下面通过文字来描述一下这个过程：
 1. 通过调用 `epoll_create()` 函数创建并初始化一个 `eventpoll` 对象。
