@@ -1,5 +1,5 @@
 ---
-title: Linux 内核 struct page 详解：核心字段、机制与生命周期全景解析
+title: Linux 内核 struct page 详解
 date: 2026-04-01
 slug: linux-kernel-page-struct
 description: Linux 内核中 struct page 结构体的详细解析，涵盖核心字段、工作机制与生命周期。
