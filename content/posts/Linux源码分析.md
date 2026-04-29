@@ -87,3 +87,5 @@ tags:
 * 文件系统与I/O
    * io_uring
 
+### 4、说明
+* 此文章搬运自仓库[linux-source-code-analyze] (https://github.com/liexusong/linux-source-code-analyze)，仅作为笔者学习使用，如有侵权请联系删除。
