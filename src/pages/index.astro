@@ -4,7 +4,7 @@ import PostCard from '../components/PostCard.astro';
 import { getSortedPosts, getAllCategories, getAllTags } from '../lib/posts';
 
 const posts = getSortedPosts();
-const latest = posts.slice(0, 6);
+const latest = posts; // 如果你想显示全部，可以去掉 .slice(0, 6) 或者改成更大的数字
 const categories = getAllCategories(posts).slice(0, 6);
 const tags = getAllTags(posts).slice(0, 12);
 ---
