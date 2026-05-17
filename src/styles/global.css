@@ -1637,6 +1637,11 @@ a:hover { color: var(--accent-soft); }
 .prose strong {
   font-weight: 600;
 }
+.prose .katex-display {
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 0.25rem 0;
+}
 .prose hr {
   border: 0;
   border-top: 1px solid #30363d;
