@@ -529,6 +529,41 @@ a:hover { color: var(--accent-soft); }
   font-size: 1rem;
 }
 
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 22px;
+}
+
+.hero-play-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 42px;
+  padding: 10px 18px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.32);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(164, 119, 255, 0.34));
+  color: #fff;
+  font-weight: 600;
+  box-shadow: 0 14px 28px rgba(70, 35, 160, 0.32);
+  transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease;
+}
+
+.hero-play-button:hover {
+  transform: translateY(-2px);
+  border-color: rgba(255, 255, 255, 0.54);
+  color: #fff;
+  box-shadow: 0 18px 34px rgba(93, 49, 190, 0.42);
+}
+
+.hero-play-button i {
+  font-size: 1.05rem;
+  line-height: 1;
+}
+
 .badge-row {
   margin-top: 16px;
   display: flex;
@@ -582,7 +617,7 @@ a:hover { color: var(--accent-soft); }
 
 .quick-feature-grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 12px;
 }
 
@@ -599,6 +634,13 @@ a:hover { color: var(--accent-soft); }
 .quick-feature:hover {
   transform: translateY(-3px);
   border-color: rgba(166, 124, 255, 0.6);
+}
+
+.quick-feature.game-feature {
+  border-color: rgba(236, 190, 255, 0.38);
+  background:
+    linear-gradient(135deg, rgba(172, 103, 255, 0.2), rgba(72, 172, 255, 0.1)),
+    color-mix(in oklab, var(--card) 82%, #0f0a1f 18%);
 }
 
 .quick-feature h3 {

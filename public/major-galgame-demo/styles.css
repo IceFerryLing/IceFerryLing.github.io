@@ -1,0 +1,380 @@
+:root {
+  color-scheme: dark;
+  --ink: #f7fbff;
+  --muted: #b9d5ef;
+  --cyan: #76dcff;
+  --gold: #f7d46b;
+  --violet: #b693ff;
+  --panel: rgba(10, 24, 45, 0.72);
+  --line: rgba(159, 222, 255, 0.52);
+  font-family: "Microsoft YaHei", "Noto Sans SC", system-ui, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  min-height: 100vh;
+  margin: 0;
+  overflow-x: hidden;
+  color: var(--ink);
+  background: #091427;
+}
+
+button,
+input {
+  font: inherit;
+}
+
+.game-shell {
+  min-height: 100vh;
+}
+
+.scene {
+  position: relative;
+  min-height: 100vh;
+  padding: 28px clamp(18px, 4vw, 58px);
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  gap: 24px;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 84% 22%, rgba(255, 255, 255, 0.38), transparent 11%),
+    linear-gradient(180deg, rgba(89, 166, 236, 0.72), rgba(20, 51, 103, 0.42) 39%, rgba(11, 18, 43, 0.94)),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1400 800'%3E%3Cpath fill='%23294569' d='M0 386h80v-91h36v91h78V214h48v172h85V318h32v68h92V158h66v228h78V246h48v140h84V188h54v198h89V108h72v278h69V259h37v127h82V202h57v184h147v414H0z'/%3E%3Cpath fill='%235f8ebd' opacity='.7' d='M0 421h104v-58h50v58h124v-93h64v93h134v-64h42v64h175v-99h60v99h132v-69h48v69h122v-115h67v115h278v379H0z'/%3E%3C/svg%3E");
+  background-size: cover;
+  background-position: center;
+}
+
+.scene::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(90deg, rgba(5, 12, 30, 0.55), transparent 24%, transparent 72%, rgba(4, 12, 28, 0.38)),
+    repeating-linear-gradient(0deg, transparent 0 20px, rgba(118, 220, 255, 0.05) 21px 22px);
+  pointer-events: none;
+}
+
+.skyline,
+.holo-grid {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.skyline::before {
+  content: "哈尔滨工业大学（深圳）";
+  position: absolute;
+  top: 70px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 12px 54px;
+  border: 2px solid rgba(233, 246, 255, 0.45);
+  background: rgba(17, 39, 73, 0.38);
+  font-size: clamp(20px, 3vw, 36px);
+  font-weight: 800;
+  letter-spacing: 0;
+  text-shadow: 0 3px 16px rgba(0, 0, 0, 0.42);
+}
+
+.holo-grid::after {
+  content: "010010  AI  IC  COMM  AUTO  EE  CS";
+  position: absolute;
+  right: 34px;
+  top: 30px;
+  width: 320px;
+  color: rgba(213, 240, 255, 0.28);
+  font-family: Consolas, monospace;
+  font-size: 18px;
+  line-height: 1.8;
+  text-align: right;
+}
+
+.topbar,
+.lab-table,
+.dialogue-panel {
+  position: relative;
+  z-index: 1;
+}
+
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 20px;
+}
+
+.kicker {
+  margin: 0 0 8px;
+  font-size: clamp(36px, 5vw, 68px);
+  font-weight: 900;
+  font-style: italic;
+  letter-spacing: 0;
+  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.42);
+}
+
+h1 {
+  margin: 0 0 8px;
+  font-size: clamp(18px, 2vw, 30px);
+  letter-spacing: 0;
+}
+
+.tagline {
+  margin: 0;
+  font-size: clamp(16px, 1.6vw, 24px);
+}
+
+.utility {
+  display: flex;
+  gap: 12px;
+}
+
+.utility button,
+.choice-grid button,
+dialog button {
+  border: 1px solid var(--line);
+  color: var(--ink);
+  background: rgba(18, 40, 76, 0.58);
+  cursor: pointer;
+}
+
+.utility button {
+  min-width: 76px;
+  height: 40px;
+}
+
+.lab-table {
+  align-self: end;
+  display: grid;
+  grid-template-columns: repeat(5, minmax(130px, 1fr));
+  align-items: end;
+  gap: clamp(10px, 2vw, 28px);
+  max-width: 1240px;
+  width: 100%;
+  margin: 0 auto;
+  padding-bottom: 12px;
+  transition: grid-template-columns 220ms ease;
+}
+
+.hero-card {
+  min-height: 270px;
+  display: grid;
+  justify-items: center;
+  align-content: end;
+  gap: 8px;
+  opacity: 0.98;
+  cursor: pointer;
+  filter: drop-shadow(0 14px 28px rgba(0, 0, 0, 0.28));
+  transition: opacity 180ms ease, transform 180ms ease, filter 180ms ease;
+}
+
+.character-img {
+  width: min(18vw, 230px);
+  min-width: 128px;
+  max-height: 54vh;
+  object-fit: contain;
+  transition: transform 180ms ease, filter 180ms ease;
+}
+
+.hero-card:hover .character-img,
+.hero-card:focus-within .character-img {
+  transform: translateY(-6px);
+  filter: drop-shadow(0 0 22px rgba(118, 220, 255, 0.46));
+}
+
+.hero-card p {
+  margin: 0;
+  font-weight: 800;
+  font-size: 22px;
+  text-shadow: 0 3px 12px rgba(0, 0, 0, 0.55);
+}
+
+.hero-card small {
+  color: var(--muted);
+}
+
+.lab-table.has-focus {
+  grid-template-columns: minmax(260px, 2.15fr) repeat(4, minmax(96px, 0.72fr));
+}
+
+.lab-table.has-focus .hero-card {
+  min-height: 230px;
+  opacity: 0.42;
+  transform: scale(0.86);
+  filter: grayscale(0.22) drop-shadow(0 10px 22px rgba(0, 0, 0, 0.26));
+}
+
+.lab-table.has-focus .hero-card.active {
+  order: -1;
+  min-height: 390px;
+  opacity: 1;
+  transform: translateY(-18px) scale(1.08);
+  z-index: 2;
+  filter: drop-shadow(0 22px 42px rgba(0, 0, 0, 0.42)) drop-shadow(0 0 28px rgba(118, 220, 255, 0.32));
+}
+
+.lab-table.has-focus .hero-card.active .character-img {
+  width: min(34vw, 390px);
+  min-width: 260px;
+  max-height: 62vh;
+}
+
+.lab-table.has-focus .hero-card.active p {
+  font-size: clamp(26px, 3vw, 40px);
+}
+
+.dialogue-panel {
+  width: min(1160px, 100%);
+  margin: 0 auto;
+  padding: 18px;
+  border: 1px solid var(--line);
+  background: var(--panel);
+  box-shadow: 0 0 38px rgba(65, 190, 255, 0.22);
+  backdrop-filter: blur(14px);
+}
+
+.speaker-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  align-items: center;
+}
+
+#speaker {
+  color: var(--cyan);
+  font-size: 22px;
+}
+
+.status {
+  display: flex;
+  gap: 12px;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+#dialogueText {
+  min-height: 64px;
+  margin: 14px 0 16px;
+  font-size: clamp(18px, 2vw, 25px);
+  line-height: 1.6;
+}
+
+.choice-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 12px;
+}
+
+.choice-grid button {
+  min-height: 86px;
+  padding: 10px;
+  display: grid;
+  gap: 4px;
+  place-items: center;
+  border-radius: 4px;
+  background: rgba(236, 248, 255, 0.15);
+  box-shadow: inset 0 0 18px rgba(118, 220, 255, 0.2);
+}
+
+.choice-grid button:hover,
+.choice-grid button:focus-visible,
+.utility button:hover,
+.utility button:focus-visible {
+  outline: none;
+  border-color: #fff;
+  transform: translateY(-1px);
+  box-shadow: 0 0 18px rgba(118, 220, 255, 0.45);
+}
+
+.choice-icon {
+  font-size: 32px;
+}
+
+.choice-title {
+  font-weight: 800;
+}
+
+.choice-subtitle {
+  color: var(--muted);
+  font-size: 13px;
+}
+
+dialog {
+  width: min(420px, calc(100vw - 32px));
+  border: 1px solid var(--line);
+  color: var(--ink);
+  background: #101d35;
+  box-shadow: 0 22px 70px rgba(0, 0, 0, 0.45);
+}
+
+dialog::backdrop {
+  background: rgba(2, 8, 18, 0.58);
+}
+
+dialog header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 18px;
+}
+
+dialog h2 {
+  margin: 0;
+}
+
+dialog label {
+  display: grid;
+  gap: 8px;
+  margin: 16px 0;
+}
+
+.paused .holo-grid::after,
+.paused .scene::before {
+  display: none;
+}
+
+@media (max-width: 900px) {
+  .scene {
+    min-height: 100svh;
+    grid-template-rows: auto auto auto;
+  }
+
+  .topbar {
+    flex-direction: column;
+  }
+
+  .lab-table {
+    grid-template-columns: repeat(5, 120px);
+    overflow-x: auto;
+    padding: 10px 0 18px;
+  }
+
+  .lab-table.has-focus {
+    grid-template-columns: 220px repeat(4, 112px);
+  }
+
+  .hero-card {
+    min-height: 205px;
+  }
+
+  .lab-table.has-focus .hero-card.active {
+    min-height: 305px;
+    transform: translateY(-8px) scale(1);
+  }
+
+  .lab-table.has-focus .hero-card.active .character-img {
+    width: 220px;
+    min-width: 220px;
+  }
+
+  .choice-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .status {
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
+}
