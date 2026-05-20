@@ -94,6 +94,7 @@ input {
 
 .topbar,
 .lab-table,
+.info-stage,
 .dialogue-panel {
   position: relative;
   z-index: 1;
@@ -223,6 +224,299 @@ dialog button {
 
 .lab-table.has-focus .hero-card.active p {
   font-size: clamp(26px, 3vw, 40px);
+}
+
+.info-stage {
+  width: min(1160px, 100%);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: minmax(260px, 0.9fr) minmax(360px, 1.35fr);
+  gap: 14px;
+}
+
+.profile-panel,
+.mini-game {
+  border: 1px solid rgba(159, 222, 255, 0.42);
+  background: rgba(8, 22, 43, 0.68);
+  box-shadow: 0 16px 36px rgba(3, 12, 28, 0.28);
+  backdrop-filter: blur(12px);
+}
+
+.profile-panel[hidden],
+.mini-game[hidden] {
+  display: none;
+}
+
+.profile-panel {
+  padding: 16px;
+}
+
+.profile-head {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.profile-head span,
+.profile-head strong,
+.mini-game header span {
+  padding: 4px 8px;
+  border: 1px solid rgba(159, 222, 255, 0.38);
+  background: rgba(118, 220, 255, 0.12);
+}
+
+.profile-panel h2,
+.mini-game h2 {
+  margin: 10px 0 8px;
+  font-size: 22px;
+  letter-spacing: 0;
+}
+
+.profile-panel p,
+.mini-game p {
+  margin: 0;
+  color: #dcefff;
+  line-height: 1.65;
+}
+
+.profile-facts {
+  margin: 14px 0 0;
+  display: grid;
+  gap: 8px;
+}
+
+.profile-facts div {
+  display: grid;
+  grid-template-columns: 76px 1fr;
+  gap: 8px;
+  align-items: start;
+}
+
+.profile-facts dt {
+  color: var(--gold);
+  font-weight: 800;
+}
+
+.profile-facts dd {
+  margin: 0;
+  color: var(--muted);
+}
+
+.mini-game {
+  padding: 16px;
+}
+
+.mini-game header {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+}
+
+.mini-game header span {
+  color: var(--cyan);
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.mini-game h2 {
+  margin: 0;
+}
+
+.mini-game-board {
+  min-height: 76px;
+  margin: 14px 0;
+  display: grid;
+  place-items: center;
+  border: 1px dashed rgba(159, 222, 255, 0.35);
+  background: rgba(236, 248, 255, 0.08);
+}
+
+.mini-game-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.mini-game-actions button {
+  min-height: 38px;
+  padding: 8px 12px;
+  border: 1px solid rgba(159, 222, 255, 0.52);
+  color: var(--ink);
+  background: rgba(236, 248, 255, 0.14);
+  cursor: pointer;
+}
+
+.mini-game-actions button:hover,
+.mini-game-actions button:focus-visible,
+.mini-game-actions button.selected {
+  outline: none;
+  border-color: #fff;
+  box-shadow: 0 0 16px rgba(118, 220, 255, 0.35);
+}
+
+.mini-game-feedback {
+  min-height: 28px;
+  margin-top: 12px;
+  color: var(--gold);
+}
+
+.sequence-track,
+.link-status,
+.binary-console {
+  padding: 12px;
+  color: var(--cyan);
+  font-weight: 800;
+  text-align: center;
+}
+
+.binary-console {
+  width: min(460px, 100%);
+  display: grid;
+  gap: 8px;
+}
+
+.binary-console span {
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.binary-console strong {
+  color: var(--gold);
+  font-size: 28px;
+}
+
+.binary-console code {
+  min-height: 32px;
+  padding: 8px;
+  border: 1px solid rgba(159, 222, 255, 0.3);
+  color: #f7fbff;
+  background: rgba(1, 7, 16, 0.45);
+  font-family: Consolas, "Courier New", monospace;
+  word-break: break-all;
+}
+
+.meter-grid {
+  width: min(360px, 100%);
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 10px 16px;
+  padding: 12px;
+}
+
+.meter-grid strong {
+  color: var(--gold);
+}
+
+.stepper-row,
+.option-row {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  padding: 8px;
+  border: 1px solid rgba(159, 222, 255, 0.24);
+  background: rgba(4, 13, 28, 0.24);
+}
+
+.stepper-row span,
+.option-row span {
+  min-width: 72px;
+  color: var(--muted);
+  font-weight: 800;
+}
+
+.stepper-row strong {
+  min-width: 58px;
+  color: var(--gold);
+}
+
+.robot-grid {
+  width: 220px;
+  aspect-ratio: 1;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 6px;
+  padding: 10px;
+}
+
+.robot-grid span {
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(159, 222, 255, 0.42);
+  background: rgba(118, 220, 255, 0.14);
+  color: var(--gold);
+  font-weight: 900;
+}
+
+.robot-grid .blocked {
+  background: rgba(5, 10, 20, 0.68);
+  border-color: rgba(255, 255, 255, 0.18);
+}
+
+.layout-grid {
+  width: min(330px, 100%);
+  aspect-ratio: 1;
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 5px;
+  padding: 10px;
+}
+
+.layout-grid button {
+  min-width: 0;
+  min-height: 0;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(159, 222, 255, 0.3);
+  color: rgba(247, 251, 255, 0.68);
+  background:
+    linear-gradient(90deg, transparent 47%, rgba(118, 220, 255, 0.1) 48% 52%, transparent 53%),
+    linear-gradient(0deg, transparent 47%, rgba(118, 220, 255, 0.1) 48% 52%, transparent 53%),
+    rgba(5, 15, 32, 0.72);
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.layout-grid button:hover,
+.layout-grid button:focus-visible {
+  outline: none;
+  border-color: #fff;
+  box-shadow: 0 0 14px rgba(118, 220, 255, 0.38);
+}
+
+.layout-grid .source,
+.layout-grid .sink {
+  color: #061326;
+  background: var(--gold);
+  border-color: #fff4bc;
+}
+
+.layout-grid .sink {
+  background: var(--cyan);
+}
+
+.layout-grid .macro {
+  color: rgba(255, 255, 255, 0.42);
+  background: repeating-linear-gradient(135deg, rgba(3, 9, 19, 0.92) 0 7px, rgba(25, 39, 61, 0.92) 8px 14px);
+  border-color: rgba(255, 255, 255, 0.18);
+  cursor: not-allowed;
+}
+
+.layout-grid .wire {
+  color: #061326;
+  background: linear-gradient(90deg, transparent 28%, #72f0b0 29% 71%, transparent 72%), rgba(114, 240, 176, 0.22);
+  border-color: rgba(114, 240, 176, 0.9);
+  box-shadow: inset 0 0 18px rgba(114, 240, 176, 0.28);
+}
+
+.layout-grid .current {
+  box-shadow: 0 0 18px rgba(114, 240, 176, 0.72), inset 0 0 18px rgba(114, 240, 176, 0.32);
 }
 
 .dialogue-panel {
@@ -371,6 +665,24 @@ dialog label {
 
   .choice-grid {
     grid-template-columns: 1fr;
+  }
+
+  .info-stage {
+    grid-template-columns: 1fr;
+  }
+
+  .profile-facts div {
+    grid-template-columns: 1fr;
+  }
+
+  .mini-game-actions {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  .stepper-row,
+  .option-row {
+    align-items: stretch;
   }
 
   .status {
