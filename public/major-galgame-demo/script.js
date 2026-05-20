@@ -1,3 +1,12 @@
+const characterData = window.characterData || {};
+const profiles = Object.fromEntries(
+  Object.entries(characterData).map(([id, character]) => [id, character.profile])
+);
+const characterRoutes = Object.values(characterData).reduce((allRoutes, character) => {
+  Object.assign(allRoutes, character.routes);
+  return allRoutes;
+}, {});
+
 const routes = {
   intro: {
     speaker: "旁白",
@@ -10,136 +19,7 @@ const routes = {
       ["comm", "⌁", "通信工程", "Communication Engineering"]
     ]
   },
-  cs: {
-    speaker: "洛泠",
-    focus: "cs",
-    text: "洛泠把终端窗口推到你面前，屏幕上是一段还没跑通的校园导览 AI。她笑着说：如果你喜欢把混乱的问题拆成清晰的模型，计算机会很适合你。代码不是魔法，是一次次把想法落到可运行的世界里。",
-    score: { logic: 2, passion: 1, team: 0 },
-    choices: [
-      ["csLab", "⌨", "进入算法实验", "帮她修好导览 AI"],
-      ["intro", "↺", "回到选择界面", "再听听别的方向"]
-    ]
-  },
-  ee: {
-    speaker: "栖禾",
-    focus: "ee",
-    text: "栖禾站在电力电子平台旁，示波器的波形像潮汐一样起伏。她说：电气的浪漫在于看不见的能量被你驯服。电机、电网、电力电子，都在把真实世界推向更高效率。",
-    score: { logic: 1, passion: 2, team: 0 },
-    choices: [
-      ["eeLab", "⚡", "参与能源调度", "让实验楼稳定供能"],
-      ["intro", "↺", "回到选择界面", "再听听别的方向"]
-    ]
-  },
-  auto: {
-    speaker: "青岚",
-    focus: "auto",
-    text: "青岚蹲在移动机器人旁边，轻轻敲了敲还在校准的激光雷达。她说：自动化介于硬件、软件和控制之间。你会让机器人知道自己在哪里，也让系统在变化中保持稳定。",
-    score: { logic: 1, passion: 1, team: 1 },
-    choices: [
-      ["autoLab", "⚙", "进入控制实验室", "让机器真正动起来"],
-      ["intro", "↺", "回到选择界面", "再听听别的方向"]
-    ]
-  },
-  ic: {
-    speaker: "微澜",
-    focus: "ic",
-    text: "微澜把一张版图投到空中，密密麻麻的走线像一座夜晚发亮的城市。她说：芯片像一座被压缩到纳米尺度的城市。选择集成电路，就是选择在最底层的物理限制里建造秩序。",
-    score: { logic: 2, passion: 0, team: 1 },
-    choices: [
-      ["icLab", "▣", "查看芯片路线", "从版图到系统"],
-      ["intro", "↺", "回到选择界面", "再听听别的方向"]
-    ]
-  },
-  comm: {
-    speaker: "星遥",
-    focus: "comm",
-    text: "星遥站在天线阵列下，抬头看向被晚霞染亮的楼顶。她说：通信工程研究连接本身。信号、网络、卫星、6G，所有远方都需要有人先把路径设计出来。",
-    score: { logic: 1, passion: 1, team: 2 },
-    choices: [
-      ["commLab", "⌁", "仰望通信天线", "让信息抵达远处"],
-      ["intro", "↺", "回到选择界面", "再听听别的方向"]
-    ]
-  },
-  csLab: {
-    speaker: "洛泠",
-    focus: "cs",
-    text: "你们把问题拆成图搜索、推荐排序和异常处理三层。模型第一次给出正确路线时，洛泠把咖啡推给你：看见了吗？计算机最迷人的地方，是它能把一个大胆念头变成可以反复验证的系统。",
-    score: { logic: 2, passion: 1, team: 1 },
-    choices: [
-      ["csDeep", "AI", "完成系统展示", "把算法交给真实用户"],
-      ["intro", "↺", "重新选择", "换一条路线看看"]
-    ]
-  },
-  eeLab: {
-    speaker: "栖禾",
-    focus: "ee",
-    text: "傍晚突降暴雨，实验楼负载波动。你和栖禾一起调整储能策略，让光伏、电池和电网像乐队一样重新合拍。她说，电气不是只和电打交道，它关心城市怎样安静、可靠、持续地运转。",
-    score: { logic: 1, passion: 2, team: 1 },
-    choices: [
-      ["eeDeep", "⚡", "提交调度方案", "把能量送到需要的地方"],
-      ["intro", "↺", "重新选择", "换一条路线看看"]
-    ]
-  },
-  autoLab: {
-    speaker: "青岚",
-    focus: "auto",
-    text: "机器人在拐角前犹豫了半秒。你们重新调 PID，融合 IMU 和视觉定位，最后它稳稳停在目标点前。青岚眨眨眼：自动化最有成就感的瞬间，就是世界很复杂，但系统依然听得懂你的意图。",
-    score: { logic: 1, passion: 1, team: 2 },
-    choices: [
-      ["autoDeep", "⚙", "完成机器人路演", "让控制闭环跑起来"],
-      ["intro", "↺", "重新选择", "换一条路线看看"]
-    ]
-  },
-  icLab: {
-    speaker: "微澜",
-    focus: "ic",
-    text: "一次时序违例让全组沉默。微澜没有急，她带你从 RTL 追到综合报告，再回到版图约束。凌晨两点，红色告警终于消失。她轻声说，芯片设计是在最小的地方，做最硬核的决定。",
-    score: { logic: 2, passion: 1, team: 1 },
-    choices: [
-      ["icDeep", "▣", "点亮验证板", "让硅片回答问题"],
-      ["intro", "↺", "重新选择", "换一条路线看看"]
-    ]
-  },
-  commLab: {
-    speaker: "星遥",
-    focus: "comm",
-    text: "你们把无人车的视频流接入临时网络。信号被楼体反射，吞吐忽高忽低，星遥带你调制、编码、切换链路。画面重新稳定时，她说，通信的意义不是炫目的速度，而是关键时刻不断线。",
-    score: { logic: 1, passion: 1, team: 2 },
-    choices: [
-      ["commDeep", "⌁", "完成远程联调", "让信息跨过距离"],
-      ["intro", "↺", "重新选择", "换一条路线看看"]
-    ]
-  },
-  csDeep: {
-    speaker: "洛泠",
-    focus: "cs",
-    text: "结局倾向：算法架构师。你适合在数据结构、系统、AI 与工程实现之间建立自己的工具箱。洛泠把项目仓库权限交给你：下一次，不只是修好一个功能，而是由你设计它的骨架。",
-    ending: true
-  },
-  eeDeep: {
-    speaker: "栖禾",
-    focus: "ee",
-    text: "结局倾向：能源系统工程师。你适合把电力电子、新能源和控制技术连成可落地的方案。栖禾关掉示波器，窗外的灯一盏盏亮起，像是在确认你的选择。",
-    ending: true
-  },
-  autoDeep: {
-    speaker: "青岚",
-    focus: "auto",
-    text: "结局倾向：机器人控制工程师。你适合在传感、控制、嵌入式和机械系统之间来回穿梭。青岚把新的任务地图发到你手机上：明天开始，我们让它去更远的地方。",
-    ending: true
-  },
-  icDeep: {
-    speaker: "微澜",
-    focus: "ic",
-    text: "结局倾向：芯片设计工程师。你适合深入数字逻辑、EDA、体系结构和半导体工艺。微澜把验证板递给你，板上的指示灯微微发亮，像一座城市正式通电。",
-    ending: true
-  },
-  commDeep: {
-    speaker: "星遥",
-    focus: "comm",
-    text: "结局倾向：未来网络研究员。你适合研究无线通信、网络协议、卫星互联网和信息安全。星遥把天线指向夜空：未来有很多远方，第一条稳定链路就从这里开始。",
-    ending: true
-  }
+  ...characterRoutes
 };
 
 const state = {
@@ -148,7 +28,8 @@ const state = {
   passion: 0,
   team: 0,
   speed: 22,
-  typingTimer: null
+  typingTimer: null,
+  scoredRoutes: []
 };
 
 const speakerEl = document.querySelector("#speaker");
@@ -162,6 +43,19 @@ const speedRange = document.querySelector("#speedRange");
 const ambientToggle = document.querySelector("#ambientToggle");
 const labTableEl = document.querySelector(".lab-table");
 const heroCards = document.querySelectorAll(".hero-card");
+const profilePanel = document.querySelector("#profilePanel");
+const profileMajor = document.querySelector("#profileMajor");
+const profileRole = document.querySelector("#profileRole");
+const profileName = document.querySelector("#profileName");
+const profileBio = document.querySelector("#profileBio");
+const profileFacts = document.querySelector("#profileFacts");
+const miniGame = document.querySelector("#miniGame");
+const miniGameTag = document.querySelector("#miniGameTag");
+const miniGameTitle = document.querySelector("#miniGameTitle");
+const miniGameBrief = document.querySelector("#miniGameBrief");
+const miniGameBoard = document.querySelector("#miniGameBoard");
+const miniGameActions = document.querySelector("#miniGameActions");
+const miniGameFeedback = document.querySelector("#miniGameFeedback");
 
 function typeText(text) {
   clearInterval(state.typingTimer);
@@ -180,11 +74,12 @@ function updateScores() {
   teamEl.textContent = state.team;
 }
 
-function applyScore(score) {
-  if (!score) return;
+function applyScore(routeId, score) {
+  if (!score || state.scoredRoutes.includes(routeId)) return;
   state.logic += score.logic ?? 0;
   state.passion += score.passion ?? 0;
   state.team += score.team ?? 0;
+  state.scoredRoutes.push(routeId);
 }
 
 function updateCharacterFocus(focus) {
@@ -192,6 +87,364 @@ function updateCharacterFocus(focus) {
   heroCards.forEach((card) => {
     card.classList.toggle("active", card.dataset.route === focus);
   });
+}
+
+function renderProfile(focus) {
+  const profile = profiles[focus];
+  profilePanel.hidden = !profile;
+  if (!profile) return;
+
+  profileMajor.textContent = profile.major;
+  profileRole.textContent = profile.role;
+  profileName.textContent = profile.name;
+  profileBio.textContent = profile.bio;
+  profileFacts.innerHTML = profile.facts
+    .map(([label, value]) => `<div><dt>${label}</dt><dd>${value}</dd></div>`)
+    .join("");
+}
+
+function hideMiniGame() {
+  miniGame.hidden = true;
+  miniGameBoard.innerHTML = "";
+  miniGameActions.innerHTML = "";
+  miniGameFeedback.textContent = "";
+}
+
+function completeMiniGame(nextRoute, message) {
+  miniGameFeedback.textContent = message;
+  miniGameActions.innerHTML = "";
+  const button = document.createElement("button");
+  button.type = "button";
+  button.textContent = "继续剧情";
+  button.addEventListener("click", () => render(nextRoute));
+  miniGameActions.appendChild(button);
+}
+
+function renderCsGame(route) {
+  const game = route.game;
+  const target = game.target;
+  const answer = target
+    .split("")
+    .map((char) => char.charCodeAt(0).toString(2).padStart(8, "0"))
+    .join(" ");
+  const bits = answer.replaceAll(" ", "").split("");
+  let cursor = 0;
+  miniGameTag.textContent = game.tag;
+  miniGameTitle.textContent = game.title;
+  miniGameBrief.textContent = `目标字符：${target}。${game.intro} ${answer}`;
+  miniGameBoard.innerHTML = `
+    <div class="binary-console">
+      <span>ASCII</span>
+      <strong>${target}</strong>
+      <code id="binaryInput"></code>
+    </div>
+  `;
+  miniGameActions.innerHTML = "";
+
+  ["0", "1"].forEach((bit) => {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.textContent = bit;
+    button.addEventListener("click", () => {
+      const input = document.querySelector("#binaryInput");
+      if (bit !== bits[cursor]) {
+        cursor = 0;
+        input.textContent = "";
+        miniGameFeedback.textContent = game.wrong;
+        return;
+      }
+      cursor += 1;
+      input.textContent = bits
+        .slice(0, cursor)
+        .join("")
+        .replace(/(.{8})/g, "$1 ")
+        .trim();
+      miniGameFeedback.textContent = cursor === bits.length ? "" : game.progress;
+      if (cursor === bits.length) completeMiniGame(route.next, game.success);
+    });
+    miniGameActions.appendChild(button);
+  });
+
+  const resetButton = document.createElement("button");
+  resetButton.type = "button";
+  resetButton.textContent = "重置";
+  resetButton.addEventListener("click", () => {
+    cursor = 0;
+    document.querySelector("#binaryInput").textContent = "";
+    miniGameFeedback.textContent = game.reset;
+  });
+  miniGameActions.appendChild(resetButton);
+  miniGameFeedback.textContent = game.hint;
+}
+
+function renderEeGame(route) {
+  const game = route.game;
+  const load = game.load;
+  const values = { ...game.values };
+  miniGameTag.textContent = game.tag;
+  miniGameTitle.textContent = game.title;
+  miniGameBrief.textContent = game.brief;
+
+  function draw() {
+    const total = values.光伏 + values.电池 + values.电网;
+    miniGameBoard.innerHTML = `
+      <div class="meter-grid">
+        <span>目标负载</span><strong>${load} kW</strong>
+        <span>当前供给</span><strong>${total} kW</strong>
+      </div>
+    `;
+    miniGameActions.innerHTML = "";
+    Object.keys(values).forEach((name) => {
+      const row = document.createElement("div");
+      row.className = "stepper-row";
+      row.innerHTML = `<span>${name}</span><strong>${values[name]} kW</strong>`;
+      ["-", "+"].forEach((label) => {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.textContent = label;
+        button.addEventListener("click", () => {
+          values[name] = Math.max(0, values[name] + (label === "+" ? 1 : -1));
+          draw();
+        });
+        row.appendChild(button);
+      });
+      miniGameActions.appendChild(row);
+    });
+    const ok = total === load && values.电池 >= 2 && values.电池 <= 4 && values.电网 <= 5;
+    miniGameFeedback.textContent = ok ? "" : game.hint;
+    if (ok) completeMiniGame(route.next, game.success);
+  }
+
+  draw();
+}
+
+function renderAutoGame(route) {
+  const game = route.game;
+  const size = game.size;
+  const target = game.target;
+  const blocks = game.blocks;
+  const bot = { ...game.start };
+  miniGameTag.textContent = game.tag;
+  miniGameTitle.textContent = game.title;
+  miniGameBrief.textContent = game.brief;
+
+  function draw() {
+    miniGameBoard.innerHTML = `<div class="robot-grid"></div>`;
+    const grid = miniGameBoard.querySelector(".robot-grid");
+    for (let y = 0; y < size; y += 1) {
+      for (let x = 0; x < size; x += 1) {
+        const cell = document.createElement("span");
+        const key = `${x}-${y}`;
+        cell.className = blocks.includes(key) ? "blocked" : "";
+        cell.textContent = bot.x === x && bot.y === y ? "R" : target.x === x && target.y === y ? "T" : "";
+        grid.appendChild(cell);
+      }
+    }
+  }
+
+  function move(dx, dy) {
+    const next = { x: bot.x + dx, y: bot.y + dy };
+    const key = `${next.x}-${next.y}`;
+    if (next.x < 0 || next.y < 0 || next.x >= size || next.y >= size || blocks.includes(key)) {
+      miniGameFeedback.textContent = game.blocked;
+      return;
+    }
+    bot.x = next.x;
+    bot.y = next.y;
+    draw();
+    if (bot.x === target.x && bot.y === target.y) {
+      completeMiniGame(route.next, game.success);
+    } else {
+      miniGameFeedback.textContent = game.progress;
+    }
+  }
+
+  miniGameActions.innerHTML = "";
+  [
+    ["↑", 0, -1],
+    ["←", -1, 0],
+    ["→", 1, 0],
+    ["↓", 0, 1]
+  ].forEach(([label, dx, dy]) => {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.textContent = label;
+    button.addEventListener("click", () => move(dx, dy));
+    miniGameActions.appendChild(button);
+  });
+  draw();
+  miniGameFeedback.textContent = game.hint;
+}
+
+function renderIcGame(route) {
+  const game = route.game;
+  const size = game.size;
+  const source = game.source;
+  const sink = game.sink;
+  const blocks = game.blocks;
+  let path = [source];
+  let completed = false;
+  miniGameTag.textContent = game.tag;
+  miniGameTitle.textContent = game.title;
+  miniGameBrief.textContent = game.brief;
+
+  function toPoint(key) {
+    const [x, y] = key.split("-").map(Number);
+    return { x, y };
+  }
+
+  function isNeighbor(a, b) {
+    const first = toPoint(a);
+    const second = toPoint(b);
+    return Math.abs(first.x - second.x) + Math.abs(first.y - second.y) === 1;
+  }
+
+  function draw() {
+    miniGameBoard.innerHTML = `<div class="layout-grid"></div>`;
+    const grid = miniGameBoard.querySelector(".layout-grid");
+
+    for (let y = 0; y < size; y += 1) {
+      for (let x = 0; x < size; x += 1) {
+        const key = `${x}-${y}`;
+        const cell = document.createElement("button");
+        cell.type = "button";
+        cell.dataset.key = key;
+
+        if (key === source) {
+          cell.className = "source";
+          cell.textContent = "PAD";
+        } else if (key === sink) {
+          cell.className = "sink";
+          cell.textContent = "CORE";
+        } else if (blocks.includes(key)) {
+          cell.className = "macro";
+          cell.textContent = "IP";
+        } else if (path.includes(key)) {
+          cell.className = key === path[path.length - 1] ? "wire current" : "wire";
+          cell.textContent = "M1";
+        }
+
+        cell.addEventListener("click", () => placeWire(key));
+        grid.appendChild(cell);
+      }
+    }
+  }
+
+  function placeWire(key) {
+    if (completed) return;
+    const last = path[path.length - 1];
+    if (key === sink && isNeighbor(last, key)) {
+      path.push(key);
+      draw();
+      completed = true;
+      completeMiniGame(route.next, game.success);
+      return;
+    }
+    if (key === source || key === sink || blocks.includes(key) || path.includes(key)) {
+      miniGameFeedback.textContent = game.invalid;
+      return;
+    }
+    if (!isNeighbor(last, key)) {
+      miniGameFeedback.textContent = game.disconnected;
+      return;
+    }
+    path.push(key);
+    draw();
+    miniGameFeedback.textContent = `已铺设 ${path.length - 1} 段金属线，${game.progress}`;
+  }
+
+  function resetPath() {
+    path = [source];
+    completed = false;
+    draw();
+    miniGameFeedback.textContent = game.reset;
+  }
+
+  miniGameActions.innerHTML = "";
+  [
+    ["撤销一步", () => {
+      if (path.length > 1) {
+        path.pop();
+        draw();
+        miniGameFeedback.textContent = game.undo;
+        return;
+      }
+      miniGameFeedback.textContent = game.undoBlocked;
+    }],
+    ["重新布线", resetPath]
+  ].forEach(([label, action]) => {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.textContent = label;
+    button.addEventListener("click", action);
+    miniGameActions.appendChild(button);
+  });
+
+  draw();
+  miniGameFeedback.textContent = game.hint;
+}
+
+function renderCommGame(route) {
+  const game = route.game;
+  const picks = {};
+  const groups = game.groups;
+  const answer = game.answer;
+  miniGameTag.textContent = game.tag;
+  miniGameTitle.textContent = game.title;
+  miniGameBrief.textContent = game.brief;
+  miniGameBoard.innerHTML = `<div class="link-status">${game.waiting}</div>`;
+  miniGameActions.innerHTML = "";
+
+  Object.entries(groups).forEach(([group, options]) => {
+    const row = document.createElement("div");
+    row.className = "option-row";
+    row.innerHTML = `<span>${group}</span>`;
+    options.forEach((option) => {
+      const button = document.createElement("button");
+      button.type = "button";
+      button.textContent = option;
+      button.addEventListener("click", () => {
+        picks[group] = option;
+        row.querySelectorAll("button").forEach((item) => item.classList.toggle("selected", item === button));
+        const ready = Object.keys(answer).every((key) => picks[key]);
+        miniGameBoard.querySelector(".link-status").textContent = ready
+          ? Object.entries(picks).map(([key, value]) => `${key}:${value}`).join(" / ")
+          : game.choosing;
+        if (!ready) return;
+        const ok = Object.keys(answer).every((key) => picks[key] === answer[key]);
+        if (ok) {
+          completeMiniGame(route.next, game.success);
+        } else {
+          miniGameFeedback.textContent = game.wrong;
+        }
+      });
+      row.appendChild(button);
+    });
+    miniGameActions.appendChild(row);
+  });
+}
+
+const gameRenderers = {
+  binary: renderCsGame,
+  energy: renderEeGame,
+  robot: renderAutoGame,
+  layout: renderIcGame,
+  link: renderCommGame
+};
+
+function renderMiniGame(route) {
+  if (!route.game) {
+    hideMiniGame();
+    return;
+  }
+  miniGame.hidden = false;
+  miniGameFeedback.textContent = "";
+  const renderer = gameRenderers[route.game.type];
+  if (!renderer) {
+    miniGameFeedback.textContent = "这个小游戏类型还没有对应的渲染器。";
+    return;
+  }
+  renderer(route);
 }
 
 function render(routeId, shouldScore = true) {
@@ -203,10 +456,13 @@ function render(routeId, shouldScore = true) {
     state.logic = 0;
     state.passion = 0;
     state.team = 0;
+    state.scoredRoutes = [];
   }
-  if (shouldScore) applyScore(route.score);
+  if (shouldScore) applyScore(routeId, route.score);
   updateScores();
   updateCharacterFocus(route.focus);
+  renderProfile(route.focus);
+  renderMiniGame(route);
 
   speakerEl.textContent = route.speaker;
   typeText(route.text);
@@ -214,7 +470,9 @@ function render(routeId, shouldScore = true) {
 
   const choices = route.ending
     ? [["intro", "↺", "重新选择", "回到五个专业"], ["save", "✓", "保存倾向", "记录当前结局"]]
-    : route.choices;
+    : route.game
+      ? [["intro", "↺", "回到选择界面", "先看看其他方向"]]
+      : route.choices;
 
   choices.forEach((choice) => {
     const [target, icon, title, subtitle] = choice;
@@ -237,7 +495,15 @@ function render(routeId, shouldScore = true) {
 }
 
 function saveGame() {
-  localStorage.setItem("majorGalgameDemo", JSON.stringify(state));
+  const snapshot = {
+    current: state.current,
+    logic: state.logic,
+    passion: state.passion,
+    team: state.team,
+    speed: state.speed,
+    scoredRoutes: state.scoredRoutes
+  };
+  localStorage.setItem("majorGalgameDemo", JSON.stringify(snapshot));
   speakerEl.textContent = "系统";
   typeText("进度已保存。等你再次回到实验平台，我们会从这里继续。");
 }

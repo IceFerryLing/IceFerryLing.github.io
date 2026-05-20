@@ -53,6 +53,29 @@
           </article>
         </section>
 
+        <section class="info-stage" aria-label="人物档案与实验互动">
+          <article class="profile-panel" id="profilePanel" hidden>
+            <div class="profile-head">
+              <span id="profileMajor"></span>
+              <strong id="profileRole"></strong>
+            </div>
+            <h2 id="profileName"></h2>
+            <p id="profileBio"></p>
+            <dl class="profile-facts" id="profileFacts"></dl>
+          </article>
+
+          <article class="mini-game" id="miniGame" hidden>
+            <header>
+              <span id="miniGameTag"></span>
+              <h2 id="miniGameTitle"></h2>
+            </header>
+            <p id="miniGameBrief"></p>
+            <div class="mini-game-board" id="miniGameBoard"></div>
+            <div class="mini-game-actions" id="miniGameActions"></div>
+            <p class="mini-game-feedback" id="miniGameFeedback" aria-live="polite"></p>
+          </article>
+        </section>
+
         <section class="dialogue-panel" aria-live="polite">
           <div class="speaker-row">
             <strong id="speaker">旁白</strong>
@@ -85,6 +108,11 @@
       </dialog>
     </main>
 
+    <script src="./characters/cs/profile.js"></script>
+    <script src="./characters/ee/profile.js"></script>
+    <script src="./characters/auto/profile.js"></script>
+    <script src="./characters/ic/profile.js"></script>
+    <script src="./characters/comm/profile.js"></script>
     <script src="./script.js"></script>
   </body>
 </html>

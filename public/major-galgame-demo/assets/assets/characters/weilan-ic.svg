@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 410" role="img" aria-label="Weilan integrated circuit character">
+  <defs>
+    <linearGradient id="coat" x1="40" x2="240" y1="238" y2="396" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#f9f5ff"/>
+      <stop offset="1" stop-color="#9b7ce7"/>
+    </linearGradient>
+    <linearGradient id="hair" x1="52" x2="230" y1="38" y2="226" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#7a62c8"/>
+      <stop offset="1" stop-color="#ded0ff"/>
+    </linearGradient>
+  </defs>
+  <path fill="none" stroke="#c9b5ff" stroke-width="4" d="M45 92h38v38H45zM52 82v10m12-10v10m12-10v10M52 130v10m12-10v10m12-10v10M35 100h10m-10 14h10m38-14h10m-10 14h10"/>
+  <path fill="url(#coat)" d="M49 268c21-45 158-45 182 0l28 127H21z"/>
+  <path fill="#fbf9ff" d="M98 251h86l-18 80h-52z"/>
+  <path fill="#8567d7" d="m113 261 28 47 29-47 21 134H89z"/>
+  <path fill="#f0c0ab" d="M104 211h72v58c-19 18-53 18-72 0z"/>
+  <path fill="#ffd9c9" d="M60 113c4-49 35-76 82-76s79 27 83 76l6 65c-9 50-42 79-89 79s-80-29-89-79z"/>
+  <path fill="url(#hair)" d="M49 185C30 95 78 29 144 29c68 0 108 52 96 134-21-39-53-70-98-78-44 2-71 34-93 100z"/>
+  <path fill="#b9a6f0" opacity=".58" d="M75 52c-35 47-36 109-16 184-31-36-31-132 16-184zm129 12c41 49 36 122 12 178 14-76 6-129-12-178z"/>
+  <path fill="#5d4c8f" d="M82 160c18-12 34-12 51 0-17-5-32-5-51 0zm75 0c18-13 34-13 51 0-17-5-33-5-51 0z"/>
+  <path fill="#d98b8b" d="M119 214c14 10 33 10 47 0-7 18-40 18-47 0z"/>
+  <text x="141" y="374" text-anchor="middle" fill="#f1eaff" font-family="Consolas, monospace" font-size="50" font-weight="800">▣</text>
+</svg>
