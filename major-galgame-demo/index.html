@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>哈工深 25届 | 专业选择 Galgame Demo</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="game-shell" aria-label="专业选择 Galgame Demo">
+      <section class="scene" id="scene">
+        <div class="skyline" aria-hidden="true"></div>
+        <div class="holo-grid" aria-hidden="true"></div>
+
+        <header class="topbar">
+          <div>
+            <p class="kicker">哈工深 25届</p>
+            <h1>工科试验班：计算机与信息类</h1>
+            <p class="tagline">我们的未来，由你选择</p>
+          </div>
+          <nav class="utility" aria-label="游戏功能">
+            <button id="saveBtn" type="button">SAVE</button>
+            <button id="loadBtn" type="button">LOAD</button>
+            <button id="configBtn" type="button">CONFIG</button>
+          </nav>
+        </header>
+
+        <section class="lab-table" aria-label="实验室伙伴">
+          <article class="hero-card cs" data-route="cs">
+            <img class="character-img" src="./png/计科.png" alt="计算机科学与技术角色洛泠" />
+            <p>洛泠</p>
+            <small>算法与代码</small>
+          </article>
+          <article class="hero-card ee" data-route="ee">
+            <img class="character-img" src="./png/电气.png" alt="电气工程及其自动化角色栖禾" />
+            <p>栖禾</p>
+            <small>电路与能量</small>
+          </article>
+          <article class="hero-card auto" data-route="auto">
+            <img class="character-img" src="./png/自动化.png" alt="自动化角色青岚" />
+            <p>青岚</p>
+            <small>机器人控制</small>
+          </article>
+          <article class="hero-card ic" data-route="ic">
+            <img class="character-img" src="./png/集成电路.png" alt="集成电路设计与集成系统角色微澜" />
+            <p>微澜</p>
+            <small>芯片与系统</small>
+          </article>
+          <article class="hero-card comm" data-route="comm">
+            <img class="character-img" src="./png/通信工程.png" alt="通信工程角色星遥" />
+            <p>星遥</p>
+            <small>通信与网络</small>
+          </article>
+        </section>
+
+        <section class="dialogue-panel" aria-live="polite">
+          <div class="speaker-row">
+            <strong id="speaker">旁白</strong>
+            <div class="status">
+              <span>理性 <b id="logicScore">0</b></span>
+              <span>热情 <b id="passionScore">0</b></span>
+              <span>协作 <b id="teamScore">0</b></span>
+            </div>
+          </div>
+          <p id="dialogueText"></p>
+          <div class="choice-grid" id="choices"></div>
+        </section>
+      </section>
+
+      <dialog id="configDialog">
+        <form method="dialog">
+          <header>
+            <h2>CONFIG</h2>
+            <button type="submit" aria-label="关闭设置">×</button>
+          </header>
+          <label>
+            文字速度
+            <input id="speedRange" type="range" min="12" max="48" value="22" />
+          </label>
+          <label>
+            <input id="ambientToggle" type="checkbox" checked />
+            开启背景动效
+          </label>
+        </form>
+      </dialog>
+    </main>
+
+    <script src="./script.js"></script>
+  </body>
+</html>

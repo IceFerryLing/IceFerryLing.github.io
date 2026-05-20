@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 410" role="img" aria-label="Qinglan automation character">
+  <defs>
+    <linearGradient id="coat" x1="40" x2="240" y1="238" y2="396" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#eef6ff"/>
+      <stop offset="1" stop-color="#6c92b9"/>
+    </linearGradient>
+    <linearGradient id="hair" x1="52" x2="230" y1="38" y2="226" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#2d2228"/>
+      <stop offset="1" stop-color="#8b7580"/>
+    </linearGradient>
+  </defs>
+  <circle cx="229" cy="126" r="24" fill="#dcecff" opacity=".62"/>
+  <path fill="none" stroke="#7893aa" stroke-width="8" d="M224 151v56m-32 0h64m-50 0 16-34 17 34"/>
+  <path fill="url(#coat)" d="M49 268c22-45 158-45 182 0l28 127H21z"/>
+  <path fill="#f7fbff" d="M98 251h86l-18 79h-52z"/>
+  <path fill="#6788a8" d="m113 261 28 45 29-45 20 134H90z"/>
+  <path fill="#f0c0ab" d="M104 210h72v59c-19 17-53 17-72 0z"/>
+  <path fill="#ffd9c9" d="M61 112c4-48 34-76 81-76s78 28 82 76l6 65c-9 50-41 80-88 80s-79-30-88-80z"/>
+  <path fill="url(#hair)" d="M51 182C33 103 74 31 142 31c64 0 102 50 98 132-21-42-51-72-96-78-42 3-72 34-93 97z"/>
+  <path fill="#251b21" opacity=".5" d="M87 49c-23 54-18 96 11 128-45-28-52-88-11-128zm92 3c36 40 40 86 10 138 47-37 48-100-10-138z"/>
+  <path fill="#344055" d="M82 160c18-12 35-12 51 0-17-5-32-5-51 0zm74 0c18-13 35-13 52 0-17-5-33-5-52 0z"/>
+  <path fill="#d98b8b" d="M119 214c14 10 33 10 47 0-7 18-40 18-47 0z"/>
+  <text x="141" y="376" text-anchor="middle" fill="#def5ff" font-family="Arial, sans-serif" font-size="54" font-weight="800">⚙</text>
+</svg>
