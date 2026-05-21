@@ -19,6 +19,10 @@
             <p class="tagline">我们的未来，由你选择</p>
           </div>
           <nav class="utility" aria-label="游戏功能">
+            <button id="atlasBtn" type="button">图鉴</button>
+            <button id="jointBtn" type="button">跨专业</button>
+            <button id="progressBtn" type="button">进度</button>
+            <button id="exploreBtn" type="button">探索</button>
             <button id="saveBtn" type="button">SAVE</button>
             <button id="loadBtn" type="button">LOAD</button>
             <button id="configBtn" type="button">CONFIG</button>
@@ -86,6 +90,7 @@
             </div>
           </div>
           <p id="dialogueText"></p>
+          <div class="ending-insights" id="endingInsights" hidden></div>
           <div class="choice-grid" id="choices"></div>
         </section>
       </section>
@@ -105,6 +110,63 @@
             开启背景动效
           </label>
         </form>
+      </dialog>
+
+      <dialog id="atlasDialog" class="atlas-dialog">
+        <form method="dialog">
+          <header>
+            <div>
+              <p>Major Archive</p>
+              <h2>专业图鉴与知识卡片</h2>
+            </div>
+            <button type="submit" aria-label="关闭图鉴">×</button>
+          </header>
+        </form>
+        <div class="atlas-tabs" role="tablist" aria-label="图鉴内容分类">
+          <button id="majorTab" class="active" type="button" role="tab" aria-selected="true">专业图鉴</button>
+          <button id="knowledgeTab" type="button" role="tab" aria-selected="false">知识卡片</button>
+        </div>
+        <section id="majorArchive" class="atlas-content" aria-label="专业图鉴"></section>
+        <section id="knowledgeCards" class="atlas-content" aria-label="知识卡片" hidden></section>
+      </dialog>
+
+      <dialog id="jointDialog" class="atlas-dialog">
+        <form method="dialog">
+          <header>
+            <div>
+              <p>Joint Route</p>
+              <h2>跨专业事件</h2>
+            </div>
+            <button type="submit" aria-label="关闭跨专业事件">×</button>
+          </header>
+        </form>
+        <section id="jointEvents" class="atlas-content" aria-label="跨专业事件"></section>
+      </dialog>
+
+      <dialog id="progressDialog" class="atlas-dialog">
+        <form method="dialog">
+          <header>
+            <div>
+              <p>Progress Hub</p>
+              <h2>成就、信赖与推荐报告</h2>
+            </div>
+            <button type="submit" aria-label="关闭进度中心">×</button>
+          </header>
+        </form>
+        <section id="progressHub" class="atlas-content" aria-label="成就、信赖与推荐报告"></section>
+      </dialog>
+
+      <dialog id="exploreDialog" class="atlas-dialog">
+        <form method="dialog">
+          <header>
+            <div>
+              <p>Campus Explore</p>
+              <h2>7 天日历、校园地图与项目任务</h2>
+            </div>
+            <button type="submit" aria-label="关闭探索模式">×</button>
+          </header>
+        </form>
+        <section id="exploreHub" class="atlas-content" aria-label="探索模式"></section>
       </dialog>
     </main>
 
