@@ -7,6 +7,32 @@ const characterRoutes = Object.values(characterData).reduce((allRoutes, characte
   return allRoutes;
 }, {});
 
+// Icon paths follow the Lucide visual style, an open-source MIT licensed icon set.
+const openIconPaths = {
+  "⌨": '<path d="m18 16 4-4-4-4"/><path d="m6 8-4 4 4 4"/><path d="m14.5 4-5 16"/>',
+  "⚡": '<path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/>',
+  "⚙": '<path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.6 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 8.92 4.6 1.65 1.65 0 0 0 10 3.09V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9c.14.31.22.65.22 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1Z"/>',
+  "▣": '<rect width="16" height="16" x="4" y="4" rx="2"/><rect width="6" height="6" x="9" y="9" rx="1"/><path d="M15 2v2"/><path d="M15 20v2"/><path d="M9 2v2"/><path d="M9 20v2"/><path d="M2 15h2"/><path d="M20 15h2"/><path d="M2 9h2"/><path d="M20 9h2"/>',
+  "▤": '<rect width="18" height="18" x="3" y="3" rx="2"/><path d="M8 7v10"/><path d="M12 7v10"/><path d="M16 7v10"/><path d="M7 8h10"/><path d="M7 12h10"/><path d="M7 16h10"/>',
+  "⌁": '<path d="M4.9 16.1C1 12.2 1 5.8 4.9 1.9"/><path d="M7.8 13.2a6 6 0 0 1 0-8.4"/><circle cx="12" cy="9" r="2"/><path d="M16.2 13.2a6 6 0 0 0 0-8.4"/><path d="M19.1 1.9a10 10 0 0 1 0 14.2"/><path d="M9.5 18h5"/><path d="m8 22 4-11 4 11"/>',
+  AI: '<rect width="6" height="6" x="9" y="2" rx="1"/><rect width="6" height="6" x="2" y="16" rx="1"/><rect width="6" height="6" x="16" y="16" rx="1"/><path d="M12 8v4"/><path d="M5 16v-3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v3"/>',
+  all: '<path d="M3 3h7v7H3z"/><path d="M14 3h7v7h-7z"/><path d="M3 14h7v7H3z"/><path d="M14 14h7v7h-7z"/>',
+  favorite: '<path d="m12 17.3 6.18 3.75-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.78L5.82 21z"/>',
+  "↺": '<path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/>',
+  "✓": '<path d="M20 6 9 17l-5-5"/>',
+  "✦": '<path d="M9.94 15.5A2 2 0 0 0 8.5 14.06l-6.14-1.58a.5.5 0 0 1 0-.96L8.5 9.94A2 2 0 0 0 9.94 8.5l1.58-6.14a.5.5 0 0 1 .96 0L14.06 8.5a2 2 0 0 0 1.44 1.44l6.14 1.58a.5.5 0 0 1 0 .96l-6.14 1.58a2 2 0 0 0-1.44 1.44l-1.58 6.14a.5.5 0 0 1-.96 0Z"/><path d="M20 3v4"/><path d="M22 5h-4"/><path d="M4 17v2"/><path d="M5 18H3"/>'
+};
+
+function renderOpenIcon(icon, className = "open-icon") {
+  const path = openIconPaths[icon];
+  if (!path) return `<span class="${className} icon-text">${icon}</span>`;
+  return `<span class="${className}" aria-hidden="true"><svg viewBox="0 0 24 24">${path}</svg></span>`;
+}
+
+function renderIconLabel(icon, label, className = "inline-open-icon") {
+  return `${renderOpenIcon(icon, className)} <span>${label}</span>`;
+}
+
 const jointRoutes = {
   jointCsComm: {
     speaker: "洛泠 & 星遥",
@@ -1069,12 +1095,12 @@ function renderRecommendationReport() {
         <span>Recommendation</span>
         <h3>专业推荐报告</h3>
       </header>
-      <p>主推荐：${primary.icon} ${primary.name}。副方向：${secondary.icon} ${secondary.name}。当前画像为「${profile.title}」，${profile.desc}</p>
+      <p>主推荐：${renderIconLabel(primary.icon, primary.name)}。副方向：${renderIconLabel(secondary.icon, secondary.name)}。当前画像为「${profile.title}」，${profile.desc}</p>
       <div class="report-ranks">
         ${recommendations
           .map((item) => `
             <span>
-              <b>${item.icon} ${item.name}</b>
+              <b>${renderIconLabel(item.icon, item.name)}</b>
               <i style="--score:${Math.min(100, item.total)}%"></i>
               <em>${item.total}</em>
             </span>
@@ -1120,7 +1146,7 @@ function renderTrustPanel() {
             const epilogueUnlocked = trust >= 50 || hasVisitedRoute(epilogueRoutesByMajor[majorId]);
             return `
               <article>
-                <strong>${major.icon} ${profiles[majorId]?.name || major.name}</strong>
+                <strong>${renderIconLabel(major.icon, profiles[majorId]?.name || major.name)}</strong>
                 <span style="--score:${trust}%"><i></i><b>${trust}</b></span>
                 <p>${trust >= 80 ? "信赖很高，已适合解锁更多后日谈。" : trust >= 50 ? "信赖达标，后日谈入口已开放。" : "继续角色路线、知识卡和跨专业事件可提升信赖。"}</p>
                 <button type="button" data-progress-route="${epilogueRoutesByMajor[majorId]}" ${epilogueUnlocked ? "" : "disabled"}>${epilogueUnlocked ? "查看后日谈" : "信赖 50 解锁"}</button>
@@ -1187,7 +1213,7 @@ function renderEndingInsights(route) {
     </section>
     <section class="cross-progress">
       <strong>交叉探索 Top 3</strong>
-      <div>${progress.map((item) => `<span>${item.icon} ${item.name}<b>${item.score}</b></span>`).join("")}</div>
+      <div>${progress.map((item) => `<span>${renderIconLabel(item.icon, item.name)}<b>${item.score}</b></span>`).join("")}</div>
       <p>${canUnlockInterdisciplinaryEnding() ? "交叉学科隐藏结局已解锁。" : "继续均衡探索至少三个专业、提升理解值并完成一个跨专业事件，可解锁交叉学科隐藏结局。"}</p>
     </section>
   `;
@@ -1563,7 +1589,7 @@ function renderMajorArchive() {
     .map(([id, major]) => `
       <article class="major-entry ${major.color}">
         <div class="major-entry-head">
-          <span>${major.icon}</span>
+          ${renderOpenIcon(major.icon, "major-entry-icon")}
           <div>
             <h3>${major.name}</h3>
             <p>${major.subtitle}</p>
@@ -1609,9 +1635,9 @@ function renderMajorArchive() {
 
 function renderKnowledgeCards(filter = "all") {
   const filterOptions = [
-    ["all", "全部"],
-    ["favorite", "收藏"],
-    ...Object.entries(majorArchive).map(([id, major]) => [id, major.icon])
+    ["all", "all", "全部"],
+    ["favorite", "favorite", "收藏"],
+    ...Object.entries(majorArchive).map(([id, major]) => [id, major.icon, major.name])
   ];
   const cards = knowledgeCards.filter((card) => {
     if (filter === "all") return true;
@@ -1625,7 +1651,7 @@ function renderKnowledgeCards(filter = "all") {
   knowledgeCardsEl.innerHTML = `
     <div class="knowledge-filter" aria-label="知识卡片筛选">
       ${filterOptions
-        .map(([id, label]) => `<button class="${id === filter ? "active" : ""}" type="button" data-filter="${id}">${label}</button>`)
+        .map(([id, icon, label]) => `<button class="${id === filter ? "active" : ""}" type="button" data-filter="${id}" aria-label="${label}" title="${label}">${renderOpenIcon(icon, "filter-icon")}</button>`)
         .join("")}
     </div>
     <div class="collection-stats">
@@ -1674,7 +1700,7 @@ function renderKnowledgeRewards() {
       const quizComplete = isMajorQuizComplete(majorId);
       return `
         <article class="reward-card ${collectionComplete ? "ready" : "locked"}">
-          <span>${major.icon} ${major.name}</span>
+          <span>${renderIconLabel(major.icon, major.name)}</span>
           <h3>${collectionComplete ? "特别对话已解锁" : "特别对话未解锁"}</h3>
           <p>知识卡进度：${unlocked}/${cards.length}</p>
           <button type="button" data-reward-route="${knowledgeRewardRoutesByMajor[majorId]}" ${collectionComplete ? "" : "disabled"}>${collectionComplete ? "进入特别对话" : "继续收集知识卡"}</button>
@@ -1713,7 +1739,7 @@ function renderKnowledgeRewards() {
         <p>${wrongCards.length ? "错题本会记录未答对的知识卡，再次答对后自动移出。" : "错题本为空。保持这个状态，很漂亮。"}</p>
         <div>
           ${wrongCards.length
-            ? wrongCards.map((card) => `<span>${majorArchive[card.major].icon} ${card.title}</span>`).join("")
+            ? wrongCards.map((card) => `<span>${renderIconLabel(majorArchive[card.major].icon, card.title)}</span>`).join("")
             : "<span>暂无错题</span>"}
         </div>
       </div>
@@ -1896,7 +1922,7 @@ function renderProjectTasks() {
             const doneRoutes = collectionState.projectProgress?.[project.id] || [];
             return `
               <article>
-                <span>${majorArchive[project.major].icon} ${project.name}</span>
+                <span>${renderIconLabel(majorArchive[project.major].icon, project.name)}</span>
                 <h4>${project.desc}</h4>
                 <p>完成度 ${doneRoutes.length}/${project.routes.length}</p>
                 <div>
@@ -1989,7 +2015,7 @@ function render(routeId, shouldScore = true) {
     const button = document.createElement("button");
     button.type = "button";
     button.innerHTML = `
-      <span class="choice-icon">${icon}</span>
+      ${renderOpenIcon(icon, "choice-icon")}
       <span class="choice-title">${title}</span>
       <span class="choice-subtitle">${subtitle}</span>
     `;

@@ -20,7 +20,7 @@ major-galgame-demo/
 │  ├─ ic/profile.js    微澜资料、剧情、小游戏配置
 │  └─ comm/profile.js  星遥资料、剧情、小游戏配置
 ├─ png/                当前使用的 PNG 人物图像
-└─ maybe_png/          预备用剧情图像
+└─ assets/characters/  旧版 SVG 角色资源
 ```
 
 ## 角色与专业

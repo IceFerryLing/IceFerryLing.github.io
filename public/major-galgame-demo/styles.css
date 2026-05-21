@@ -5,6 +5,8 @@
   --cyan: #76dcff;
   --gold: #f7d46b;
   --violet: #b693ff;
+  --mint: #72f0b0;
+  --coral: #ff9f7a;
   --panel: rgba(10, 24, 45, 0.72);
   --line: rgba(159, 222, 255, 0.52);
   font-family: "Microsoft YaHei", "Noto Sans SC", system-ui, sans-serif;
@@ -41,26 +43,46 @@ input {
   overflow: hidden;
   background:
     radial-gradient(circle at 84% 22%, rgba(255, 255, 255, 0.38), transparent 11%),
+    linear-gradient(145deg, rgba(255, 159, 122, 0.28), transparent 28%),
+    linear-gradient(225deg, rgba(114, 240, 176, 0.22), transparent 26%),
     linear-gradient(180deg, rgba(89, 166, 236, 0.72), rgba(20, 51, 103, 0.42) 39%, rgba(11, 18, 43, 0.94)),
     url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1400 800'%3E%3Cpath fill='%23294569' d='M0 386h80v-91h36v91h78V214h48v172h85V318h32v68h92V158h66v228h78V246h48v140h84V188h54v198h89V108h72v278h69V259h37v127h82V202h57v184h147v414H0z'/%3E%3Cpath fill='%235f8ebd' opacity='.7' d='M0 421h104v-58h50v58h124v-93h64v93h134v-64h42v64h175v-99h60v99h132v-69h48v69h122v-115h67v115h278v379H0z'/%3E%3C/svg%3E");
   background-size: cover;
   background-position: center;
 }
 
-.scene::before {
+.scene::before,
+.scene::after {
   content: "";
   position: absolute;
   inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.scene::before {
   background:
     linear-gradient(90deg, rgba(5, 12, 30, 0.55), transparent 24%, transparent 72%, rgba(4, 12, 28, 0.38)),
-    repeating-linear-gradient(0deg, transparent 0 20px, rgba(118, 220, 255, 0.05) 21px 22px);
-  pointer-events: none;
+    repeating-linear-gradient(0deg, transparent 0 20px, rgba(118, 220, 255, 0.05) 21px 22px),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180' viewBox='0 0 180 180'%3E%3Cg fill='none' stroke='%2376dcff' stroke-opacity='.16' stroke-width='1.5'%3E%3Cpath d='M24 34h44v26h34v44h42'/%3E%3Cpath d='M18 132h46V94h28V52h52'/%3E%3Cpath d='M112 20v30h30v36'/%3E%3Ccircle cx='24' cy='34' r='4'/%3E%3Ccircle cx='102' cy='60' r='3'/%3E%3Ccircle cx='144' cy='104' r='4'/%3E%3Ccircle cx='64' cy='132' r='3'/%3E%3C/g%3E%3Cg fill='%23f7d46b' fill-opacity='.18'%3E%3Cpath d='M156 30l3 8 8 3-8 3-3 8-3-8-8-3 8-3z'/%3E%3Cpath d='M38 88l2 6 6 2-6 2-2 6-2-6-6-2 6-2z'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: auto, auto, 180px 180px;
+}
+
+.scene::after {
+  opacity: 0.78;
+  background:
+    linear-gradient(180deg, transparent 56%, rgba(2, 9, 20, 0.42)),
+    repeating-linear-gradient(120deg, transparent 0 42px, rgba(255, 255, 255, 0.045) 43px 44px),
+    repeating-linear-gradient(60deg, transparent 0 58px, rgba(114, 240, 176, 0.055) 59px 60px);
+  -webkit-mask-image: linear-gradient(180deg, transparent 0 18%, #000 34% 100%);
+  mask-image: linear-gradient(180deg, transparent 0 18%, #000 34% 100%);
 }
 
 .skyline,
 .holo-grid {
   position: absolute;
   inset: 0;
+  z-index: 0;
   pointer-events: none;
 }
 
@@ -72,7 +94,10 @@ input {
   transform: translateX(-50%);
   padding: 12px 54px;
   border: 2px solid rgba(233, 246, 255, 0.45);
-  background: rgba(17, 39, 73, 0.38);
+  background:
+    linear-gradient(90deg, rgba(118, 220, 255, 0.16), rgba(247, 212, 107, 0.1), rgba(182, 147, 255, 0.14)),
+    rgba(17, 39, 73, 0.38);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.18), 0 18px 44px rgba(0, 0, 0, 0.22);
   font-size: clamp(20px, 3vw, 36px);
   font-weight: 800;
   letter-spacing: 0;
@@ -90,6 +115,23 @@ input {
   font-size: 18px;
   line-height: 1.8;
   text-align: right;
+}
+
+.holo-grid::before {
+  content: "";
+  position: absolute;
+  right: clamp(24px, 7vw, 110px);
+  top: 112px;
+  width: min(34vw, 430px);
+  aspect-ratio: 1.65;
+  border: 1px solid rgba(159, 222, 255, 0.22);
+  opacity: 0.68;
+  background:
+    linear-gradient(90deg, transparent 0 18%, rgba(118, 220, 255, 0.16) 18% 19%, transparent 19% 54%, rgba(247, 212, 107, 0.18) 54% 55%, transparent 55%),
+    linear-gradient(0deg, transparent 0 28%, rgba(114, 240, 176, 0.14) 28% 29%, transparent 29% 70%, rgba(182, 147, 255, 0.16) 70% 71%, transparent 71%),
+    repeating-linear-gradient(90deg, rgba(236, 248, 255, 0.05) 0 1px, transparent 1px 28px),
+    repeating-linear-gradient(0deg, rgba(236, 248, 255, 0.05) 0 1px, transparent 1px 28px);
+  clip-path: polygon(0 14%, 92% 14%, 100% 28%, 100% 100%, 8% 100%, 0 86%);
 }
 
 .topbar,
@@ -139,13 +181,17 @@ h1 {
 dialog button {
   border: 1px solid var(--line);
   color: var(--ink);
-  background: rgba(18, 40, 76, 0.58);
+  background:
+    linear-gradient(135deg, rgba(118, 220, 255, 0.14), transparent 46%),
+    rgba(18, 40, 76, 0.58);
   cursor: pointer;
 }
 
 .utility button {
   min-width: 76px;
   height: 40px;
+  border-radius: 6px;
+  box-shadow: inset 0 0 14px rgba(236, 248, 255, 0.06);
 }
 
 .lab-table {
@@ -162,6 +208,8 @@ dialog button {
 }
 
 .hero-card {
+  position: relative;
+  z-index: 0;
   min-height: 270px;
   display: grid;
   justify-items: center;
@@ -173,7 +221,60 @@ dialog button {
   transition: opacity 180ms ease, transform 180ms ease, filter 180ms ease;
 }
 
+.hero-card::before,
+.hero-card::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  z-index: 0;
+  pointer-events: none;
+  transform: translateX(-50%);
+}
+
+.hero-card::before {
+  bottom: 24px;
+  width: min(86%, 230px);
+  aspect-ratio: 3.8;
+  border: 1px solid rgba(159, 222, 255, 0.34);
+  background:
+    repeating-linear-gradient(90deg, transparent 0 10px, rgba(118, 220, 255, 0.18) 11px 12px),
+    radial-gradient(ellipse at center, rgba(118, 220, 255, 0.2), transparent 70%);
+  box-shadow: 0 0 28px rgba(118, 220, 255, 0.18);
+  transform: translateX(-50%) perspective(240px) rotateX(58deg);
+}
+
+.hero-card::after {
+  bottom: 18px;
+  width: min(68%, 172px);
+  height: 2px;
+  background: linear-gradient(90deg, transparent, currentColor, transparent);
+  opacity: 0.72;
+  box-shadow: 0 0 18px currentColor;
+}
+
+.hero-card.cs {
+  color: var(--cyan);
+}
+
+.hero-card.ee {
+  color: var(--gold);
+}
+
+.hero-card.auto {
+  color: var(--mint);
+}
+
+.hero-card.ic {
+  color: var(--violet);
+}
+
+.hero-card.comm {
+  color: var(--coral);
+}
+
 .character-img {
+  position: relative;
+  z-index: 1;
   width: min(18vw, 230px);
   min-width: 128px;
   max-height: 54vh;
@@ -188,6 +289,8 @@ dialog button {
 }
 
 .hero-card p {
+  position: relative;
+  z-index: 1;
   margin: 0;
   font-weight: 800;
   font-size: 22px;
@@ -195,6 +298,8 @@ dialog button {
 }
 
 .hero-card small {
+  position: relative;
+  z-index: 1;
   color: var(--muted);
 }
 
@@ -238,10 +343,35 @@ dialog button {
 
 .profile-panel,
 .mini-game {
+  position: relative;
+  overflow: hidden;
   border: 1px solid rgba(159, 222, 255, 0.42);
-  background: rgba(8, 22, 43, 0.68);
+  background:
+    linear-gradient(135deg, rgba(118, 220, 255, 0.12), transparent 34%),
+    linear-gradient(315deg, rgba(247, 212, 107, 0.08), transparent 38%),
+    rgba(8, 22, 43, 0.68);
   box-shadow: 0 16px 36px rgba(3, 12, 28, 0.28);
   backdrop-filter: blur(12px);
+}
+
+.profile-panel::before,
+.mini-game::before,
+.dialogue-panel::before,
+.atlas-dialog::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(var(--line), var(--line)) left 12px top 12px / 34px 1px no-repeat,
+    linear-gradient(var(--line), var(--line)) left 12px top 12px / 1px 34px no-repeat,
+    linear-gradient(var(--line), var(--line)) right 12px top 12px / 34px 1px no-repeat,
+    linear-gradient(var(--line), var(--line)) right 12px top 12px / 1px 34px no-repeat,
+    linear-gradient(var(--line), var(--line)) left 12px bottom 12px / 34px 1px no-repeat,
+    linear-gradient(var(--line), var(--line)) left 12px bottom 12px / 1px 34px no-repeat,
+    linear-gradient(var(--line), var(--line)) right 12px bottom 12px / 34px 1px no-repeat,
+    linear-gradient(var(--line), var(--line)) right 12px bottom 12px / 1px 34px no-repeat;
+  opacity: 0.62;
 }
 
 .profile-panel[hidden],
@@ -334,7 +464,11 @@ dialog button {
   display: grid;
   place-items: center;
   border: 1px dashed rgba(159, 222, 255, 0.35);
-  background: rgba(236, 248, 255, 0.08);
+  background:
+    linear-gradient(90deg, transparent 49%, rgba(118, 220, 255, 0.14) 50%, transparent 51%),
+    linear-gradient(0deg, transparent 49%, rgba(118, 220, 255, 0.14) 50%, transparent 51%),
+    rgba(236, 248, 255, 0.08);
+  background-size: 34px 34px, 34px 34px, auto;
 }
 
 .mini-game-actions {
@@ -522,13 +656,37 @@ dialog button {
 }
 
 .dialogue-panel {
+  position: relative;
+  overflow: hidden;
   width: min(1160px, 100%);
   margin: 0 auto;
   padding: 18px;
   border: 1px solid var(--line);
-  background: var(--panel);
-  box-shadow: 0 0 38px rgba(65, 190, 255, 0.22);
+  background:
+    linear-gradient(135deg, rgba(118, 220, 255, 0.14), transparent 30%),
+    linear-gradient(315deg, rgba(255, 159, 122, 0.1), transparent 32%),
+    var(--panel);
+  box-shadow: 0 0 38px rgba(65, 190, 255, 0.22), inset 0 0 28px rgba(236, 248, 255, 0.05);
   backdrop-filter: blur(14px);
+}
+
+.dialogue-panel::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.24;
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='128' height='64' viewBox='0 0 128 64'%3E%3Cg fill='none' stroke='%23f7d46b' stroke-opacity='.55' stroke-width='1'%3E%3Cpath d='M8 8h22l8 8h28l8-8h46'/%3E%3Cpath d='M14 48h28l8-8h24l8 8h32'/%3E%3Ccircle cx='30' cy='8' r='2'/%3E%3Ccircle cx='66' cy='16' r='2'/%3E%3Ccircle cx='82' cy='48' r='2'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: 128px 64px;
+}
+
+.speaker-row,
+#dialogueText,
+.ending-insights,
+.choice-grid {
+  position: relative;
+  z-index: 1;
 }
 
 .speaker-row {
@@ -691,8 +849,46 @@ dialog button {
   gap: 4px;
   place-items: center;
   border-radius: 4px;
-  background: rgba(236, 248, 255, 0.15);
-  box-shadow: inset 0 0 18px rgba(118, 220, 255, 0.2);
+  background:
+    linear-gradient(135deg, rgba(236, 248, 255, 0.18), transparent 42%),
+    linear-gradient(315deg, rgba(247, 212, 107, 0.08), transparent 44%),
+    rgba(236, 248, 255, 0.15);
+  box-shadow: inset 0 0 18px rgba(118, 220, 255, 0.2), 0 8px 18px rgba(0, 0, 0, 0.12);
+}
+
+.open-icon,
+.inline-open-icon,
+.major-entry-icon,
+.filter-icon,
+.major-choice-icon,
+.choice-icon {
+  width: 1.2em;
+  height: 1.2em;
+  display: inline-grid;
+  place-items: center;
+  flex: 0 0 auto;
+  color: currentColor;
+  vertical-align: middle;
+}
+
+.open-icon svg,
+.inline-open-icon svg,
+.major-entry-icon svg,
+.filter-icon svg,
+.major-choice-icon svg,
+.choice-icon svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.inline-open-icon + span {
+  margin-left: 6px;
 }
 
 .choice-grid button:hover,
@@ -706,7 +902,8 @@ dialog button {
 }
 
 .choice-icon {
-  font-size: 32px;
+  width: 28px;
+  height: 28px;
 }
 
 .choice-title {
@@ -719,10 +916,13 @@ dialog button {
 }
 
 dialog {
+  position: relative;
   width: min(420px, calc(100vw - 32px));
   border: 1px solid var(--line);
   color: var(--ink);
-  background: #101d35;
+  background:
+    linear-gradient(135deg, rgba(118, 220, 255, 0.12), transparent 42%),
+    #101d35;
   box-shadow: 0 22px 70px rgba(0, 0, 0, 0.45);
 }
 
@@ -748,13 +948,16 @@ dialog label {
 }
 
 .atlas-dialog {
+  position: relative;
   width: min(980px, calc(100vw - 28px));
   max-height: min(820px, calc(100vh - 28px));
   padding: 0;
   overflow: hidden;
   background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='96' height='96' viewBox='0 0 96 96'%3E%3Cg fill='none' stroke='%2376dcff' stroke-opacity='.14'%3E%3Cpath d='M0 24h24V0M96 72H72v24M22 72h18l8-8h26M22 24h22l8 8h22'/%3E%3C/g%3E%3Cg fill='%23f7d46b' fill-opacity='.12'%3E%3Cpath d='M79 19l2 5 5 2-5 2-2 5-2-5-5-2 5-2z'/%3E%3C/g%3E%3C/svg%3E"),
     linear-gradient(135deg, rgba(12, 33, 58, 0.96), rgba(14, 23, 45, 0.98)),
     #101d35;
+  background-size: 96px 96px, auto, auto;
 }
 
 .atlas-dialog form {
@@ -1086,12 +1289,15 @@ dialog label {
 }
 
 .reward-card {
+  position: relative;
+  overflow: hidden;
   padding: 12px;
   display: grid;
   gap: 8px;
   align-content: start;
   border: 1px solid rgba(159, 222, 255, 0.24);
   background: rgba(1, 7, 16, 0.22);
+  color: var(--gold);
 }
 
 .reward-card.locked {
@@ -1195,6 +1401,8 @@ dialog label {
 }
 
 .knowledge-card {
+  position: relative;
+  overflow: hidden;
   min-height: 320px;
   padding: 15px;
   display: grid;
@@ -1203,7 +1411,24 @@ dialog label {
   border: 1px solid rgba(159, 222, 255, 0.3);
   background:
     linear-gradient(135deg, rgba(236, 248, 255, 0.1), transparent 42%),
+    repeating-linear-gradient(120deg, transparent 0 26px, rgba(255, 255, 255, 0.035) 27px 28px),
     rgba(5, 15, 32, 0.62);
+}
+
+.knowledge-card::after,
+.joint-card::after,
+.reward-card::after {
+  content: "";
+  position: absolute;
+  right: -18px;
+  bottom: -18px;
+  width: 108px;
+  aspect-ratio: 1;
+  pointer-events: none;
+  opacity: 0.34;
+  background:
+    conic-gradient(from 45deg, transparent 0 12%, currentColor 12% 14%, transparent 14% 36%, currentColor 36% 38%, transparent 38% 62%, currentColor 62% 64%, transparent 64% 86%, currentColor 86% 88%, transparent 88%),
+    radial-gradient(circle, transparent 0 48%, currentColor 49% 50%, transparent 51%);
 }
 
 .knowledge-card.locked {
@@ -1213,22 +1438,27 @@ dialog label {
 }
 
 .knowledge-card.cs {
+  color: var(--cyan);
   box-shadow: inset 0 3px 0 #76dcff;
 }
 
 .knowledge-card.ee {
+  color: var(--gold);
   box-shadow: inset 0 3px 0 #f7d46b;
 }
 
 .knowledge-card.auto {
+  color: var(--mint);
   box-shadow: inset 0 3px 0 #72f0b0;
 }
 
 .knowledge-card.ic {
+  color: var(--violet);
   box-shadow: inset 0 3px 0 #b693ff;
 }
 
 .knowledge-card.comm {
+  color: var(--coral);
   box-shadow: inset 0 3px 0 #ff9f7a;
 }
 
@@ -1341,6 +1571,8 @@ dialog label {
 }
 
 .joint-card {
+  position: relative;
+  overflow: hidden;
   min-height: 280px;
   padding: 15px;
   display: grid;
@@ -1349,7 +1581,9 @@ dialog label {
   border: 1px solid rgba(159, 222, 255, 0.3);
   background:
     linear-gradient(135deg, rgba(114, 240, 176, 0.12), transparent 46%),
+    repeating-linear-gradient(60deg, transparent 0 24px, rgba(114, 240, 176, 0.035) 25px 26px),
     rgba(5, 15, 32, 0.66);
+  color: var(--mint);
 }
 
 .joint-card.locked {
@@ -1600,7 +1834,10 @@ dialog label {
 }
 
 .paused .holo-grid::after,
-.paused .scene::before {
+.paused .holo-grid::before,
+.paused .scene::before,
+.paused .scene::after,
+.paused .dialogue-panel::after {
   display: none;
 }
 
