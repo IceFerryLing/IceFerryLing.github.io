@@ -13,19 +13,24 @@
         <div class="holo-grid" aria-hidden="true"></div>
 
         <header class="topbar">
-          <div>
+          <div class="brand-block">
             <p class="kicker">哈工深 25届</p>
             <h1>工科试验班：计算机与信息类</h1>
             <p class="tagline">我们的未来，由你选择</p>
           </div>
           <nav class="utility" aria-label="游戏功能">
-            <button id="atlasBtn" type="button">图鉴</button>
-            <button id="jointBtn" type="button">跨专业</button>
-            <button id="progressBtn" type="button">进度</button>
-            <button id="exploreBtn" type="button">探索</button>
-            <button id="saveBtn" type="button">SAVE</button>
-            <button id="loadBtn" type="button">LOAD</button>
-            <button id="configBtn" type="button">CONFIG</button>
+            <div class="utility-group primary-tools" aria-label="玩法入口">
+              <button id="atlasBtn" type="button">图鉴</button>
+              <button id="jointBtn" type="button">跨专业</button>
+              <button id="progressBtn" type="button">进度</button>
+              <button id="exploreBtn" type="button">探索</button>
+              <button id="debateBtn" type="button">辩论</button>
+            </div>
+            <div class="utility-group system-tools" aria-label="系统操作">
+              <button id="saveBtn" type="button">SAVE</button>
+              <button id="loadBtn" type="button">LOAD</button>
+              <button id="configBtn" type="button">CONFIG</button>
+            </div>
           </nav>
         </header>
 
@@ -202,6 +207,19 @@
           </header>
         </form>
         <section id="exploreHub" class="atlas-content" aria-label="探索模式"></section>
+      </dialog>
+
+      <dialog id="debateDialog" class="atlas-dialog">
+        <form method="dialog">
+          <header>
+            <div>
+              <p>Major Debate</p>
+              <h2>专业选择辩论赛</h2>
+            </div>
+            <button type="submit" aria-label="关闭辩论赛">×</button>
+          </header>
+        </form>
+        <section id="debateHub" class="atlas-content" aria-label="专业选择辩论赛"></section>
       </dialog>
     </main>
 

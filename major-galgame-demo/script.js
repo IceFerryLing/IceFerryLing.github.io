@@ -38,7 +38,26 @@ const jointRoutes = {
     speaker: "洛泠 & 星遥",
     focus: "cs",
     text: "导览 AI 的路线推荐已经能跑，但星遥的链路日志显示，体育馆附近的视频回传总会抖一下。洛泠盯着延迟曲线，星遥蹲在天线旁调中继参数。你把地图图结构和链路质量叠在一起，忽然发现：算法不能只看最短路，通信也不能只看峰值速率。真正可靠的校园智能体，要把路径、信号、拥塞和用户体验一起考虑。星遥笑着朝洛泠挥手：这次不是谁辅助谁，是我们一起把远方接进系统里。",
+    next: "jointCsCommEnd",
     score: { logic: 2, passion: 1, team: 2 },
+    game: {
+      type: "tradeoff",
+      tag: "计科 × 通信",
+      title: "智能导览网络权衡",
+      brief: "选择 3 张策略卡，让路径规划同时兼顾距离、信号强度、拥塞和时延。",
+      metrics: { 路径效率: 3, 信号强度: 2, 拥塞控制: 1, 时延压力: 2 },
+      targets: { 路径效率: [3, 6], 信号强度: [4, 6], 拥塞控制: [3, 6], 时延压力: [0, 4] },
+      maxTurns: 3,
+      cards: [
+        { title: "动态路径缓存", desc: "洛泠预先缓存候选路线。", effects: { 路径效率: 2, 拥塞控制: 1, 时延压力: -1 } },
+        { title: "楼顶中继路线", desc: "星遥切到更稳的中继链路。", effects: { 信号强度: 2, 路径效率: -1, 时延压力: 1 } },
+        { title: "避开拥塞走廊", desc: "牺牲一点距离，换取稳定体验。", effects: { 拥塞控制: 2, 路径效率: -1 } },
+        { title: "提高发射功率", desc: "链路更稳，但会放大能耗与干扰。", effects: { 信号强度: 2, 拥塞控制: -1, 时延压力: 1 } }
+      ],
+      hint: "目标：路径效率、信号强度、拥塞控制都要达标，时延压力不要超过上限。",
+      fail: "联调结果还不够稳。洛泠让你重看代价函数，星遥让你重看链路质量。",
+      success: "路径、信号、拥塞和时延终于同时落在安全区间。星遥冲你比了个 OK，洛泠在日志里标注：联合策略可部署。"
+    },
     choices: [
       ["jointCsCommEnd", "AI", "完成智能导览联调", "把算法和网络接成一条稳定路径"],
       ["intro", "↺", "回到选择界面", "继续探索其他专业"]
@@ -54,7 +73,26 @@ const jointRoutes = {
     speaker: "青岚 & 栖禾",
     focus: "auto",
     text: "暴雨后的实验楼需要巡检微电网柜，青岚把机器人导航地图传到平板上，栖禾则盯着电池和负载曲线。你们让机器人避开积水区域，在低电量时自动切换巡检顺序，并把关键节点的温度、声音和电流异常回传。青岚说控制策略要稳，栖禾说供能策略也要稳。你突然明白，自动化让设备自己行动，电气让系统持续有能量行动；两者交汇处，就是会自己照看城市的基础设施。",
+    next: "jointAutoEeEnd",
     score: { logic: 1, passion: 2, team: 2 },
+    game: {
+      type: "tradeoff",
+      tag: "自动化 × 电气",
+      title: "自主能源巡检调度",
+      brief: "选择 3 张策略卡，让机器人在电量、巡检覆盖、负载风险和安全边界之间取得平衡。",
+      metrics: { 电量余量: 4, 巡检覆盖: 1, 负载风险: 3, 安全边界: 2 },
+      targets: { 电量余量: [2, 5], 巡检覆盖: [4, 6], 负载风险: [0, 3], 安全边界: [4, 6] },
+      maxTurns: 3,
+      cards: [
+        { title: "低电量优先巡检", desc: "先跑关键节点，减少返航风险。", effects: { 电量余量: -1, 巡检覆盖: 2, 安全边界: 1 } },
+        { title: "关闭非关键负载", desc: "栖禾切掉低优先级设备。", effects: { 电量余量: 1, 负载风险: -2 } },
+        { title: "降低巡检速度", desc: "青岚让控制策略更保守。", effects: { 电量余量: -1, 巡检覆盖: 1, 安全边界: 1 } },
+        { title: "绕开积水区域", desc: "安全提高，但覆盖会变少。", effects: { 巡检覆盖: -1, 安全边界: 2 } }
+      ],
+      hint: "目标：覆盖和安全必须达标，负载风险要降下来，电量不能被用空。",
+      fail: "机器人完成不了稳定闭环。青岚盯着路径，栖禾开始重算供能边界。",
+      success: "巡检路线、供能策略和安全边界同时达标。青岚点头：闭环成立；栖禾补充：供能也稳住了。"
+    },
     choices: [
       ["jointAutoEeEnd", "⚙", "完成微电网巡检", "让机器人和能源系统形成闭环"],
       ["intro", "↺", "回到选择界面", "继续探索其他专业"]
@@ -70,7 +108,26 @@ const jointRoutes = {
     speaker: "微澜 & 洛泠",
     focus: "ic",
     text: "洛泠的模型在边缘设备上跑得太慢，微澜把计算图拆成矩阵乘、缓存访问和数据搬运三类。你们从算法瓶颈追到硬件结构，又从芯片面积追回模型压缩。洛泠第一次承认：不是所有优化都能靠代码解决。微澜也轻轻点头：不是所有芯片都应该脱离应用场景设计。你在白板上画出一条从算法需求到 RTL 模块的路径，突然看见软件和硅片之间并没有墙，只有一层又一层可以被理解的抽象。",
+    next: "jointIcCsEnd",
     score: { logic: 3, passion: 1, team: 1 },
+    game: {
+      type: "tradeoff",
+      tag: "集成电路 × 计科",
+      title: "AI 加速器部署权衡",
+      brief: "选择 3 张策略卡，在模型精度、延迟、功耗和芯片面积之间找到可部署方案。",
+      metrics: { 模型精度: 3, 推理延迟: 5, 功耗压力: 4, 芯片面积: 2 },
+      targets: { 模型精度: [4, 6], 推理延迟: [0, 3], 功耗压力: [0, 4], 芯片面积: [0, 4] },
+      maxTurns: 3,
+      cards: [
+        { title: "INT8 量化", desc: "降低计算量，但要守住关键精度。", effects: { 模型精度: -1, 推理延迟: -2, 功耗压力: -1 } },
+        { title: "片上缓存扩容", desc: "减少数据搬运，面积会增加。", effects: { 推理延迟: -1, 功耗压力: 1, 芯片面积: 1 } },
+        { title: "保留 FP16 关键层", desc: "用精度守住核心输出。", effects: { 模型精度: 2, 推理延迟: 1, 功耗压力: 1 } },
+        { title: "稀疏计算单元", desc: "跳过无效乘加，换取结构复杂度。", effects: { 推理延迟: -1, 功耗压力: -1, 芯片面积: 1 } }
+      ],
+      hint: "目标：模型精度不能塌，延迟要降下来，功耗和面积都不能超预算。",
+      fail: "方案还不能部署。洛泠说模型输出不稳，微澜说硅片预算也撑不住。",
+      success: "精度、延迟、功耗和面积同时过线。洛泠把模型冻结，微澜把模块写进下一版框图。"
+    },
     choices: [
       ["jointIcCsEnd", "▣", "完成 AI 加速器方案", "让算法需求落到硬件结构"],
       ["intro", "↺", "回到选择界面", "继续探索其他专业"]
@@ -182,7 +239,26 @@ const jointRoutes = {
     speaker: "微澜 & 星遥",
     focus: "ic",
     text: "星遥的高速链路实验需要更低功耗的信号处理模块，微澜把编码、调制和基带处理拆成硬件流水线。你们从误码率讨论到乘加阵列，从频谱效率讨论到片上缓存。通信系统追求可靠抵达，芯片系统追求高效执行；当两者坐到同一张桌前，每一比特都开始有了物理重量。星遥看着版图上的数据通路，小声说：原来信号抵达远方之前，先要穿过这么精密的一座城。",
+    next: "jointIcCommEnd",
     score: { logic: 2, passion: 1, team: 2 },
+    game: {
+      type: "tradeoff",
+      tag: "集成电路 × 通信",
+      title: "低功耗基带模块设计",
+      brief: "选择 3 张策略卡，在误码率、吞吐量、功耗和芯片面积之间取得平衡。",
+      metrics: { 误码风险: 4, 吞吐量: 2, 功耗压力: 3, 芯片面积: 2 },
+      targets: { 误码风险: [0, 2], 吞吐量: [4, 7], 功耗压力: [0, 4], 芯片面积: [0, 4] },
+      maxTurns: 3,
+      cards: [
+        { title: "LDPC 硬件流水线", desc: "编码更可靠，但硬件更重。", effects: { 误码风险: -2, 吞吐量: 1, 功耗压力: 1, 芯片面积: 1 } },
+        { title: "可配置调制单元", desc: "适配更多链路状态。", effects: { 吞吐量: 2, 功耗压力: 1, 芯片面积: 1 } },
+        { title: "共享存储缓存", desc: "复用片上资源，减少搬运。", effects: { 吞吐量: 1, 功耗压力: -1, 芯片面积: -1 } },
+        { title: "降低工作电压", desc: "功耗更低，但链路余量会变紧。", effects: { 误码风险: 1, 吞吐量: -1, 功耗压力: -1 } }
+      ],
+      hint: "目标：误码风险要压低，吞吐量要达标，功耗和面积不能爆表。",
+      fail: "模块指标还没收敛。星遥看着误码曲线，微澜开始重排数据通路。",
+      success: "误码率、吞吐量、功耗和面积全部进入可接受范围。星遥说链路稳了，微澜说硅片也能承受。"
+    },
     choices: [
       ["jointIcCommEnd", "⌁", "完成低功耗基带模块", "让通信算法进入芯片流水线"],
       ["intro", "↺", "回到选择界面", "继续探索其他专业"]
@@ -250,12 +326,21 @@ const knowledgeRewardRoutes = {
   knowledgeFinalArchive: {
     speaker: "系统",
     focus: "cs",
-    text: "最终隐藏剧情：全域图鉴。十张知识卡全部被你收藏后，实验平台的资料终端亮起一行新的权限提示：你已经不只是被某一个专业吸引，而是开始理解专业之间怎样共同解释世界。洛泠、栖禾、青岚、微澜和星遥把各自的项目资料合成一份联合档案，封面写着“未来不是单选题”。你获得最终图鉴称号：全域策展人。",
+    text: "最终隐藏剧情：全域图鉴。十张知识卡全部解锁并通过测验后，实验平台的资料终端亮起一行新的权限提示：你已经不只是被某一个专业吸引，而是开始理解专业之间怎样共同解释世界。洛泠、栖禾、青岚、微澜和星遥把各自的项目资料合成一份联合档案，封面写着“未来不是单选题”。你获得最终图鉴称号：全域策展人。",
     score: { logic: 2, passion: 2, team: 2 },
     choices: [
       ["intro", "↺", "带着全域图鉴重新选择", "回到五个专业"]
     ],
     ending: true
+  },
+  restEvening: {
+    speaker: "系统",
+    focus: "",
+    text: "夜色把实验楼的灯一点点收进窗里。你没有继续硬撑，而是把今天的笔记合上，去楼下吹了一会儿风。专业选择不是越焦虑越清楚，有时让大脑安静下来，第二天反而能看见真正的问题。",
+    score: { logic: 0, passion: 1, team: 0 },
+    choices: [
+      ["intro", "↺", "回到选择界面", "休息后重新整理方向"]
+    ]
   },
   interdisciplinaryHidden: {
     speaker: "系统",
@@ -686,6 +771,39 @@ const aptitudeProfiles = [
   { title: "探索型", match: () => true, desc: "你在多个方向之间保持开放，适合继续探索交叉路径。" }
 ];
 
+const thinkingModes = {
+  abstractModeling: {
+    title: "抽象建模型",
+    majors: ["cs"],
+    routes: ["csTheory", "csTheoryMore", "csAiPromise", "csSysPromise", "jointIcCs", "jointCsAuto"],
+    advice: "你习惯先定义问题、边界和验证方式，适合算法、系统、AI 平台或需要强抽象能力的方向。"
+  },
+  realLoop: {
+    title: "现实闭环型",
+    majors: ["auto", "ee"],
+    routes: ["autoGame", "autoLab", "eeGame", "eeLab", "jointAutoEe", "jointCsAuto"],
+    advice: "你会自然追问设备怎样在真实环境里稳定运转，适合自动化、机器人、能源系统和现场联调。"
+  },
+  connectedCollaboration: {
+    title: "连接协作型",
+    majors: ["comm"],
+    routes: ["commTheory", "commTheoryMore", "commGame", "commLab", "jointCsComm", "jointEeComm", "jointAutoComm"],
+    advice: "你关注信息怎样可靠抵达、系统怎样协同，适合通信网络、分布式系统和跨团队联调。"
+  },
+  lowLevelEfficiency: {
+    title: "底层效率型",
+    majors: ["ic"],
+    routes: ["icTheory", "icTheoryMore", "icGame", "icLab", "jointIcCs", "jointEeIc", "jointIcComm"],
+    advice: "你会被性能、功耗、时序和可靠性吸引，适合芯片、体系结构、嵌入式和高性能系统。"
+  },
+  crossIntegration: {
+    title: "交叉整合型",
+    majors: ["cs", "ee", "auto", "ic", "comm"],
+    routes: ["jointCsComm", "jointAutoEe", "jointIcCs", "jointCsEe", "jointCsAuto", "jointEeIc", "jointEeComm", "jointAutoIc", "jointAutoComm", "jointIcComm", "interdisciplinaryHidden"],
+    advice: "你不满足于单点答案，更想把算法、硬件、能源、控制和通信拼成完整系统。"
+  }
+};
+
 const majorRouteMarkers = {
   cs: ["cs", "csTheory", "csTheoryMore", "csGame", "csLab", "csAiPromise", "csSysPromise"],
   ee: ["ee", "eeTheory", "eeTheoryMore", "eeGame", "eeLab", "eeGridPromise", "eePowerPromise"],
@@ -702,6 +820,14 @@ const epilogueRoutesByMajor = {
   comm: "epilogueComm"
 };
 
+const gapReviewRoutesByMajor = {
+  cs: "csTheoryMore",
+  ee: "eeTheoryMore",
+  auto: "autoTheoryMore",
+  ic: "icTheoryMore",
+  comm: "commTheoryMore"
+};
+
 const trustRouteGain = {
   cs: ["cs", "csTheory", "csTheoryMore", "csGame", "csLab", "csAiPromise", "csSysPromise", "knowledgeRewardCs"],
   ee: ["ee", "eeTheory", "eeTheoryMore", "eeGame", "eeLab", "eeGridPromise", "eePowerPromise", "knowledgeRewardEe"],
@@ -711,7 +837,7 @@ const trustRouteGain = {
 };
 
 const achievementDefinitions = [
-  { id: "first-game", title: "第一次实验完成", desc: "完成任意一个专业小游戏。", test: () => ["csLab", "eeLab", "autoLab", "icLab", "commLab"].some(hasVisitedRoute) },
+  { id: "first-game", title: "第一次实验完成", desc: "完成任意一个专业或联合小游戏。", test: () => ["csLab", "eeLab", "autoLab", "icLab", "commLab", ...jointEvents.map(getJointEventEndRoute)].some(hasVisitedRoute) },
   { id: "major-cards", title: "专业知识收集者", desc: "集齐任意一个专业的知识卡。", test: () => Object.keys(majorArchive).some(isMajorKnowledgeComplete) },
   { id: "all-joints", title: "跨专业联调大师", desc: "完成全部跨专业事件。", test: () => jointEvents.every(isJointEventCompleted) },
   { id: "interdisciplinary", title: "交叉学科候选人", desc: "解锁交叉学科隐藏结局。", test: () => hasVisitedRoute("interdisciplinaryHidden") },
@@ -719,20 +845,27 @@ const achievementDefinitions = [
 ];
 
 const calendarEvents = [
-  { id: "lecture-ai", day: 1, slot: "上午", title: "AI 导览讲座", place: "讲座厅", major: "cs", route: "csTheory", gain: "logic" },
-  { id: "lab-energy", day: 1, slot: "下午", title: "微电网开放实验", place: "实验室", major: "ee", route: "eeGame", gain: "team" },
-  { id: "robot-demo", day: 2, slot: "上午", title: "机器人队演示", place: "创新工坊", major: "auto", route: "autoGame", gain: "team" },
-  { id: "chip-night", day: 2, slot: "下午", title: "芯片版图夜谈", place: "创新工坊", major: "ic", route: "icTheory", gain: "logic" },
-  { id: "roof-link", day: 3, slot: "上午", title: "屋顶链路复测", place: "屋顶", major: "comm", route: "commGame", gain: "passion" },
-  { id: "library-review", day: 3, slot: "下午", title: "图书馆知识复习", place: "图书馆", major: "cs", route: "csTheoryMore", gain: "logic" },
-  { id: "joint-briefing", day: 4, slot: "上午", title: "跨专业项目简报", place: "讲座厅", major: "auto", route: "jointCsAuto", gain: "team" },
-  { id: "dorm-talk", day: 4, slot: "下午", title: "宿舍楼下专业夜聊", place: "宿舍楼", major: "comm", route: "commTheoryMore", gain: "passion" },
-  { id: "power-module", day: 5, slot: "上午", title: "功率模块拆解", place: "实验室", major: "ee", route: "jointEeIc", gain: "logic" },
-  { id: "chip-review", day: 5, slot: "下午", title: "RTL Review", place: "创新工坊", major: "ic", route: "icTheoryMore", gain: "logic" },
-  { id: "project-day", day: 6, slot: "上午", title: "项目制任务冲刺", place: "实验室", major: "auto", route: "autoLab", gain: "team" },
-  { id: "final-report", day: 6, slot: "下午", title: "专业推荐报告整理", place: "图书馆", major: "cs", route: "knowledgeFinalArchive", gain: "passion" },
-  { id: "open-demo", day: 7, slot: "上午", title: "开放日联调展示", place: "讲座厅", major: "comm", route: "jointAutoComm", gain: "team" },
-  { id: "choice-evening", day: 7, slot: "下午", title: "最终选择前夜", place: "屋顶", major: "cs", route: "interdisciplinaryHidden", gain: "passion" }
+  { id: "lecture-ai", day: 1, slot: "上午", action: "上课", title: "AI 导览讲座", place: "讲座厅", major: "cs", route: "csTheory", gain: "logic" },
+  { id: "lab-energy", day: 1, slot: "下午", action: "实验", title: "微电网开放实验", place: "实验室", major: "ee", route: "eeGame", gain: "team" },
+  { id: "night-review-1", day: 1, slot: "晚上", action: "自习", title: "复杂度夜间复盘", place: "图书馆", major: "cs", route: "csTheoryMore", gain: "logic" },
+  { id: "robot-demo", day: 2, slot: "上午", action: "社团", title: "机器人队演示", place: "创新工坊", major: "auto", route: "autoGame", gain: "team" },
+  { id: "chip-night", day: 2, slot: "下午", action: "上课", title: "芯片版图夜谈", place: "创新工坊", major: "ic", route: "icTheory", gain: "logic" },
+  { id: "ask-auto", day: 2, slot: "晚上", action: "找角色请教", title: "青岚的闭环辅导", place: "宿舍楼", major: "auto", route: "autoTheoryMore", gain: "team" },
+  { id: "roof-link", day: 3, slot: "上午", action: "实验", title: "屋顶链路复测", place: "屋顶", major: "comm", route: "commGame", gain: "passion" },
+  { id: "library-review", day: 3, slot: "下午", action: "自习", title: "图书馆知识复习", place: "图书馆", major: "cs", route: "csTheoryMore", gain: "logic" },
+  { id: "rest-night", day: 3, slot: "晚上", action: "休息", title: "宿舍楼下散步", place: "宿舍楼", major: "ee", route: "restEvening", gain: "passion" },
+  { id: "joint-briefing", day: 4, slot: "上午", action: "社团", title: "跨专业项目简报", place: "讲座厅", major: "auto", route: "jointCsAuto", gain: "team" },
+  { id: "dorm-talk", day: 4, slot: "下午", action: "找角色请教", title: "宿舍楼下专业夜聊", place: "宿舍楼", major: "comm", route: "commTheoryMore", gain: "passion" },
+  { id: "night-review-2", day: 4, slot: "晚上", action: "自习", title: "信号与时序错题复盘", place: "图书馆", major: "comm", route: "commTheoryMore", gain: "logic" },
+  { id: "power-module", day: 5, slot: "上午", action: "实验", title: "功率模块拆解", place: "实验室", major: "ee", route: "jointEeIc", gain: "logic" },
+  { id: "chip-review", day: 5, slot: "下午", action: "上课", title: "RTL Review", place: "创新工坊", major: "ic", route: "icTheoryMore", gain: "logic" },
+  { id: "ask-ee", day: 5, slot: "晚上", action: "找角色请教", title: "栖禾的安全边界辅导", place: "宿舍楼", major: "ee", route: "eeTheoryMore", gain: "team" },
+  { id: "project-day", day: 6, slot: "上午", action: "社团", title: "项目制任务冲刺", place: "实验室", major: "auto", route: "autoLab", gain: "team" },
+  { id: "final-report", day: 6, slot: "下午", action: "自习", title: "专业推荐报告整理", place: "图书馆", major: "cs", route: "knowledgeFinalArchive", gain: "passion" },
+  { id: "rest-before-demo", day: 6, slot: "晚上", action: "休息", title: "展示前夜休整", place: "宿舍楼", major: "ic", route: "restEvening", gain: "passion" },
+  { id: "open-demo", day: 7, slot: "上午", action: "实验", title: "开放日联调展示", place: "讲座厅", major: "comm", route: "jointAutoComm", gain: "team" },
+  { id: "choice-evening", day: 7, slot: "下午", action: "自习", title: "最终选择前夜", place: "屋顶", major: "cs", route: "interdisciplinaryHidden", gain: "passion" },
+  { id: "graduation-design", day: 7, slot: "晚上", action: "社团", title: "全员毕业设计构想", place: "创新工坊", major: "auto", route: "interdisciplinaryHidden", gain: "team" }
 ];
 
 const campusLocations = [
@@ -750,6 +883,29 @@ const projectTasks = [
   { id: "chip-shop", name: "芯片工坊", major: "ic", desc: "从 RTL、时序到低功耗模块做一次完整 review。", routes: ["icLab", "jointIcComm"], milestones: ["完成版图布线", "完成低功耗基带模块"] },
   { id: "green-campus", name: "低碳校园组", major: "ee", desc: "围绕负载预测、储能和应急供能建立方案。", routes: ["eeLab", "jointCsEe"], milestones: ["完成微电网调度", "完成 AI 能源调度"] },
   { id: "wireless-link", name: "无线联调组", major: "comm", desc: "围绕链路可靠性、编码和中继完成联调。", routes: ["commLab", "jointEeComm"], milestones: ["完成链路配置", "完成应急通信供能"] }
+];
+
+const debateScenarios = [
+  {
+    id: "campus-car",
+    title: "如何让校园无人车稳定运行？",
+    problem: "同一辆校园无人车要穿过教学楼、宿舍区和施工路段。五个角色分别提出专业视角，你需要选择支持、补充或反驳的切入点。",
+    views: [
+      ["cs", "洛泠", "路径规划与任务调度要先定义清楚代价函数。"],
+      ["auto", "青岚", "控制闭环和传感融合决定它能不能在真实路面稳定行动。"],
+      ["comm", "星遥", "低延迟链路和抗干扰策略决定远程监控会不会掉线。"],
+      ["ee", "栖禾", "电池、供能和安全边界决定它能不能持续工作。"],
+      ["ic", "微澜", "边缘计算芯片和实时性决定算法能不能在车上跑起来。"]
+    ],
+    choices: [
+      { label: "追问路径代价怎么算", desc: "支持洛泠，把问题先抽象成可验证模型。", major: "cs", mode: "abstractModeling", score: { logic: 2, passion: 0, team: 1 }, reply: "洛泠点头：你开始先问问题怎样被定义了。" },
+      { label: "追问谁保证刹得住", desc: "补充青岚，强调闭环、误差和安全动作。", major: "auto", mode: "realLoop", score: { logic: 1, passion: 1, team: 1 }, reply: "青岚把控制曲线推给你：这才是车真的会不会稳。" },
+      { label: "追问延迟和丢包", desc: "支持星遥，关注移动链路对控制的影响。", major: "comm", mode: "connectedCollaboration", score: { logic: 1, passion: 0, team: 2 }, reply: "星遥笑着记下你的问题：连接不是背景，是系统的一部分。" },
+      { label: "追问电量和保护", desc: "补充栖禾，把供能、安全和任务时长放到同一张表。", major: "ee", mode: "realLoop", score: { logic: 1, passion: 2, team: 0 }, reply: "栖禾轻声说：能跑很重要，安全地一直跑更重要。" },
+      { label: "追问车端算力", desc: "支持微澜，关注实时芯片和功耗预算。", major: "ic", mode: "lowLevelEfficiency", score: { logic: 2, passion: 0, team: 1 }, reply: "微澜把延迟预算圈出来：这个问题最后会落到硅片上。" },
+      { label: "把五个视角合成方案", desc: "不选单一立场，要求建立联合工程指标。", major: "auto", mode: "crossIntegration", score: { logic: 1, passion: 1, team: 3 }, reply: "五个人同时看向你。系统提示：你正在用完整系统而不是单一专业理解问题。" }
+    ]
+  }
 ];
 
 const state = {
@@ -770,12 +926,22 @@ const collectionState = {
   solvedQuizzes: {},
   quizFeedback: {},
   wrongQuizCards: [],
+  thinkingModeScores: {},
+  regret: 0,
+  focusStreak: { major: "", count: 0 },
+  fatigue: 0,
+  decisionPressure: 0,
+  weekSlots: 0,
+  quizMistakes: {},
   understanding: 0,
   achievements: [],
   trust: { cs: 0, ee: 0, auto: 0, ic: 0, comm: 0 },
   calendarDone: [],
   locationVisits: [],
-  projectProgress: {}
+  projectProgress: {},
+  debateChoices: {},
+  completedEndings: [],
+  runCount: 1
 };
 
 const speakerEl = document.querySelector("#speaker");
@@ -790,10 +956,12 @@ const atlasDialog = document.querySelector("#atlasDialog");
 const jointDialog = document.querySelector("#jointDialog");
 const progressDialog = document.querySelector("#progressDialog");
 const exploreDialog = document.querySelector("#exploreDialog");
+const debateDialog = document.querySelector("#debateDialog");
 const atlasBtn = document.querySelector("#atlasBtn");
 const jointBtn = document.querySelector("#jointBtn");
 const progressBtn = document.querySelector("#progressBtn");
 const exploreBtn = document.querySelector("#exploreBtn");
+const debateBtn = document.querySelector("#debateBtn");
 const resetBtn = document.querySelector("#resetBtn");
 const cancelResetBtn = document.querySelector("#cancelResetBtn");
 const confirmResetBtn = document.querySelector("#confirmResetBtn");
@@ -805,6 +973,7 @@ const knowledgeCardsEl = document.querySelector("#knowledgeCards");
 const jointEventsEl = document.querySelector("#jointEvents");
 const progressHubEl = document.querySelector("#progressHub");
 const exploreHubEl = document.querySelector("#exploreHub");
+const debateHubEl = document.querySelector("#debateHub");
 const speedRange = document.querySelector("#speedRange");
 const ambientToggle = document.querySelector("#ambientToggle");
 const labTableEl = document.querySelector(".lab-table");
@@ -850,6 +1019,7 @@ function applyScore(routeId, score) {
 }
 
 function rememberRoute(routeId) {
+  const previousMajor = getRouteMajor(state.current);
   if (!state.visitedRoutes.includes(routeId)) {
     state.visitedRoutes.push(routeId);
   }
@@ -859,28 +1029,39 @@ function rememberRoute(routeId) {
     collectionState.unlockedRoutes.push(routeId);
   }
   if (isNewCollectionRoute) increaseTrustForRoute(routeId);
+  updateChoiceReflection(routeId, previousMajor, isNewCollectionRoute);
   rememberJointCompletion(routeId);
+  rememberEnding(routeId);
   evaluateAchievements();
   saveCollectionState();
 }
 
 function loadCollectionState() {
   const saved = localStorage.getItem("majorGalgameCollection");
-  if (!saved) return;
   try {
-    Object.assign(collectionState, JSON.parse(saved));
+    if (saved) Object.assign(collectionState, JSON.parse(saved));
     collectionState.unlockedRoutes = collectionState.unlockedRoutes || ["intro"];
     collectionState.completedJointEvents = collectionState.completedJointEvents || [];
     collectionState.favorites = collectionState.favorites || [];
     collectionState.solvedQuizzes = collectionState.solvedQuizzes || {};
     collectionState.quizFeedback = collectionState.quizFeedback || {};
     collectionState.wrongQuizCards = collectionState.wrongQuizCards || [];
+    collectionState.thinkingModeScores = collectionState.thinkingModeScores || {};
+    collectionState.regret = collectionState.regret || 0;
+    collectionState.focusStreak = collectionState.focusStreak || { major: "", count: 0 };
+    collectionState.fatigue = collectionState.fatigue || 0;
+    collectionState.decisionPressure = collectionState.decisionPressure || 0;
+    collectionState.weekSlots = collectionState.weekSlots || 0;
+    collectionState.quizMistakes = collectionState.quizMistakes || {};
     collectionState.understanding = collectionState.understanding || 0;
     collectionState.achievements = collectionState.achievements || [];
     collectionState.trust = { cs: 0, ee: 0, auto: 0, ic: 0, comm: 0, ...(collectionState.trust || {}) };
     collectionState.calendarDone = collectionState.calendarDone || [];
     collectionState.locationVisits = collectionState.locationVisits || [];
     collectionState.projectProgress = collectionState.projectProgress || {};
+    collectionState.debateChoices = collectionState.debateChoices || {};
+    collectionState.completedEndings = collectionState.completedEndings || [];
+    collectionState.runCount = collectionState.runCount || 1;
   } catch {
     localStorage.removeItem("majorGalgameCollection");
   }
@@ -905,6 +1086,45 @@ function increaseTrustForRoute(routeId) {
       });
     }
   });
+}
+
+function getRouteMajor(routeId) {
+  return Object.entries(majorRouteMarkers).find(([, routeIds]) => routeIds.includes(routeId))?.[0] || "";
+}
+
+function updateChoiceReflection(routeId, previousMajor, isNewCollectionRoute) {
+  collectionState.thinkingModeScores = collectionState.thinkingModeScores || {};
+  Object.entries(thinkingModes).forEach(([modeId, mode]) => {
+    const major = getRouteMajor(routeId);
+    if (mode.routes.includes(routeId) || mode.majors.includes(major)) {
+      collectionState.thinkingModeScores[modeId] = (collectionState.thinkingModeScores[modeId] || 0) + (isNewCollectionRoute ? 2 : 1);
+    }
+  });
+
+  const currentMajor = getRouteMajor(routeId);
+  collectionState.focusStreak = collectionState.focusStreak || { major: "", count: 0 };
+  if (currentMajor) {
+    if (collectionState.focusStreak.major === currentMajor) {
+      collectionState.focusStreak.count += 1;
+    } else {
+      collectionState.focusStreak = { major: currentMajor, count: 1 };
+    }
+  }
+
+  if (routeId === "intro" && previousMajor) {
+    collectionState.regret = Math.min(100, (collectionState.regret || 0) + 8);
+  } else if (currentMajor && previousMajor && currentMajor !== previousMajor) {
+    const breadth = getExplorationBreadth();
+    const regretDelta = breadth >= 3 ? -2 : 3;
+    collectionState.regret = Math.min(100, Math.max(0, (collectionState.regret || 0) + regretDelta));
+  }
+
+  if (currentMajor && collectionState.focusStreak.count >= 4) {
+    collectionState.regret = Math.min(100, (collectionState.regret || 0) + 2);
+  }
+  if (currentMajor && collectionState.focusStreak.count >= 2 && getExplorationBreadth() >= 3) {
+    collectionState.regret = Math.max(0, (collectionState.regret || 0) - 1);
+  }
 }
 
 function evaluateAchievements() {
@@ -950,6 +1170,14 @@ function rememberJointCompletion(routeId) {
   }
 }
 
+function rememberEnding(routeId) {
+  if (!routes[routeId]?.ending) return;
+  collectionState.completedEndings = collectionState.completedEndings || [];
+  if (!collectionState.completedEndings.includes(routeId)) {
+    collectionState.completedEndings.push(routeId);
+  }
+}
+
 function toggleFavorite(cardId) {
   if (collectionState.favorites.includes(cardId)) {
     collectionState.favorites = collectionState.favorites.filter((id) => id !== cardId);
@@ -976,6 +1204,9 @@ function answerQuiz(cardId, selectedIndex) {
     if (!collectionState.wrongQuizCards.includes(cardId)) {
       collectionState.wrongQuizCards.push(cardId);
     }
+    collectionState.quizMistakes = collectionState.quizMistakes || {};
+    collectionState.quizMistakes[card.major] = (collectionState.quizMistakes[card.major] || 0) + 1;
+    collectionState.fatigue = Math.min(100, (collectionState.fatigue || 0) + 3);
   }
   evaluateAchievements();
   saveCollectionState();
@@ -1008,6 +1239,10 @@ function hasFullFavoriteCollection() {
   return knowledgeCards.every((card) => collectionState.favorites.includes(card.id));
 }
 
+function hasFullArchiveCompletion() {
+  return knowledgeCards.every(isCardUnlocked) && knowledgeCards.every((card) => collectionState.solvedQuizzes[card.id]);
+}
+
 function renderReportContent(majorId) {
   const report = knowledgeReports[majorId];
   return `
@@ -1037,6 +1272,89 @@ function getAptitudeProfile() {
   return { ...profile, normalized };
 }
 
+function getThinkingModeReport() {
+  const scores = Object.entries(thinkingModes)
+    .map(([id, mode]) => ({
+      id,
+      ...mode,
+      score: collectionState.thinkingModeScores?.[id] || 0
+    }))
+    .sort((a, b) => b.score - a.score);
+  const top = scores[0] || { title: "探索中", advice: "继续推进剧情和探索模式，系统会逐渐识别你的工作方式。", score: 0 };
+  return { top, scores };
+}
+
+function getExplorationBreadth() {
+  return getMajorExplorationProgress().filter((item) => item.score > 0).length;
+}
+
+function getThinkingModeHighlights(limit = 3) {
+  return getThinkingModeReport().scores.filter((item) => item.score > 0).slice(0, limit);
+}
+
+function getWorkStyleProfile(majorId) {
+  const report = getThinkingModeReport();
+  const breadth = getExplorationBreadth();
+  const regret = collectionState.regret || 0;
+  const alignedModes = report.scores.filter((item) => item.majors?.includes(majorId) && item.score > 0);
+  const bestMatch = alignedModes[0] || report.top;
+  const fitScore = Math.max(
+    0,
+    Math.min(
+      100,
+      (bestMatch.score || 0) * 12 +
+        alignedModes.reduce((sum, item) => sum + item.score, 0) * 5 +
+        breadth * 7 -
+        regret / 2
+    )
+  );
+  const label = fitScore >= 70 ? "高度契合" : fitScore >= 45 ? "双轨并行" : "需要补样本";
+  const note = alignedModes.length
+    ? `你常被「${alignedModes.map((item) => item.title).join(" / ")}」吸引。`
+    : `当前样本更偏向「${report.top.title}」。`;
+  return { fitScore, label, note, bestMatch, alignedModes, breadth };
+}
+
+function getParadoxInsight(primaryMajor) {
+  const report = getThinkingModeReport();
+  const topMode = report.top;
+  const workStyle = getWorkStyleProfile(primaryMajor);
+  const expected = topMode.majors?.includes(primaryMajor);
+  if (expected || topMode.score < 4) {
+    return `你的专业兴趣与工作方式基本同向：${topMode.advice} 当前工作契合度为 ${workStyle.label}。`;
+  }
+  const majorName = majorArchive[primaryMajor]?.name || "当前主线";
+  return `人格悖论：你表面上更靠近「${majorName}」，但选择记录显示你真正被「${topMode.title}」吸引。${topMode.advice} 工作契合度则是 ${workStyle.label}。`;
+}
+
+function getDecisionRiskReport(primaryMajor) {
+  const exploredMajors = getExplorationBreadth();
+  const regret = collectionState.regret || 0;
+  const fatigue = collectionState.fatigue || 0;
+  if (regret >= 40 && exploredMajors <= 2) {
+    return `犹豫值 ${regret}/100：你对 ${majorArchive[primaryMajor]?.name || "主线"} 有兴趣，但视野宽度还偏窄，建议先完成一个跨专业事件再做最终判断。`;
+  }
+  if (fatigue >= 55) {
+    return `疲劳值 ${fatigue}/100：最近学习密度偏高，推荐用复习或休息行动降低压力，再进入结局判断。`;
+  }
+  if (exploredMajors >= 3) {
+    return `犹豫值 ${regret}/100：你已经横向比较过多个方向，后悔风险正在下降，适合把主线和交叉出口一起写进计划。`;
+  }
+  return `犹豫值 ${regret}/100：当前选择还比较凭直觉，继续看理论、做实验和完成知识卡会让推荐更稳。`;
+}
+
+function getKnowledgeGapReport() {
+  const wrongCards = (collectionState.wrongQuizCards || [])
+    .map((cardId) => knowledgeCards.find((card) => card.id === cardId))
+    .filter(Boolean);
+  const byMajor = Object.entries(majorArchive).map(([majorId, major]) => {
+    const cards = wrongCards.filter((card) => card.major === majorId);
+    const mistakes = collectionState.quizMistakes?.[majorId] || 0;
+    return { majorId, icon: major.icon, name: major.name, cards, mistakes };
+  });
+  return byMajor.filter((item) => item.cards.length || item.mistakes);
+}
+
 function getMajorExplorationProgress() {
   const visited = collectionState.unlockedRoutes || ["intro"];
   return Object.entries(majorArchive).map(([majorId, major]) => {
@@ -1059,7 +1377,7 @@ function canUnlockInterdisciplinaryEnding() {
 }
 
 function isRouteAvailable(routeId) {
-  if (routeId === "knowledgeFinalArchive") return hasFullFavoriteCollection();
+  if (routeId === "knowledgeFinalArchive") return hasFullArchiveCompletion();
   if (routeId === "interdisciplinaryHidden") return canUnlockInterdisciplinaryEnding();
   const epilogueMajor = Object.entries(epilogueRoutesByMajor).find(([, epilogueRoute]) => epilogueRoute === routeId)?.[0];
   if (epilogueMajor) return (collectionState.trust?.[epilogueMajor] || 0) >= 50 || hasVisitedRoute(routeId);
@@ -1070,11 +1388,16 @@ function isRouteAvailable(routeId) {
 
 function getRecommendedMajors() {
   return getMajorExplorationProgress()
-    .map((item) => ({
-      ...item,
-      trust: collectionState.trust?.[item.id] || 0,
-      total: item.score * 8 + (collectionState.trust?.[item.id] || 0)
-    }))
+    .map((item) => {
+      const style = getWorkStyleProfile(item.id);
+      const trust = collectionState.trust?.[item.id] || 0;
+      return {
+        ...item,
+        trust,
+        style,
+        total: item.score * 8 + trust + Math.round(style.fitScore / 10)
+      };
+    })
     .sort((a, b) => b.total - a.total);
 }
 
@@ -1094,6 +1417,9 @@ function renderRecommendationReport() {
   const primary = recommendations[0];
   const secondary = recommendations[1];
   const profile = getAptitudeProfile();
+  const thinking = getThinkingModeReport();
+  const topHighlights = getThinkingModeHighlights();
+  const style = getWorkStyleProfile(primary.id);
   return `
     <section class="report-card">
       <header>
@@ -1101,6 +1427,16 @@ function renderRecommendationReport() {
         <h3>专业推荐报告</h3>
       </header>
       <p>主推荐：${renderIconLabel(primary.icon, primary.name)}。副方向：${renderIconLabel(secondary.icon, secondary.name)}。当前画像为「${profile.title}」，${profile.desc}</p>
+      <p>${getParadoxInsight(primary.id)}</p>
+      <p>${getDecisionRiskReport(primary.id)}</p>
+      <div class="style-snapshot">
+        <strong>工作方式契合</strong>
+        <p>${style.label} · ${style.note}</p>
+        <small>契合度 ${style.fitScore}/100，探索宽度 ${style.breadth}。</small>
+      </div>
+      <div class="mode-chip-row">
+        ${topHighlights.map((item) => `<span>${item.title}<b>${item.score}</b></span>`).join("")}
+      </div>
       <div class="report-ranks">
         ${recommendations
           .map((item) => `
@@ -1110,6 +1446,11 @@ function renderRecommendationReport() {
               <em>${item.total}</em>
             </span>
           `)
+          .join("")}
+      </div>
+      <div class="mode-list">
+        ${thinking.scores
+          .map((item) => `<span><b>${item.title}</b><i style="--score:${Math.min(100, item.score * 10)}%"></i><em>${item.score}</em></span>`)
           .join("")}
       </div>
       <p>${getTrainingAdvice(primary.id)}</p>
@@ -1143,16 +1484,19 @@ function renderAchievements() {
 function renderTrustPanel() {
   return `
     <section class="progress-section">
-      <header><span>Trust</span><h3>角色信赖度</h3></header>
+      <header><span>Trust</span><h3>角色信赖与工作契合</h3></header>
       <div class="trust-grid">
         ${Object.entries(majorArchive)
           .map(([majorId, major]) => {
             const trust = collectionState.trust?.[majorId] || 0;
+            const style = getWorkStyleProfile(majorId);
             const epilogueUnlocked = trust >= 50 || hasVisitedRoute(epilogueRoutesByMajor[majorId]);
             return `
               <article>
                 <strong>${renderIconLabel(major.icon, profiles[majorId]?.name || major.name)}</strong>
                 <span style="--score:${trust}%"><i></i><b>${trust}</b></span>
+                <span style="--score:${style.fitScore}%"><i></i><b>${style.fitScore}</b></span>
+                <small>契合 ${style.label}</small>
                 <p>${trust >= 80 ? "信赖很高，已适合解锁更多后日谈。" : trust >= 50 ? "信赖达标，后日谈入口已开放。" : "继续角色路线、知识卡和跨专业事件可提升信赖。"}</p>
                 <button type="button" data-progress-route="${epilogueRoutesByMajor[majorId]}" ${epilogueUnlocked ? "" : "disabled"}>${epilogueUnlocked ? "查看后日谈" : "信赖 50 解锁"}</button>
               </article>
@@ -1164,16 +1508,91 @@ function renderTrustPanel() {
   `;
 }
 
+function renderKnowledgeGapMap() {
+  const gaps = getKnowledgeGapReport();
+  return `
+    <section class="progress-section">
+      <header><span>Gap Map</span><h3>知识漏洞地图</h3></header>
+      <div class="gap-grid">
+        ${gaps.length
+          ? gaps
+              .map((item) => `
+                <article>
+                  <strong>${renderIconLabel(item.icon, item.name)}</strong>
+                  <p>${item.cards.length ? "薄弱卡片：" + item.cards.map((card) => card.title).join(" / ") : "历史错题已修复，仍建议复盘该方向。"}</p>
+                  <span>错题触发 ${item.mistakes} 次</span>
+                  <button type="button" data-progress-route="${gapReviewRoutesByMajor[item.majorId]}">进入角色辅导</button>
+                </article>
+              `)
+              .join("")
+          : `
+            <article class="done">
+              <strong>暂无明显漏洞</strong>
+              <p>错题本为空。继续保持复盘节奏，后续答错会在这里形成薄弱概念地图。</p>
+              <span>理解状态稳定</span>
+            </article>
+          `}
+      </div>
+    </section>
+  `;
+}
+
+function startNewGamePlus() {
+  state.current = "intro";
+  state.logic = 0;
+  state.passion = 0;
+  state.team = 0;
+  state.scoredRoutes = [];
+  state.visitedRoutes = ["intro"];
+  collectionState.runCount = (collectionState.runCount || 1) + 1;
+  collectionState.regret = 0;
+  collectionState.fatigue = 0;
+  collectionState.decisionPressure = 0;
+  collectionState.weekSlots = 0;
+  collectionState.calendarDone = [];
+  collectionState.locationVisits = [];
+  collectionState.projectProgress = {};
+  collectionState.debateChoices = {};
+  saveCollectionState();
+  updateScores();
+  progressDialog.close();
+  render("intro", false);
+}
+
+function renderNewGamePlusPanel() {
+  const completedCount = (collectionState.completedEndings || []).length;
+  const archiveComplete = hasFullArchiveCompletion();
+  const canStart = completedCount > 0 || archiveComplete;
+  const nextRun = (collectionState.runCount || 1) + 1;
+  return `
+    <section class="progress-section">
+      <header><span>New Game+</span><h3>多周目继承</h3></header>
+      <div class="ng-panel">
+        <strong>当前第 ${collectionState.runCount || 1} 周目</strong>
+        <p>已记录结局 ${completedCount} 个。下一周目会继承知识卡、测验、错题、收藏、图鉴称号、信赖和已看结局，并重置课程周、项目任务、辩论选择、疲劳与临时倾向分数。</p>
+        <small>${archiveComplete ? "全域图鉴已完成，下一周目会开放更稳定的交叉推荐样本。" : "完成任意结局或全域图鉴后开放继承。"}</small>
+        <button type="button" data-new-run ${canStart ? "" : "disabled"}>${canStart ? `进入第 ${nextRun} 周目` : "完成一个结局后解锁"}</button>
+      </div>
+    </section>
+  `;
+}
+
 function renderProgressHub() {
+  const gapCount = getKnowledgeGapReport().reduce((sum, item) => sum + item.cards.length, 0);
   progressHubEl.innerHTML = `
     <div class="collection-stats">
       <span>成就 ${collectionState.achievements.length}/${achievementDefinitions.length}</span>
       <span>理解值 ${collectionState.understanding || 0}/100</span>
+      <span>犹豫值 ${collectionState.regret || 0}/100</span>
+      <span>疲劳值 ${collectionState.fatigue || 0}/100</span>
+      <span>漏洞 ${gapCount}</span>
       <span>图鉴称号 ${getFavoriteRewardTier().title}</span>
     </div>
     ${renderRecommendationReport()}
+    ${renderKnowledgeGapMap()}
     ${renderAchievements()}
     ${renderTrustPanel()}
+    ${renderNewGamePlusPanel()}
   `;
 
   progressHubEl.querySelectorAll("[data-progress-route]").forEach((button) => {
@@ -1181,6 +1600,9 @@ function renderProgressHub() {
       progressDialog.close();
       render(button.dataset.progressRoute);
     });
+  });
+  progressHubEl.querySelectorAll("[data-new-run]").forEach((button) => {
+    button.addEventListener("click", startNewGamePlus);
   });
 }
 
@@ -1192,6 +1614,9 @@ function renderEndingInsights(route) {
   }
 
   const profile = getAptitudeProfile();
+  const recommendations = getRecommendedMajors();
+  const thinking = getThinkingModeReport();
+  const style = getWorkStyleProfile(recommendations[0]?.id);
   const progress = getMajorExplorationProgress().sort((a, b) => b.score - a.score).slice(0, 3);
   const radarPoints = [
     `50% ${50 - profile.normalized.logic * 0.45}%`,
@@ -1209,16 +1634,21 @@ function renderEndingInsights(route) {
       <div>
         <strong>专业画像：${profile.title}</strong>
         <p>${profile.desc}</p>
+        <p>${getParadoxInsight(recommendations[0]?.id)}</p>
+        <p>工作方式：${style.label}。${style.note}</p>
         <dl>
           <div><dt>理性</dt><dd>${state.logic}</dd></div>
           <div><dt>热情</dt><dd>${state.passion}</dd></div>
           <div><dt>协作</dt><dd>${state.team}</dd></div>
+          <div><dt>思维</dt><dd>${thinking.top.title}</dd></div>
         </dl>
       </div>
     </section>
     <section class="cross-progress">
       <strong>交叉探索 Top 3</strong>
       <div>${progress.map((item) => `<span>${renderIconLabel(item.icon, item.name)}<b>${item.score}</b></span>`).join("")}</div>
+      <p>${getDecisionRiskReport(recommendations[0]?.id)}</p>
+      <p>隐藏标签：${getThinkingModeHighlights(3).map((item) => item.title).join(" / ") || "探索中"}</p>
       <p>${canUnlockInterdisciplinaryEnding() ? "交叉学科隐藏结局已解锁。" : "继续均衡探索至少三个专业、提升理解值并完成一个跨专业事件，可解锁交叉学科隐藏结局。"}</p>
     </section>
   `;
@@ -1566,12 +1996,100 @@ function renderCommGame(route) {
   });
 }
 
+function renderTradeoffGame(route) {
+  const game = route.game;
+  const values = { ...game.metrics };
+  const selected = [];
+  miniGameTag.textContent = game.tag;
+  miniGameTitle.textContent = game.title;
+  miniGameBrief.textContent = game.brief;
+
+  function formatEffect([name, value]) {
+    return `${name} ${value > 0 ? "+" : ""}${value}`;
+  }
+
+  function isMetricOk(name, value) {
+    const range = game.targets[name] || [-Infinity, Infinity];
+    return value >= range[0] && value <= range[1];
+  }
+
+  function isSolved() {
+    return Object.entries(values).every(([name, value]) => isMetricOk(name, value));
+  }
+
+  function reset() {
+    Object.assign(values, game.metrics);
+    selected.length = 0;
+    draw();
+    miniGameFeedback.textContent = game.hint;
+  }
+
+  function draw() {
+    miniGameBoard.innerHTML = `
+      <div class="tradeoff-board">
+        ${Object.entries(values)
+          .map(([name, value]) => {
+            const [min, max] = game.targets[name] || ["-", "-"];
+            return `
+              <span class="${isMetricOk(name, value) ? "ok" : ""}">
+                <b>${name}</b>
+                <strong>${value}</strong>
+                <small>目标 ${min}-${max}</small>
+              </span>
+            `;
+          })
+          .join("")}
+      </div>
+    `;
+    miniGameActions.innerHTML = "";
+
+    if (selected.length >= game.maxTurns) {
+      if (isSolved()) {
+        completeMiniGame(route.next, game.success);
+        return;
+      }
+      miniGameFeedback.textContent = game.fail;
+      const retry = document.createElement("button");
+      retry.type = "button";
+      retry.textContent = "重新权衡";
+      retry.addEventListener("click", reset);
+      miniGameActions.appendChild(retry);
+      return;
+    }
+
+    game.cards.forEach((card, index) => {
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = "tradeoff-card";
+      button.disabled = selected.includes(index);
+      button.innerHTML = `
+        <strong>${card.title}</strong>
+        <small>${card.desc}</small>
+        <span>${Object.entries(card.effects).map(formatEffect).join(" / ")}</span>
+      `;
+      button.addEventListener("click", () => {
+        selected.push(index);
+        Object.entries(card.effects).forEach(([name, value]) => {
+          values[name] = (values[name] || 0) + value;
+        });
+        miniGameFeedback.textContent = `已选择 ${selected.length}/${game.maxTurns}：${card.title}`;
+        draw();
+      });
+      miniGameActions.appendChild(button);
+    });
+  }
+
+  draw();
+  miniGameFeedback.textContent = game.hint;
+}
+
 const gameRenderers = {
   binary: renderCsGame,
   energy: renderEeGame,
   robot: renderAutoGame,
   layout: renderIcGame,
-  link: renderCommGame
+  link: renderCommGame,
+  tradeoff: renderTradeoffGame
 };
 
 function renderMiniGame(route) {
@@ -1720,9 +2238,9 @@ function renderKnowledgeRewards() {
   const currentTier = getFavoriteRewardTier();
   const nextTier = getNextFavoriteRewardTier();
   const fullFavorite = hasFullFavoriteCollection();
-  const wrongCards = (collectionState.wrongQuizCards || [])
-    .map((cardId) => knowledgeCards.find((card) => card.id === cardId))
-    .filter(Boolean);
+  const fullArchive = hasFullArchiveCompletion();
+  const gapReport = getKnowledgeGapReport();
+  const wrongCards = gapReport.flatMap((item) => item.cards);
 
   return `
     <section class="reward-panel" aria-label="知识卡片奖励">
@@ -1737,14 +2255,17 @@ function renderKnowledgeRewards() {
         <strong>图鉴称号：${currentTier.title}</strong>
         <p>${currentTier.advice}</p>
         <small>${nextTier ? `再收藏 ${nextTier.count - collectionState.favorites.length} 张知识卡，解锁「${nextTier.title}」。` : "全部收藏称号已解锁。"}</small>
-        <button type="button" data-reward-route="knowledgeFinalArchive" ${fullFavorite ? "" : "disabled"}>${fullFavorite ? "进入最终隐藏剧情" : `收藏全部 ${knowledgeCards.length} 张知识卡后解锁最终剧情`}</button>
+        <button type="button" data-reward-route="knowledgeFinalArchive" ${fullArchive ? "" : "disabled"}>${fullArchive ? "进入最终隐藏剧情" : `解锁并通过全部 ${knowledgeCards.length} 张知识卡测验后解锁最终剧情`}</button>
+        <small>${fullFavorite ? "收藏全收集已完成，图鉴称号达到最高级。" : "收藏会继续提升图鉴称号，但不再阻塞最终剧情。"}</small>
       </div>
       <div class="review-panel">
         <strong>理解值：${collectionState.understanding || 0}/100</strong>
-        <p>${wrongCards.length ? "错题本会记录未答对的知识卡，再次答对后自动移出。" : "错题本为空。保持这个状态，很漂亮。"}</p>
+        <p>${wrongCards.length ? "知识漏洞地图会按专业整理薄弱概念，再次答对后自动修复。" : "错题本为空。保持这个状态，很漂亮。"}</p>
         <div>
           ${wrongCards.length
-            ? wrongCards.map((card) => `<span>${renderIconLabel(majorArchive[card.major].icon, card.title)}</span>`).join("")
+            ? gapReport
+                .map((item) => `<span>${renderIconLabel(item.icon, `${item.name} · ${item.cards.map((card) => card.title).join(" / ") || "待复盘"}`)}</span>`)
+                .join("")
             : "<span>暂无错题</span>"}
         </div>
       </div>
@@ -1842,7 +2363,8 @@ function completeCalendarEvent(eventId) {
   collectionState.calendarDone = collectionState.calendarDone || [];
   if (!collectionState.calendarDone.includes(eventId)) {
     collectionState.calendarDone.push(eventId);
-    state[event.gain] = (state[event.gain] || 0) + 1;
+    if (event.gain) state[event.gain] = (state[event.gain] || 0) + 1;
+    updateCourseWeekPressure(event);
     increaseTrustForRoute(event.route);
     evaluateAchievements();
     saveCollectionState();
@@ -1867,10 +2389,65 @@ function completeProjectTask(projectId, routeId) {
   }
 }
 
+function updateCourseWeekPressure(event) {
+  collectionState.weekSlots = (collectionState.weekSlots || 0) + 1;
+  const fatigueByAction = {
+    上课: 5,
+    实验: 10,
+    社团: 8,
+    自习: -4,
+    休息: -18,
+    找角色请教: 4
+  };
+  const fatigueGain = fatigueByAction[event.action] ?? (event.place === "图书馆" ? 3 : event.place === "宿舍楼" ? -8 : event.route.includes("joint") ? 12 : 8);
+  collectionState.fatigue = Math.max(0, Math.min(100, (collectionState.fatigue || 0) + fatigueGain));
+  const slotPressure = event.slot === "晚上" ? 10 : event.slot === "下午" ? 6 : 0;
+  const actionPressure = event.action === "休息" ? -8 : event.action === "自习" ? -2 : event.action === "实验" ? 3 : 0;
+  collectionState.decisionPressure = Math.min(100, Math.max(0, Math.max(collectionState.decisionPressure || 0, event.day * 11 + slotPressure) + actionPressure));
+  if (event.action === "自习") {
+    collectionState.understanding = Math.min(100, (collectionState.understanding || 0) + 4);
+  }
+  if (event.action === "找角色请教") {
+    collectionState.trust[event.major] = Math.min(100, (collectionState.trust[event.major] || 0) + 8);
+  }
+  if (event.day >= 6) {
+    collectionState.regret = Math.min(100, (collectionState.regret || 0) + 4);
+  }
+  if (event.place === "图书馆" || event.action === "自习") {
+    collectionState.regret = Math.max(0, (collectionState.regret || 0) - 3);
+  }
+  if (event.action === "休息") {
+    collectionState.regret = Math.max(0, (collectionState.regret || 0) - 5);
+  }
+}
+
+function getCourseWeekStatus() {
+  const fatigue = collectionState.fatigue || 0;
+  const pressure = collectionState.decisionPressure || 0;
+  const slots = collectionState.weekSlots || 0;
+  const focus = collectionState.focusStreak || { major: "", count: 0 };
+  const focusName = focus.major ? majorArchive[focus.major].name : "未形成";
+  const advice = fatigue >= 70
+    ? "疲劳偏高，建议优先安排复习或低强度交流。"
+    : pressure >= 70
+      ? "决策压力正在上升，适合整理推荐报告并确认交叉出口。"
+      : slots >= 6
+        ? "课程周样本足够，推荐报告会更可靠。"
+        : "继续安排课程、实验和项目行动，系统会逐步稳定判断。";
+  return { fatigue, pressure, slots, focusName, focusCount: focus.count || 0, advice };
+}
+
 function renderCalendarPlanner() {
+  const weekStatus = getCourseWeekStatus();
   return `
     <section class="explore-section">
       <header><span>7 Days</span><h3>7 天专业选择日历</h3></header>
+      <div class="week-pressure">
+        <span><b>疲劳</b><i style="--score:${weekStatus.fatigue}%"></i><em>${weekStatus.fatigue}</em></span>
+        <span><b>压力</b><i style="--score:${weekStatus.pressure}%"></i><em>${weekStatus.pressure}</em></span>
+        <span><b>专注</b><i style="--score:${Math.min(100, weekStatus.focusCount * 18)}%"></i><em>${weekStatus.focusName}</em></span>
+        <p>${weekStatus.advice}</p>
+      </div>
       <div class="calendar-grid">
         ${calendarEvents
           .map((event) => {
@@ -1878,7 +2455,7 @@ function renderCalendarPlanner() {
             const available = isRouteAvailable(event.route);
             return `
               <article class="${done ? "done" : ""}">
-                <span>Day ${event.day} · ${event.slot}</span>
+                <span>Day ${event.day} · ${event.slot} · ${event.action}</span>
                 <h4>${event.title}</h4>
                 <p>${event.place} / ${majorArchive[event.major].name}</p>
                 <button type="button" data-calendar-event="${event.id}" data-explore-route="${event.route}" ${available ? "" : "disabled"}>${done ? "再次前往" : available ? "选择行动" : "条件不足"}</button>
@@ -1946,12 +2523,82 @@ function renderProjectTasks() {
   `;
 }
 
+function chooseDebateOption(scenarioId, choiceIndex) {
+  const scenario = debateScenarios.find((item) => item.id === scenarioId);
+  const choice = scenario?.choices[choiceIndex];
+  if (!choice) return;
+  collectionState.debateChoices = collectionState.debateChoices || {};
+  collectionState.debateChoices[scenarioId] = choiceIndex;
+  collectionState.thinkingModeScores[choice.mode] = (collectionState.thinkingModeScores[choice.mode] || 0) + 4;
+  collectionState.trust[choice.major] = Math.min(100, (collectionState.trust[choice.major] || 0) + 10);
+  collectionState.regret = Math.max(0, (collectionState.regret || 0) - (choice.mode === "crossIntegration" ? 6 : 3));
+  state.logic += choice.score.logic || 0;
+  state.passion += choice.score.passion || 0;
+  state.team += choice.score.team || 0;
+  saveCollectionState();
+  updateScores();
+  renderDebateHub();
+}
+
+function renderDebateHub() {
+  const completedCount = Object.keys(collectionState.debateChoices || {}).length;
+  debateHubEl.innerHTML = `
+    <div class="collection-stats">
+      <span>辩论 ${completedCount}/${debateScenarios.length}</span>
+      <span>周目 ${collectionState.runCount || 1}</span>
+      <span>犹豫值 ${collectionState.regret || 0}/100</span>
+    </div>
+    <div class="debate-grid">
+      ${debateScenarios
+        .map((scenario) => {
+          const selectedIndex = collectionState.debateChoices?.[scenario.id];
+          const selected = Number.isInteger(selectedIndex) ? scenario.choices[selectedIndex] : null;
+          return `
+            <article class="debate-card ${selected ? "done" : ""}">
+              <header>
+                <span>${selected ? "DONE" : "OPEN"}</span>
+                <h3>${scenario.title}</h3>
+              </header>
+              <p>${scenario.problem}</p>
+              <div class="debate-views">
+                ${scenario.views
+                  .map(([majorId, speaker, line]) => `<span>${renderIconLabel(majorArchive[majorId].icon, speaker)}<small>${line}</small></span>`)
+                  .join("")}
+              </div>
+              ${selected ? `<p class="debate-result">${selected.reply}</p>` : ""}
+              <div class="debate-options">
+                ${scenario.choices
+                  .map((choice, index) => `
+                    <button type="button" data-debate="${scenario.id}" data-choice="${index}" ${selected ? "disabled" : ""}>
+                      <strong>${choice.label}</strong>
+                      <small>${choice.desc}</small>
+                    </button>
+                  `)
+                  .join("")}
+              </div>
+            </article>
+          `;
+        })
+        .join("")}
+    </div>
+  `;
+
+  debateHubEl.querySelectorAll("[data-debate]").forEach((button) => {
+    button.addEventListener("click", () => {
+      chooseDebateOption(button.dataset.debate, Number(button.dataset.choice));
+    });
+  });
+}
+
 function renderExploreHub() {
+  const weekStatus = getCourseWeekStatus();
   exploreHubEl.innerHTML = `
     <div class="collection-stats">
       <span>日历 ${collectionState.calendarDone.length}/${calendarEvents.length}</span>
       <span>地点 ${collectionState.locationVisits.length}/${campusLocations.length}</span>
       <span>项目 ${Object.values(collectionState.projectProgress || {}).flat().length}/${projectTasks.reduce((sum, item) => sum + item.routes.length, 0)}</span>
+      <span>疲劳 ${weekStatus.fatigue}/100</span>
+      <span>压力 ${weekStatus.pressure}/100</span>
     </div>
     ${renderCalendarPlanner()}
     ${renderCampusMap()}
@@ -2087,12 +2734,22 @@ function performResetAllProgress() {
   collectionState.solvedQuizzes = {};
   collectionState.quizFeedback = {};
   collectionState.wrongQuizCards = [];
+  collectionState.thinkingModeScores = {};
+  collectionState.regret = 0;
+  collectionState.focusStreak = { major: "", count: 0 };
+  collectionState.fatigue = 0;
+  collectionState.decisionPressure = 0;
+  collectionState.weekSlots = 0;
+  collectionState.quizMistakes = {};
   collectionState.understanding = 0;
   collectionState.achievements = [];
   collectionState.trust = { cs: 0, ee: 0, auto: 0, ic: 0, comm: 0 };
   collectionState.calendarDone = [];
   collectionState.locationVisits = [];
   collectionState.projectProgress = {};
+  collectionState.debateChoices = {};
+  collectionState.completedEndings = [];
+  collectionState.runCount = 1;
 
   localStorage.removeItem("majorGalgameDemo");
   localStorage.removeItem("majorGalgameCollection");
@@ -2130,6 +2787,11 @@ exploreBtn.addEventListener("click", () => {
   loadCollectionState();
   renderExploreHub();
   exploreDialog.showModal();
+});
+debateBtn.addEventListener("click", () => {
+  loadCollectionState();
+  renderDebateHub();
+  debateDialog.showModal();
 });
 majorTab.addEventListener("click", () => switchAtlasTab("major"));
 knowledgeTab.addEventListener("click", () => switchAtlasTab("knowledge"));

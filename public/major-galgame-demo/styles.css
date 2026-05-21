@@ -146,7 +146,11 @@ input {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  gap: 20px;
+  gap: clamp(18px, 3vw, 36px);
+}
+
+.brand-block {
+  min-width: min(560px, 48vw);
 }
 
 .kicker {
@@ -170,10 +174,26 @@ h1 {
 }
 
 .utility {
+  width: min(720px, 48vw);
+  display: grid;
+  gap: 8px;
+  justify-content: flex-end;
+}
+
+.utility-group {
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-end;
-  gap: 12px;
+  gap: 8px;
+}
+
+.primary-tools {
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(159, 222, 255, 0.22);
+}
+
+.system-tools {
+  gap: 6px;
 }
 
 .utility button,
@@ -188,10 +208,25 @@ dialog button {
 }
 
 .utility button {
-  min-width: 76px;
-  height: 40px;
+  min-width: 72px;
+  height: 36px;
+  padding: 0 14px;
   border-radius: 6px;
   box-shadow: inset 0 0 14px rgba(236, 248, 255, 0.06);
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.system-tools button {
+  min-width: 64px;
+  height: 32px;
+  padding: 0 12px;
+  color: var(--muted);
+  background:
+    linear-gradient(135deg, rgba(247, 212, 107, 0.1), transparent 46%),
+    rgba(18, 40, 76, 0.42);
+  font-size: 13px;
+  letter-spacing: 0.02em;
 }
 
 .lab-table {
@@ -498,6 +533,66 @@ dialog button {
   min-height: 28px;
   margin-top: 12px;
   color: var(--gold);
+}
+
+.tradeoff-board {
+  width: min(520px, 100%);
+  display: grid;
+  grid-template-columns: repeat(2, minmax(120px, 1fr));
+  gap: 8px;
+  padding: 12px;
+}
+
+.tradeoff-board span {
+  min-height: 72px;
+  padding: 10px;
+  display: grid;
+  gap: 3px;
+  border: 1px solid rgba(159, 222, 255, 0.28);
+  background: rgba(1, 7, 16, 0.22);
+}
+
+.tradeoff-board span.ok {
+  border-color: rgba(114, 240, 176, 0.52);
+  background: rgba(114, 240, 176, 0.08);
+}
+
+.tradeoff-board b {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.tradeoff-board strong {
+  color: var(--gold);
+  font-size: 24px;
+}
+
+.tradeoff-board small {
+  color: var(--muted);
+}
+
+.mini-game-actions .tradeoff-card {
+  width: min(260px, 100%);
+  min-height: 118px;
+  padding: 10px;
+  display: grid;
+  gap: 6px;
+  text-align: left;
+}
+
+.tradeoff-card strong {
+  color: var(--ink);
+}
+
+.tradeoff-card small {
+  color: var(--muted);
+  line-height: 1.45;
+}
+
+.tradeoff-card span {
+  color: var(--gold);
+  font-size: 12px;
+  line-height: 1.45;
 }
 
 .sequence-track,
@@ -1985,9 +2080,31 @@ dialog label {
   line-height: 1.65;
 }
 
+.style-snapshot {
+  margin-top: 12px;
+  padding: 12px;
+  border: 1px solid rgba(247, 212, 107, 0.26);
+  background: rgba(247, 212, 107, 0.07);
+}
+
+.style-snapshot strong {
+  color: var(--gold);
+}
+
+.style-snapshot p,
+.style-snapshot small {
+  display: block;
+  margin: 6px 0 0;
+  color: var(--muted);
+  line-height: 1.55;
+}
+
 .report-ranks,
+.mode-list,
 .achievement-grid,
 .trust-grid,
+.gap-grid,
+.debate-grid,
 .calendar-grid,
 .map-grid,
 .project-grid {
@@ -2000,7 +2117,9 @@ dialog label {
 }
 
 .report-ranks span,
-.trust-grid span {
+.mode-list span,
+.trust-grid span,
+.week-pressure span {
   display: grid;
   grid-template-columns: minmax(110px, 1fr) 1.4fr 42px;
   gap: 8px;
@@ -2008,11 +2127,15 @@ dialog label {
 }
 
 .report-ranks b,
+.mode-list b,
+.week-pressure b,
 .trust-grid strong {
   color: var(--ink);
 }
 
 .report-ranks i,
+.mode-list i,
+.week-pressure i,
 .trust-grid i {
   height: 8px;
   border: 1px solid rgba(159, 222, 255, 0.24);
@@ -2020,6 +2143,8 @@ dialog label {
 }
 
 .report-ranks em,
+.mode-list em,
+.week-pressure em,
 .trust-grid b {
   color: var(--gold);
   font-style: normal;
@@ -2027,8 +2152,47 @@ dialog label {
   text-align: right;
 }
 
+.mode-list,
+.week-pressure {
+  margin-top: 12px;
+  padding: 12px;
+  border: 1px solid rgba(114, 240, 176, 0.24);
+  background: rgba(114, 240, 176, 0.06);
+}
+
+.mode-chip-row {
+  margin-top: 12px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.mode-chip-row span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  border: 1px solid rgba(159, 222, 255, 0.24);
+  color: var(--muted);
+  background: rgba(1, 7, 16, 0.2);
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.mode-chip-row b {
+  color: var(--gold);
+}
+
+.week-pressure p {
+  margin: 6px 0 0;
+  color: var(--muted);
+  line-height: 1.55;
+}
+
 .achievement-grid,
 .trust-grid,
+.gap-grid,
+.debate-grid,
 .map-grid,
 .project-grid {
   grid-template-columns: repeat(2, minmax(240px, 1fr));
@@ -2040,6 +2204,8 @@ dialog label {
 
 .achievement-grid article,
 .trust-grid article,
+.gap-grid article,
+.debate-card,
 .calendar-grid article,
 .map-grid article,
 .project-grid article {
@@ -2049,6 +2215,8 @@ dialog label {
 }
 
 .achievement-grid article.done,
+.gap-grid article.done,
+.debate-card.done,
 .calendar-grid article.done,
 .map-grid article.done {
   border-color: rgba(114, 240, 176, 0.42);
@@ -2056,6 +2224,8 @@ dialog label {
 }
 
 .achievement-grid strong,
+.gap-grid strong,
+.gap-grid span,
 .calendar-grid span,
 .project-grid > article > span {
   color: var(--gold);
@@ -2071,6 +2241,7 @@ dialog label {
 
 .achievement-grid p,
 .trust-grid p,
+.gap-grid p,
 .calendar-grid p,
 .map-grid p,
 .project-grid p {
@@ -2079,7 +2250,16 @@ dialog label {
   line-height: 1.55;
 }
 
+.trust-grid small {
+  display: block;
+  margin-top: 4px;
+  color: var(--gold);
+  font-size: 12px;
+  font-weight: 800;
+}
+
 .trust-grid button,
+.gap-grid button,
 .calendar-grid button,
 .map-grid button,
 .project-grid button {
@@ -2094,6 +2274,8 @@ dialog label {
 
 .trust-grid button:not(:disabled):hover,
 .trust-grid button:not(:disabled):focus-visible,
+.gap-grid button:not(:disabled):hover,
+.gap-grid button:not(:disabled):focus-visible,
 .calendar-grid button:not(:disabled):hover,
 .calendar-grid button:not(:disabled):focus-visible,
 .map-grid button:not(:disabled):hover,
@@ -2106,11 +2288,106 @@ dialog label {
 }
 
 .trust-grid button:disabled,
+.gap-grid button:disabled,
 .calendar-grid button:disabled,
 .map-grid button:disabled,
 .project-grid button:disabled {
   cursor: default;
   opacity: 0.55;
+}
+
+.debate-card header {
+  margin: 0 0 10px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+}
+
+.debate-card header span,
+.debate-result {
+  color: var(--gold);
+  font-weight: 900;
+}
+
+.debate-card p,
+.ng-panel p {
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+.debate-views,
+.debate-options {
+  display: grid;
+  gap: 8px;
+}
+
+.debate-views span {
+  padding: 8px;
+  border: 1px solid rgba(159, 222, 255, 0.22);
+  background: rgba(1, 7, 16, 0.18);
+}
+
+.debate-views small {
+  display: block;
+  margin-top: 4px;
+  color: var(--muted);
+  line-height: 1.45;
+}
+
+.debate-options {
+  margin-top: 10px;
+}
+
+.debate-options button,
+.ng-panel button {
+  min-height: 40px;
+  padding: 8px 10px;
+  border: 1px solid rgba(159, 222, 255, 0.38);
+  color: var(--ink);
+  background: rgba(236, 248, 255, 0.1);
+  cursor: pointer;
+  text-align: left;
+}
+
+.debate-options button strong,
+.debate-options button small {
+  display: block;
+}
+
+.debate-options button small,
+.ng-panel small {
+  margin-top: 4px;
+  color: var(--muted);
+  line-height: 1.45;
+}
+
+.debate-options button:not(:disabled):hover,
+.debate-options button:not(:disabled):focus-visible,
+.ng-panel button:not(:disabled):hover,
+.ng-panel button:not(:disabled):focus-visible {
+  outline: none;
+  border-color: #fff;
+  box-shadow: 0 0 14px rgba(118, 220, 255, 0.26);
+}
+
+.ng-panel {
+  padding: 12px;
+  border: 1px solid rgba(247, 212, 107, 0.28);
+  background: rgba(247, 212, 107, 0.07);
+}
+
+.ng-panel strong {
+  color: var(--gold);
+}
+
+.ng-panel button {
+  margin-top: 10px;
+}
+
+.ng-panel button:disabled,
+.debate-options button:disabled {
+  cursor: default;
+  opacity: 0.56;
 }
 
 .paused .holo-grid::after,
@@ -2131,8 +2408,34 @@ dialog label {
     flex-direction: column;
   }
 
+  .brand-block,
   .utility {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .utility {
+    justify-content: stretch;
+  }
+
+  .utility-group {
     justify-content: flex-start;
+  }
+
+  .primary-tools {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(58px, 1fr));
+  }
+
+  .system-tools {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(72px, 1fr));
+  }
+
+  .utility button,
+  .system-tools button {
+    width: 100%;
+    min-width: 0;
   }
 
   .lab-table {
@@ -2196,19 +2499,40 @@ dialog label {
   }
 
   .archive-grid,
-  .advice-grid,
-  .joint-grid,
-  .reward-grid,
-  .achievement-grid,
-  .trust-grid,
-  .calendar-grid,
-  .map-grid,
-  .project-grid,
+    .advice-grid,
+    .joint-grid,
+    .reward-grid,
+    .achievement-grid,
+    .trust-grid,
+    .debate-grid,
+    .gap-grid,
+    .calendar-grid,
+    .map-grid,
+    .project-grid,
   .knowledge-grid {
     grid-template-columns: 1fr;
   }
 
   .major-entry-head {
     grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 560px) {
+  .primary-tools {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .system-tools {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .utility button {
+    padding: 0 8px;
+    font-size: 14px;
+  }
+
+  .system-tools button {
+    font-size: 12px;
   }
 }
