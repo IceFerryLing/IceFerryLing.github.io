@@ -785,6 +785,7 @@ const logicEl = document.querySelector("#logicScore");
 const passionEl = document.querySelector("#passionScore");
 const teamEl = document.querySelector("#teamScore");
 const configDialog = document.querySelector("#configDialog");
+const resetDialog = document.querySelector("#resetDialog");
 const atlasDialog = document.querySelector("#atlasDialog");
 const jointDialog = document.querySelector("#jointDialog");
 const progressDialog = document.querySelector("#progressDialog");
@@ -793,6 +794,10 @@ const atlasBtn = document.querySelector("#atlasBtn");
 const jointBtn = document.querySelector("#jointBtn");
 const progressBtn = document.querySelector("#progressBtn");
 const exploreBtn = document.querySelector("#exploreBtn");
+const resetBtn = document.querySelector("#resetBtn");
+const cancelResetBtn = document.querySelector("#cancelResetBtn");
+const confirmResetBtn = document.querySelector("#confirmResetBtn");
+const closeResetDialogBtn = document.querySelector("#closeResetDialog");
 const majorTab = document.querySelector("#majorTab");
 const knowledgeTab = document.querySelector("#knowledgeTab");
 const majorArchiveEl = document.querySelector("#majorArchive");
@@ -2061,9 +2066,48 @@ function loadGame() {
   render(state.current, false);
 }
 
+function resetAllProgress() {
+  resetDialog.showModal();
+}
+
+function performResetAllProgress() {
+
+  clearInterval(state.typingTimer);
+  state.typingTimer = null;
+  state.current = "intro";
+  state.logic = 0;
+  state.passion = 0;
+  state.team = 0;
+  state.scoredRoutes = [];
+  state.visitedRoutes = ["intro"];
+
+  collectionState.unlockedRoutes = ["intro"];
+  collectionState.completedJointEvents = [];
+  collectionState.favorites = [];
+  collectionState.solvedQuizzes = {};
+  collectionState.quizFeedback = {};
+  collectionState.wrongQuizCards = [];
+  collectionState.understanding = 0;
+  collectionState.achievements = [];
+  collectionState.trust = { cs: 0, ee: 0, auto: 0, ic: 0, comm: 0 };
+  collectionState.calendarDone = [];
+  collectionState.locationVisits = [];
+  collectionState.projectProgress = {};
+
+  localStorage.removeItem("majorGalgameDemo");
+  localStorage.removeItem("majorGalgameCollection");
+  configDialog.close();
+  resetDialog.close();
+  render("intro", false);
+}
+
 document.querySelector("#saveBtn").addEventListener("click", saveGame);
 document.querySelector("#loadBtn").addEventListener("click", loadGame);
 document.querySelector("#configBtn").addEventListener("click", () => configDialog.showModal());
+resetBtn.addEventListener("click", resetAllProgress);
+cancelResetBtn.addEventListener("click", () => resetDialog.close());
+closeResetDialogBtn.addEventListener("click", () => resetDialog.close());
+confirmResetBtn.addEventListener("click", performResetAllProgress);
 atlasBtn.addEventListener("click", () => {
   loadCollectionState();
   renderMajorArchive();

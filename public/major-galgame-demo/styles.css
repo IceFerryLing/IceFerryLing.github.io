@@ -947,6 +947,286 @@ dialog label {
   margin: 16px 0;
 }
 
+.config-dialog {
+  width: min(560px, calc(100vw - 28px));
+  padding: 0;
+  overflow: hidden;
+  border-color: rgba(159, 222, 255, 0.42);
+  background:
+    radial-gradient(circle at 88% 12%, rgba(247, 212, 107, 0.16), transparent 18%),
+    radial-gradient(circle at 12% 18%, rgba(118, 220, 255, 0.14), transparent 20%),
+    linear-gradient(160deg, rgba(11, 28, 54, 0.98), rgba(9, 18, 38, 0.98));
+  box-shadow: 0 26px 80px rgba(0, 0, 0, 0.5), inset 0 0 0 1px rgba(255, 255, 255, 0.04);
+}
+
+.config-panel {
+  position: relative;
+  margin: 0;
+  padding: 18px 18px 16px;
+}
+
+.config-panel::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(90deg, rgba(118, 220, 255, 0.1), transparent 24%, transparent 76%, rgba(247, 212, 107, 0.08)),
+    repeating-linear-gradient(0deg, transparent 0 25px, rgba(255, 255, 255, 0.03) 26px 27px);
+  opacity: 0.85;
+}
+
+.config-header,
+.config-body,
+.config-actions {
+  position: relative;
+  z-index: 1;
+}
+
+.config-header {
+  margin-bottom: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid rgba(159, 222, 255, 0.18);
+}
+
+.config-header p {
+  margin: 0 0 4px;
+  color: var(--cyan);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.config-header h2 {
+  margin: 0;
+  font-size: 22px;
+}
+
+.config-header button {
+  width: 36px;
+  height: 36px;
+  border-radius: 999px;
+  font-size: 20px;
+  line-height: 1;
+}
+
+.config-body {
+  display: grid;
+  gap: 14px;
+  padding: 16px 0 18px;
+}
+
+.config-field {
+  gap: 10px;
+  margin: 0;
+}
+
+.config-field span {
+  color: var(--gold);
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.config-field input[type="range"] {
+  width: 100%;
+  accent-color: var(--cyan);
+}
+
+.config-toggle {
+  margin: 0;
+  grid-template-columns: 20px 1fr;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  border: 1px solid rgba(159, 222, 255, 0.18);
+  background: rgba(236, 248, 255, 0.06);
+}
+
+.config-toggle input {
+  width: 18px;
+  height: 18px;
+  margin: 0;
+  accent-color: var(--mint);
+}
+
+.config-toggle strong,
+.config-toggle small {
+  display: block;
+}
+
+.config-toggle strong {
+  color: var(--ink);
+  font-size: 14px;
+}
+
+.config-toggle small {
+  margin-top: 3px;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.config-actions {
+  display: flex;
+  justify-content: flex-end;
+  padding-top: 2px;
+}
+
+#resetBtn {
+  min-width: 148px;
+  height: 40px;
+  border-color: rgba(255, 159, 122, 0.42);
+  color: #ffd8cc;
+  background: rgba(255, 159, 122, 0.12);
+}
+
+#resetBtn:hover,
+#resetBtn:focus-visible {
+  border-color: #ffbca8;
+  background: rgba(255, 159, 122, 0.2);
+  box-shadow: 0 0 18px rgba(255, 159, 122, 0.24);
+}
+
+.reset-dialog {
+  width: min(520px, calc(100vw - 28px));
+  padding: 0;
+  overflow: hidden;
+  border-color: rgba(255, 159, 122, 0.35);
+  background:
+    radial-gradient(circle at 18% 18%, rgba(255, 159, 122, 0.18), transparent 22%),
+    radial-gradient(circle at 82% 12%, rgba(247, 212, 107, 0.12), transparent 18%),
+    linear-gradient(160deg, rgba(16, 27, 48, 0.98), rgba(10, 18, 32, 0.99));
+  box-shadow: 0 30px 90px rgba(0, 0, 0, 0.56), inset 0 0 0 1px rgba(255, 255, 255, 0.04);
+}
+
+.reset-panel {
+  position: relative;
+  margin: 0;
+  padding: 18px;
+}
+
+.reset-panel::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(90deg, rgba(255, 159, 122, 0.12), transparent 28%, transparent 72%, rgba(247, 212, 107, 0.08)),
+    repeating-linear-gradient(0deg, transparent 0 28px, rgba(255, 255, 255, 0.03) 29px 30px);
+  opacity: 0.85;
+}
+
+.reset-header,
+.reset-copy,
+.reset-summary,
+.reset-actions {
+  position: relative;
+  z-index: 1;
+}
+
+.reset-header {
+  display: grid;
+  grid-template-columns: 46px 1fr 36px;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 14px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid rgba(255, 159, 122, 0.16);
+}
+
+.reset-header p {
+  margin: 0 0 4px;
+  color: #ffbca8;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.reset-header h2 {
+  margin: 0;
+  font-size: 22px;
+}
+
+.reset-badge {
+  width: 46px;
+  height: 46px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(255, 159, 122, 0.42);
+  border-radius: 14px;
+  color: #ffd8cc;
+  background:
+    linear-gradient(135deg, rgba(255, 159, 122, 0.18), rgba(255, 159, 122, 0.06)),
+    rgba(255, 255, 255, 0.02);
+  font-size: 28px;
+  font-weight: 900;
+  box-shadow: inset 0 0 16px rgba(255, 159, 122, 0.12);
+}
+
+.reset-header button {
+  width: 36px;
+  height: 36px;
+  border-radius: 999px;
+  font-size: 20px;
+  line-height: 1;
+}
+
+.reset-copy {
+  margin: 0 0 14px;
+  color: var(--ink);
+  line-height: 1.7;
+}
+
+.reset-summary {
+  margin-bottom: 16px;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.reset-summary span {
+  padding: 10px 12px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: var(--muted);
+  background: rgba(236, 248, 255, 0.05);
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.reset-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.reset-actions button {
+  min-width: 108px;
+  height: 40px;
+}
+
+#cancelResetBtn {
+  border-color: rgba(159, 222, 255, 0.28);
+  background: rgba(236, 248, 255, 0.08);
+}
+
+#confirmResetBtn {
+  border-color: rgba(255, 159, 122, 0.5);
+  color: #ffe0d4;
+  background: linear-gradient(135deg, rgba(255, 159, 122, 0.22), rgba(255, 159, 122, 0.12));
+}
+
+#confirmResetBtn:hover,
+#confirmResetBtn:focus-visible {
+  border-color: #ffbca8;
+  background: linear-gradient(135deg, rgba(255, 159, 122, 0.28), rgba(255, 159, 122, 0.18));
+  box-shadow: 0 0 18px rgba(255, 159, 122, 0.24);
+}
+
 .atlas-dialog {
   position: relative;
   width: min(980px, calc(100vw - 28px));

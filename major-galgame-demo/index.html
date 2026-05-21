@@ -95,20 +95,55 @@
         </section>
       </section>
 
-      <dialog id="configDialog">
-        <form method="dialog">
-          <header>
-            <h2>CONFIG</h2>
+      <dialog id="configDialog" class="config-dialog">
+        <form method="dialog" class="config-panel">
+          <header class="config-header">
+            <div>
+              <p>System Settings</p>
+              <h2>CONFIG</h2>
+            </div>
             <button type="submit" aria-label="关闭设置">×</button>
           </header>
-          <label>
-            文字速度
-            <input id="speedRange" type="range" min="12" max="48" value="22" />
-          </label>
-          <label>
-            <input id="ambientToggle" type="checkbox" checked />
-            开启背景动效
-          </label>
+          <div class="config-body">
+            <label class="config-field">
+              <span>文字速度</span>
+              <input id="speedRange" type="range" min="12" max="48" value="22" />
+            </label>
+            <label class="config-toggle">
+              <input id="ambientToggle" type="checkbox" checked />
+              <span>
+                <strong>开启背景动效</strong>
+                <small>保留界面流动感</small>
+              </span>
+            </label>
+          </div>
+          <div class="config-actions">
+            <button id="resetBtn" type="button">重置所有存档</button>
+          </div>
+        </form>
+      </dialog>
+
+      <dialog id="resetDialog" class="reset-dialog">
+        <form method="dialog" class="reset-panel">
+          <header class="reset-header">
+            <div class="reset-badge" aria-hidden="true">!</div>
+            <div>
+              <p>Danger Zone</p>
+              <h2>重置所有存档</h2>
+            </div>
+            <button type="button" id="closeResetDialog" aria-label="关闭确认弹窗">×</button>
+          </header>
+          <p class="reset-copy">这会清除当前进度、图鉴收藏、测验记录与本地存档，回到最初状态。</p>
+          <div class="reset-summary">
+            <span>demo 存档</span>
+            <span>collection 存档</span>
+            <span>当前进度</span>
+            <span>图鉴记录</span>
+          </div>
+          <div class="reset-actions">
+            <button type="button" id="cancelResetBtn">取消</button>
+            <button type="button" id="confirmResetBtn">确认重置</button>
+          </div>
         </form>
       </dialog>
 
