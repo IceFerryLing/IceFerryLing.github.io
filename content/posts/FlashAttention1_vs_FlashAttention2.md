@@ -2,7 +2,7 @@
 title: FlashAttention 1 和 FlashAttention 2 的区别
 date: 2026-05-28
 slug: flash-attention-1-vs-flash-attention-2
-description: FlashAttention 1 和 FlashAttention 2 的区别与优化策略，适合深度学习和 GPU 编程开发者。
+description: 记录学习 FlashAttention 1 和 FlashAttention 2 时，对 HBM IO、GPU 并行度和 kernel 优化的理解。
 category:
   - 深度学习
 tags:
@@ -11,7 +11,11 @@ tags:
 ---
 # FlashAttention 1 和 FlashAttention 2 的区别
 
-## 1. 总体结论
+这篇是我学习 FlashAttention 时的一次梳理。刚开始看 FA1 和 FA2，我最困惑的地方是：两者都叫 FlashAttention，都说是优化 attention，那 FA2 到底是在 FA1 基础上改了什么？如果 FA1 已经避免了显式生成完整 attention matrix，为什么还需要 FA2？
+
+后来我把问题拆成两层，思路就清楚了：FA1 主要解决“不要频繁访问 HBM”；FA2 在保留这个思路的基础上，继续解决“GPU 计算资源有没有真的跑满”。下面按这个学习过程来整理。
+
+## 1. 我先建立的总体结论
 
 FlashAttention 1 和 FlashAttention 2 的核心区别可以概括为：
 
@@ -659,3 +663,12 @@ $$
 }
 $$
 
+学完以后，我觉得 FlashAttention 不能只理解成“省显存的 attention”。FA1 的确让我先看到 IO-aware tiling 的价值：少把中间矩阵写回 HBM，性能就能明显改善。但 FA2 进一步提醒我，GPU 优化不只是减少访存，还要看 warp/block 怎么分工、并行度够不够、softmax 这类非 GEMM 操作有没有拖后腿。
+
+所以我现在记 FA1 和 FA2 的方式是：
+
+- FA1：先把 attention 的内存访问问题压下去；
+- FA2：在 IO 优化基础上继续压榨 GPU 执行效率；
+- 推理 decode 阶段还要额外关注 KV Cache layout 和带宽瓶颈。
+
+这个理解比单纯背“FA2 比 FA1 更快”更有用，因为它能帮助我判断一个 attention kernel 到底是在被 HBM、并行度，还是非矩阵乘开销限制。
